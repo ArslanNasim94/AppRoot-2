@@ -43,7 +43,7 @@ export function FinalCTA() {
   return (
     <section
       id="contact"
-      className="section-padding relative flex min-h-[80vh] items-center justify-center bg-bg"
+      className="site-section relative bg-bg"
     >
       <div
         ref={glowRef}
@@ -54,7 +54,7 @@ export function FinalCTA() {
         }}
       />
 
-      <div className="container relative z-10 text-center">
+      <div className="container relative z-10 py-4 text-center lg:py-6">
         <SectionTag>07 · Launch</SectionTag>
         <h2 ref={headingRef} className="text-heading-cta">
           {["STOP JUGGLING", "DEVELOPMENT.", "START BUILDING", "MOMENTUM."].map(

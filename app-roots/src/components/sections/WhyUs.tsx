@@ -64,27 +64,29 @@ export function WhyUs() {
   }, []);
 
   return (
-    <section id="why-different" className="section-padding bg-bg">
+    <section id="why-different" className="site-section bg-bg-surface">
       <div className="container">
-        <SectionTag>04 · Why us</SectionTag>
-        <h2 ref={headingRef} className="text-heading-section">
-          {["BUILT FOR", "FOUNDERS."].map((line) => (
-            <span key={line} className="block overflow-hidden">
-              <span data-line className="block">
-                {line}
+        <div className="section-header">
+          <SectionTag>04 · Why us</SectionTag>
+          <h2 ref={headingRef} className="text-heading-section">
+            {["BUILT FOR", "FOUNDERS."].map((line) => (
+              <span key={line} className="block overflow-hidden">
+                <span data-line className="block">
+                  {line}
+                </span>
               </span>
-            </span>
-          ))}
-        </h2>
-        <p className="copy-lead section-intro max-w-3xl">
-          Most startups juggle freelancers, agencies, and hiring. AppRoots gives you
-          one dedicated squad that ships web, mobile, AI, and backend — so you stay
-          focused on customers. Our experienced team brings 20+ years in the IT
-          industry, using that expertise to boost, refine, and polish your SaaS, MVP,
-          or startup product.
-        </p>
+            ))}
+          </h2>
+          <p className="copy-lead max-w-3xl">
+            Most startups juggle freelancers, agencies, and hiring. AppRoots gives you
+            one dedicated squad that ships web, mobile, AI, and backend — so you stay
+            focused on customers. Our experienced team brings 20+ years in the IT
+            industry, using that expertise to boost, refine, and polish your SaaS, MVP,
+            or startup product.
+          </p>
+        </div>
 
-        <div className="card-grid section-intro md:grid-cols-2">
+        <div className="card-grid md:grid-cols-2">
           <div className="card-surface">
             <h3 className="heading-card text-white/40">The usual path</h3>
             <ul className="mt-6 space-y-4">
@@ -113,7 +115,7 @@ export function WhyUs() {
           </div>
         </div>
 
-        <div ref={cardsRef} className="card-grid sm:grid-cols-2 lg:grid-cols-4">
+        <div ref={cardsRef} className="card-grid mt-10 sm:grid-cols-2 lg:mt-12 lg:grid-cols-4">
           {miniCards.map((card) => (
             <div key={card.title} className="card-surface">
               <h3 className="font-satoshi text-sm font-black uppercase text-text-heading">

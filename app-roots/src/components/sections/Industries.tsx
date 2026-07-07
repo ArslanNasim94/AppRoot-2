@@ -52,7 +52,7 @@ export function Industries() {
   }, []);
 
   return (
-    <section id="tech-stack" className="section-padding bg-bg">
+    <section id="tech-stack" className="site-section bg-bg">
       <div className="container section-grid">
         <div>
           <SectionTag>05 · Tech stack</SectionTag>

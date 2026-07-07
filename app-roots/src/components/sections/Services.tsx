@@ -35,7 +35,7 @@ export function Services() {
     <section
       id="pain-points"
       ref={sectionRef}
-      className="section-padding relative overflow-hidden bg-bg"
+      className="site-section relative overflow-hidden bg-bg-surface"
     >
       <div className="container">
         <div className="section-grid md:grid-cols-2">
@@ -56,12 +56,12 @@ export function Services() {
             </p>
           </div>
 
-          <ContainerScroll className="min-h-[220vh] space-y-6 py-6 md:py-8">
+          <ContainerScroll className="min-h-[115vh] space-y-6 md:min-h-[135vh]">
             {painPoints.map((point, index) => (
               <CardSticky
                 key={point.number}
-                index={index + 2}
-                incrementY={14}
+                index={index + 1}
+                incrementY={10}
                 incrementZ={10}
                 className="card-surface group w-full shadow-[0_8px_32px_rgba(10,10,15,0.45)] backdrop-blur-md"
               >

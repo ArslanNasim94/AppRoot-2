@@ -13,9 +13,9 @@ export function IdeaSection() {
   return (
     <section
       id="idea"
-      className="relative z-20 -mt-px scroll-mt-20 border-t border-white/[0.06] bg-bg section-padding flex min-h-[70vh] items-center"
+      className="site-section relative z-20 scroll-mt-20 bg-bg"
     >
-      <div className="container max-w-5xl text-center">
+      <div className="container max-w-5xl py-4 text-center lg:py-6">
         <SectionTag>01 · Idea</SectionTag>
 
         <p className="mb-3 font-inter text-[11px] font-medium uppercase tracking-[0.12em] text-white/30">

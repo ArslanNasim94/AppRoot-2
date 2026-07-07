@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function ProductsPage() {
   return (
-    <div className="section-padding pt-28">
+    <div className="site-section pt-28 lg:pt-32">
       <div className="container">
         <nav aria-label="Breadcrumb" className="mb-8">
           <ol className="flex flex-wrap items-center gap-1.5 font-inter text-sm text-text-body">

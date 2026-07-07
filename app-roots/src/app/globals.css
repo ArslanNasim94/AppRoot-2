@@ -16,11 +16,15 @@
   --purple: #7b2fff;
   --cyan: #00c8ff;
   --gradient: linear-gradient(135deg, #7b2fff 0%, #00c8ff 100%);
-  /* 8px spacing scale */
-  --space-section-y: 5rem;
-  --space-section-y-lg: 7.5rem;
-  --space-block: 3rem;
-  --space-block-lg: 4rem;
+  /* Spacing scale — 8px base, compact SaaS rhythm */
+  --space-section-y: 4.5rem;
+  --space-section-y-lg: 6rem;
+  --space-block: 2.5rem;
+  --space-block-lg: 3rem;
+  --space-stack: 1rem;
+  --space-stack-lg: 1.5rem;
+  --space-inline: 1.5rem;
+  --space-inline-lg: 2rem;
 }
 
 * {
@@ -150,19 +154,37 @@ h4 {
   }
 }
 
-.section-padding {
+.section-padding,
+.site-section {
   padding-top: var(--space-section-y);
   padding-bottom: var(--space-section-y);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 @media (min-width: 1024px) {
-  .section-padding {
+  .section-padding,
+  .site-section {
     padding-top: var(--space-section-y-lg);
     padding-bottom: var(--space-section-y-lg);
   }
 }
 
+.site-section:last-of-type,
+.section-padding:last-of-type {
+  border-bottom: none;
+}
+
 @layer components {
+  .section-header {
+    margin-bottom: var(--space-block);
+  }
+
+  @media (min-width: 1024px) {
+    .section-header {
+      margin-bottom: var(--space-block-lg);
+    }
+  }
+
   .section-intro {
     margin-bottom: var(--space-block);
   }
@@ -174,17 +196,19 @@ h4 {
   }
 
   .copy-lead {
-    margin-top: 1.5rem;
+    margin-top: var(--space-stack);
     max-width: 65ch;
     font-family: "Inter", sans-serif;
     font-size: 1rem;
-    line-height: 1.6;
+    line-height: 1.65;
     color: var(--text-body);
   }
 
   @media (min-width: 1024px) {
     .copy-lead {
+      margin-top: var(--space-stack-lg);
       font-size: 1.125rem;
+      line-height: 1.7;
     }
   }
 
@@ -199,18 +223,19 @@ h4 {
     border-radius: 1rem;
     border: 1px solid rgba(255, 255, 255, 0.07);
     background-color: var(--bg-surface);
-    padding: 1.5rem;
+    padding: 1.75rem;
   }
 
   @media (min-width: 1024px) {
     .card-surface {
-      padding: 2rem;
+      padding: 2.25rem;
     }
   }
 
   .section-grid {
     display: grid;
-    gap: 2rem;
+    gap: var(--space-block);
+    align-items: start;
   }
 
   @media (min-width: 1024px) {
@@ -222,15 +247,21 @@ h4 {
 
   .card-grid {
     display: grid;
-    gap: 1.5rem;
+    gap: var(--space-inline);
+  }
+
+  @media (min-width: 1024px) {
+    .card-grid {
+      gap: var(--space-inline-lg);
+    }
   }
 
   .btn-row {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 1rem;
-    margin-top: 2rem;
+    gap: var(--space-stack);
+    margin-top: var(--space-stack-lg);
   }
 
   .btn-row-center {
@@ -238,8 +269,15 @@ h4 {
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
-    margin-top: 2.5rem;
+    gap: var(--space-stack);
+    margin-top: var(--space-stack-lg);
+  }
+
+  @media (min-width: 1024px) {
+    .btn-row,
+    .btn-row-center {
+      margin-top: var(--space-block);
+    }
   }
 
   .heading-card {
@@ -258,7 +296,7 @@ h4 {
   }
 
   .text-card {
-    margin-top: 0.75rem;
+    margin-top: var(--space-stack);
     font-family: "Inter", sans-serif;
     font-size: 0.875rem;
     line-height: 1.6;

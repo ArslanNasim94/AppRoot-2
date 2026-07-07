@@ -21,7 +21,7 @@ export function SectionHeading({
 
   return (
     <>
-      {tag && <span className="section-tag mb-3 block font-inter text-[11px] font-medium uppercase tracking-[0.12em] text-white/30">{tag}</span>}
+      {tag && <span className="section-tag mb-4 block font-inter text-[11px] font-medium uppercase tracking-[0.12em] text-white/30">{tag}</span>}
       <Tag
         ref={headingRef}
         className={`text-heading-display ${className}`}

@@ -4,9 +4,9 @@ import { gsap } from "@/lib/gsap";
 
 export const FRAME_COUNT = 208;
 export const NAV_HEIGHT_PX = 80;
-export const HERO_FRAME_VH = 2.75;
-export const HERO_HOLD_VH = 0.4;
-export const HERO_EXIT_VH = 1;
+export const HERO_FRAME_VH = 2.5;
+export const HERO_HOLD_VH = 0.25;
+export const HERO_EXIT_VH = 0.75;
 export const HERO_TOTAL_VH = HERO_FRAME_VH + HERO_HOLD_VH + HERO_EXIT_VH;
 
 const PREFETCH_RADIUS = 40;

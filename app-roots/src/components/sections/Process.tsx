@@ -62,7 +62,7 @@ export function Process() {
   }, []);
 
   return (
-    <section id="steps" className="section-padding bg-bg">
+    <section id="steps" className="site-section bg-bg-surface">
       <div className="container section-grid">
         <div className="lg:sticky lg:top-32 lg:self-start">
           <SectionTag>06 · How we work</SectionTag>
@@ -77,7 +77,7 @@ export function Process() {
           </h2>
         </div>
 
-        <div className="relative space-y-12 pl-8">
+        <div className="relative space-y-10 pl-8 lg:space-y-12">
           <div
             className="absolute left-3 top-0 h-full w-px bg-white/10"
             style={{
@@ -110,7 +110,7 @@ export function Process() {
         </div>
       </div>
 
-      <div className="card-grid container mt-12 lg:mt-16 md:grid-cols-3">
+      <div className="card-grid container mt-10 md:grid-cols-3 lg:mt-12">
         {notes.map((note) => (
           <div key={note.title} className="card-surface">
             <h3 className="font-satoshi text-sm font-black uppercase text-text-heading">

@@ -61,7 +61,7 @@ export function AiForStartups() {
     <section
       id="ai-for-startups"
       ref={sectionRef}
-      className="section-padding relative overflow-hidden bg-bg"
+      className="site-section relative overflow-hidden bg-bg"
     >
       <div className="container">
         <div className="section-grid lg:grid-cols-[minmax(0,380px)_1fr] lg:items-start xl:grid-cols-[minmax(0,420px)_1fr]">

@@ -62,11 +62,11 @@ function ProductHeroVisual({ product }: { product: Product }) {
 
 export function ProductLandingPage({ product }: { product: Product }) {
   return (
-    <div className="section-padding pt-28">
+    <div className="site-section pt-28 lg:pt-32">
       <div className="container max-w-6xl">
         <ProductBreadcrumb name={product.name} />
 
-        <section className="section-grid border-b border-white/[0.07] pb-12 lg:pb-16">
+        <section className="section-grid border-b border-white/[0.07] pb-12 lg:pb-20">
           <div>
             <div className="mb-4 flex flex-wrap gap-2">
               <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1 font-inter text-xs font-medium uppercase tracking-wide text-text-heading">
@@ -104,7 +104,7 @@ export function ProductLandingPage({ product }: { product: Product }) {
           <ProductHeroVisual product={product} />
         </section>
 
-        <section className="border-b border-white/[0.07] py-12 lg:py-16">
+        <section className="border-b border-white/[0.07] py-12 lg:py-20">
           <h2 className="text-heading-section mb-6">About This Product</h2>
           <p className="copy-lead max-w-3xl">{product.about}</p>
 
@@ -127,7 +127,7 @@ export function ProductLandingPage({ product }: { product: Product }) {
 
         <ProductScreenshots product={product} />
 
-        <section className="border-b border-white/[0.07] py-12 lg:py-16">
+        <section className="border-b border-white/[0.07] py-12 lg:py-20">
           <h2 className="text-heading-section mb-6">Pricing</h2>
           <div className="card-surface max-w-md">
             <p className="font-satoshi text-3xl font-black text-brand-cyan">
@@ -148,12 +148,12 @@ export function ProductLandingPage({ product }: { product: Product }) {
           </div>
         </section>
 
-        <section className="border-b border-white/[0.07] py-12 lg:py-16">
+        <section className="border-b border-white/[0.07] py-12 lg:py-20">
           <h2 className="text-heading-section mb-6">Use Cases</h2>
           <p className="copy-lead max-w-3xl">{product.useCases}</p>
         </section>
 
-        <section id="request-info" className="py-12 lg:py-16">
+        <section id="request-info" className="py-12 lg:py-20">
           <h2 className="text-heading-section mb-3">Request Information</h2>
           <p className="copy-lead mb-0 max-w-2xl text-sm">
             Interested in {product.name}? Fill out the form below and our team
