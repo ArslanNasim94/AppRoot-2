@@ -1,52 +1,23 @@
-import dynamic from "next/dynamic";
 import { FounderPipeline } from "@/components/layout/FounderPipeline";
 import { Hero } from "@/components/sections/Hero";
-
-const Manifesto = dynamic(
-  () => import("@/components/sections/Manifesto").then((m) => m.Manifesto),
-  { ssr: false }
-);
-const Services = dynamic(
-  () => import("@/components/sections/Services").then((m) => m.Services)
-);
-const AiForStartups = dynamic(
-  () => import("@/components/sections/AiForStartups").then((m) => m.AiForStartups)
-);
-const AiAgents = dynamic(
-  () => import("@/components/sections/AiAgents").then((m) => m.AiAgents)
-);
-const WhyUs = dynamic(
-  () => import("@/components/sections/WhyUs").then((m) => m.WhyUs)
-);
-const Industries = dynamic(
-  () => import("@/components/sections/Industries").then((m) => m.Industries)
-);
-const Work = dynamic(
-  () => import("@/components/sections/Work").then((m) => m.Work)
-);
-const Metrics = dynamic(
-  () => import("@/components/sections/Metrics").then((m) => m.Metrics)
-);
-const Process = dynamic(
-  () => import("@/components/sections/Process").then((m) => m.Process)
-);
-const FinalCTA = dynamic(
-  () => import("@/components/sections/FinalCTA").then((m) => m.FinalCTA)
-);
+import { IdeaSection } from "@/components/sections/IdeaSection";
+import { Services } from "@/components/sections/Services";
+import { AiForStartups } from "@/components/sections/AiForStartups";
+import { WhyUs } from "@/components/sections/WhyUs";
+import { Industries } from "@/components/sections/Industries";
+import { Process } from "@/components/sections/Process";
+import { FinalCTA } from "@/components/sections/FinalCTA";
 
 export default function Home() {
   return (
     <>
       <FounderPipeline />
       <Hero />
-      <Manifesto />
+      <IdeaSection />
       <Services />
       <AiForStartups />
-      <AiAgents />
       <WhyUs />
       <Industries />
-      <Work />
-      <Metrics />
       <Process />
       <FinalCTA />
     </>

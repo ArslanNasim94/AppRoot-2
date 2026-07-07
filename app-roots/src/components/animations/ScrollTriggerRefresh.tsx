@@ -3,27 +3,34 @@
 import { useEffect } from "react";
 import { ScrollTrigger } from "@/lib/gsap";
 
+function refreshScrollTriggers() {
+  ScrollTrigger.refresh(true);
+}
+
 export function ScrollTriggerRefresh() {
   useEffect(() => {
-    const refresh = () => ScrollTrigger.refresh(true);
-
-    const onLoad = () => {
-      refresh();
-      setTimeout(refresh, 300);
+    const refreshSoon = () => {
+      refreshScrollTriggers();
+      window.setTimeout(refreshScrollTriggers, 200);
+      window.setTimeout(refreshScrollTriggers, 800);
     };
 
-    if (document.readyState === "complete") {
-      onLoad();
-    } else {
-      window.addEventListener("load", onLoad);
-    }
+    refreshSoon();
 
-    return () => window.removeEventListener("load", onLoad);
+    window.addEventListener("load", refreshSoon);
+    window.addEventListener("resize", refreshSoon, { passive: true });
+
+    const observer = new ResizeObserver(refreshSoon);
+    observer.observe(document.body);
+
+    return () => {
+      window.removeEventListener("load", refreshSoon);
+      window.removeEventListener("resize", refreshSoon);
+      observer.disconnect();
+    };
   }, []);
 
   return null;
 }
 
-export function refreshScrollTriggers() {
-  ScrollTrigger.refresh(true);
-}
+export { refreshScrollTriggers };

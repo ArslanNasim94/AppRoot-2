@@ -65,7 +65,7 @@ export function Process() {
     <section id="steps" className="section-padding bg-bg">
       <div className="container grid gap-16 lg:grid-cols-2">
         <div className="lg:sticky lg:top-32 lg:self-start">
-          <SectionTag>05 · How we work</SectionTag>
+          <SectionTag>06 · How we work</SectionTag>
           <h2
             ref={headingRef}
             className="font-satoshi text-[clamp(40px,6vw,72px)] font-black uppercase leading-[0.95] tracking-tight text-text-heading"

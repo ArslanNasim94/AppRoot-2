@@ -4,6 +4,7 @@ import { Navigation } from "@/components/layout/Navigation";
 import { Footer } from "@/components/layout/Footer";
 import { CustomCursor } from "@/components/ui/CustomCursor";
 import { AiChatbot } from "@/components/ui/AiChatbot";
+import { ScrollTriggerRefresh } from "@/components/animations/ScrollTriggerRefresh";
 
 export const metadata: Metadata = {
   title: "AppRoots — Your Development Partner for Startups",
@@ -29,6 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <body>
+        <ScrollTriggerRefresh />
         <CustomCursor />
         <Navigation />
         <main className="relative z-0 pt-20">{children}</main>

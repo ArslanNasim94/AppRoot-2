@@ -93,6 +93,22 @@ export function useNizekHeading(
       );
     });
 
+    ScrollTrigger.refresh();
+
+    const fallbackTimer = window.setTimeout(() => {
+      const first = letters[0];
+      if (!first) return;
+      const opacity = Number.parseFloat(first.style.opacity || "1");
+      if (opacity < 0.95) {
+        gsap.set(letters, {
+          x: 0,
+          opacity: 1,
+          textShadow: HEADING_SHADOW_TO,
+          clearProps: "transform",
+        });
+      }
+    }, 2000);
+
     const tag = el.previousElementSibling;
     if (tag?.classList.contains("section-tag")) {
       gsap.fromTo(
@@ -109,6 +125,7 @@ export function useNizekHeading(
     }
 
     return () => {
+      window.clearTimeout(fallbackTimer);
       ScrollTrigger.getAll().forEach((st) => {
         if (st.trigger === el || st.trigger === tag) st.kill();
       });

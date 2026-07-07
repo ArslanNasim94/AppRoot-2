@@ -40,7 +40,7 @@ export function Services() {
       <div className="container">
         <div className="grid gap-12 md:grid-cols-2 md:gap-8 lg:gap-16 xl:gap-12">
           <div className="left-0 top-0 md:sticky md:top-32 md:self-start md:py-8 lg:top-36">
-            <SectionTag>01 · Pain points — Sound familiar?</SectionTag>
+            <SectionTag>02 · Pain points — Sound familiar?</SectionTag>
             <h2
               ref={headingRef}
               className="font-satoshi text-[clamp(32px,4vw,52px)] font-black uppercase leading-[1.02] tracking-tight text-text-heading"

@@ -66,7 +66,7 @@ export function WhyUs() {
   return (
     <section id="why-different" className="section-padding bg-bg">
       <div className="container">
-        <SectionTag>03 · Why us</SectionTag>
+        <SectionTag>04 · Why us</SectionTag>
         <h2
           ref={headingRef}
           className="mb-8 font-satoshi text-[clamp(40px,6vw,72px)] font-black uppercase leading-[0.95] tracking-tight text-text-heading"

@@ -55,7 +55,7 @@ export function FinalCTA() {
       />
 
       <div className="container relative z-10 text-center">
-        <SectionTag>Pipeline complete — ready to ship</SectionTag>
+        <SectionTag>07 · Launch</SectionTag>
         <h2
           ref={headingRef}
           className="font-satoshi text-[clamp(48px,8vw,120px)] font-black uppercase leading-[0.92] tracking-tighter text-text-heading"

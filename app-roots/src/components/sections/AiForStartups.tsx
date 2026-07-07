@@ -66,7 +66,7 @@ export function AiForStartups() {
       <div className="container">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,380px)_1fr] lg:items-start lg:gap-16 xl:grid-cols-[minmax(0,420px)_1fr]">
           <div className="lg:sticky lg:top-32">
-            <SectionTag>02 · AI path</SectionTag>
+            <SectionTag>03 · AI path</SectionTag>
             <h2
               ref={headingRef}
               className="font-satoshi text-[clamp(32px,4vw,52px)] font-black uppercase leading-[1.02] tracking-tight text-text-heading"

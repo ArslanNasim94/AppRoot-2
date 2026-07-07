@@ -55,7 +55,7 @@ export function Industries() {
     <section id="tech-stack" className="section-padding bg-bg">
       <div className="container grid gap-16 lg:grid-cols-2">
         <div>
-          <SectionTag>04 · Tech stack</SectionTag>
+          <SectionTag>05 · Tech stack</SectionTag>
           <h2
             ref={headingRef}
             className="font-satoshi text-[clamp(40px,6vw,72px)] font-black uppercase leading-[0.95] tracking-tight text-text-heading"
