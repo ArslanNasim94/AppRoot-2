@@ -1,25 +1,27 @@
 import Image from "next/image";
 import Link from "next/link";
 
+const exploreLinks = [
+  { label: "Why Us", href: "/#why-different" },
+  { label: "AI for Startups", href: "/#ai-for-startups" },
+  { label: "Problems", href: "/#pain-points" },
+  { label: "How it works", href: "/#steps" },
+  { label: "Products", href: "/products" },
+];
+
 const companyLinks = [
-  { label: "About", href: "#team" },
-  { label: "Work", href: "#work" },
-  { label: "Process", href: "#services" },
-  { label: "Careers", href: "#" },
+  { label: "FAQ", href: "/faq" },
+  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Terms of Service", href: "/terms" },
+  { label: "Contact", href: "/#contact" },
 ];
 
-const serviceLinks = [
-  { label: "AI Engineering", href: "#services" },
-  { label: "3D Web", href: "#services" },
-  { label: "SaaS Platforms", href: "#services" },
-  { label: "Mobile Apps", href: "#services" },
-];
-
-const connectLinks = [
-  { label: "LinkedIn", href: "#" },
-  { label: "Twitter / X", href: "#" },
-  { label: "GitHub", href: "#" },
-  { label: "Privacy Policy", href: "#" },
+const coreStacks = [
+  "React Native",
+  "SwiftUI",
+  "Kotlin",
+  "Laravel",
+  "Next.js",
 ];
 
 export function Footer() {
@@ -30,14 +32,36 @@ export function Footer() {
           <div>
             <Image
               src="/images/App_Roots_Logo.jpeg"
-              alt="App Roots"
+              alt="AppRoots"
               width={180}
               height={48}
               className="h-12 w-auto object-contain transition-[filter] duration-300 hover:drop-shadow-[0_0_12px_rgba(0,200,255,0.4)]"
             />
             <p className="mt-4 max-w-xs font-inter text-sm text-text-body">
-              We build what others can&apos;t imagine.
+              AppRoots takes web, mobile, and backend development off your plate
+              — so you can spend your time on marketing, sales, and customers.
             </p>
+            <p className="mt-4 font-inter text-xs text-white/25">
+              {coreStacks.join(" · ")}
+            </p>
+          </div>
+
+          <div>
+            <h4 className="mb-4 font-inter text-[11px] font-medium uppercase tracking-[0.12em] text-white/25">
+              Explore
+            </h4>
+            <ul className="space-y-3">
+              {exploreLinks.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
+                    className="footer-link font-inter text-sm text-text-body transition-colors hover:text-text-heading"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
 
           <div>
@@ -60,45 +84,40 @@ export function Footer() {
 
           <div>
             <h4 className="mb-4 font-inter text-[11px] font-medium uppercase tracking-[0.12em] text-white/25">
-              Services
+              Get Started
             </h4>
             <ul className="space-y-3">
-              {serviceLinks.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="footer-link font-inter text-sm text-text-body transition-colors hover:text-text-heading"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="mb-4 font-inter text-[11px] font-medium uppercase tracking-[0.12em] text-white/25">
-              Connect
-            </h4>
-            <ul className="space-y-3">
-              {connectLinks.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="footer-link font-inter text-sm text-text-body transition-colors hover:text-text-heading"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+              <li>
+                <Link
+                  href="/register"
+                  className="footer-link font-inter text-sm text-text-body transition-colors hover:text-text-heading"
+                >
+                  Create Account
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/login"
+                  className="footer-link font-inter text-sm text-text-body transition-colors hover:text-text-heading"
+                >
+                  Login
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/#ai-chatbot"
+                  className="footer-link font-inter text-sm text-text-body transition-colors hover:text-text-heading"
+                >
+                  Chat with AI Assistant
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
 
         <div className="mt-16 border-t border-white/[0.07] pt-8">
           <p className="font-inter text-xs text-white/25">
-            © 2025 App Roots. All rights reserved. · Built by the people who
-            wrote the guarantee.
+            © 2026 AppRoots.net — All rights reserved.
           </p>
         </div>
       </div>

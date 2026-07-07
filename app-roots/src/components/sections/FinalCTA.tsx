@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsap";
 import { MagneticButton } from "@/components/ui/MagneticButton";
+import { SectionTag } from "@/components/ui/SectionTag";
 import { useNizekHeading } from "@/components/animations/useNizekHeading";
 
 export function FinalCTA() {
@@ -40,7 +41,10 @@ export function FinalCTA() {
   }, []);
 
   return (
-    <section id="contact" className="relative flex min-h-screen items-center justify-center bg-bg section-padding">
+    <section
+      id="contact"
+      className="relative flex min-h-screen items-center justify-center bg-bg section-padding"
+    >
       <div
         ref={glowRef}
         className="pointer-events-none absolute inset-0 opacity-30"
@@ -51,35 +55,37 @@ export function FinalCTA() {
       />
 
       <div className="container relative z-10 text-center">
+        <SectionTag>Pipeline complete — ready to ship</SectionTag>
         <h2
           ref={headingRef}
-          className="font-satoshi text-[clamp(72px,10vw,140px)] font-black uppercase leading-[0.92] tracking-tighter text-text-heading"
+          className="font-satoshi text-[clamp(48px,8vw,120px)] font-black uppercase leading-[0.92] tracking-tighter text-text-heading"
         >
-          {["YOUR IDEA", "DESERVES", "BETTER CODE."].map((line) => (
-            <span key={line} className="block overflow-hidden">
-              <span data-line className="block">
-                {line}
+          {["STOP JUGGLING", "DEVELOPMENT.", "START BUILDING", "MOMENTUM."].map(
+            (line) => (
+              <span key={line} className="block overflow-hidden">
+                <span data-line className="block">
+                  {line}
+                </span>
               </span>
-            </span>
-          ))}
+            )
+          )}
         </h2>
 
         <p className="mx-auto mt-8 max-w-[520px] font-inter text-lg text-text-body">
-          Tell us what you&apos;re building. We&apos;ll tell you honestly whether
-          we&apos;re the right team — and if we are, we&apos;ll show you exactly how
-          we&apos;d approach it.
+          Tell us what you&apos;re building. We&apos;ll figure out the first step
+          together.
         </p>
 
         <div className="mt-10 flex flex-col items-center justify-center gap-6 sm:flex-row">
-          <MagneticButton href="mailto:hello@approots.com" className="px-8 py-4">
-            Let&apos;s Build Something →
+          <MagneticButton href="/register" className="px-8 py-4">
+            Let&apos;s talk →
           </MagneticButton>
           <a
-            href="mailto:hello@approots.com"
+            href="#ai-chatbot"
             className="link-underline font-inter text-sm font-semibold uppercase tracking-[0.06em] text-text-heading"
             data-cursor="hover"
           >
-            Book a Free Strategy Call
+            Talk to us
           </a>
         </div>
 

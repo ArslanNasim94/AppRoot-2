@@ -4,30 +4,31 @@ import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { SectionTag } from "@/components/ui/SectionTag";
+import { MagneticButton } from "@/components/ui/MagneticButton";
 import { useNizekHeading } from "@/components/animations/useNizekHeading";
 
-const painPoints = [
+const aiPaths = [
   {
     number: "01",
-    title: "Hiring takes months you don't have",
-    body: "Finding, hiring, and managing a reliable dev team eats the runway you need for everything else.",
-    solution: "We become your dev team — no hiring required.",
+    title: "Integrate AI into your product",
+    body: "Add chat assistants, smart search, and AI features to your existing app, CRM, or workflow — without rebuilding what already works.",
+    tags: ["LLM APIs", "RAG", "Chat assistants"],
   },
   {
     number: "02",
-    title: "Marketing is ready, but the product isn't",
-    body: "Your launch plan is waiting on features that keep slipping — and every delay costs you momentum.",
-    solution: "We ship on your timeline so marketing can launch.",
+    title: "Upgrade existing systems with AI",
+    body: "We improve the system you run today: AI automation, intelligent agents, and analytics that make your product more progressive and competitive.",
+    tags: ["Automation", "AI agents", "Analytics"],
   },
   {
     number: "03",
-    title: "You're building software instead of finding customers",
-    body: "Founders end up buried in tech decisions when their time is worth far more in front of customers.",
-    solution: "We handle tech — you stay in front of customers.",
+    title: "Build a brand-new AI SaaS",
+    body: "Have an AI product idea? We take it from concept to production — a complete AI-native SaaS built, launched, and maintained by one team.",
+    tags: ["Laravel", "Next.js", "MVP to scale"],
   },
 ];
 
-export function Services() {
+export function AiForStartups() {
   const sectionRef = useRef<HTMLElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -75,18 +76,18 @@ export function Services() {
 
   return (
     <section
-      id="pain-points"
+      id="ai-for-startups"
       ref={sectionRef}
       className="section-padding relative overflow-hidden bg-bg"
     >
       <div className="container flex flex-col gap-16 md:flex-row">
         <div className="md:sticky md:top-32 md:w-1/3 md:self-start">
-          <SectionTag>01 · Pain points — Sound familiar?</SectionTag>
+          <SectionTag>02 · AI path</SectionTag>
           <h2
             ref={headingRef}
             className="font-satoshi text-[clamp(40px,6vw,72px)] font-black uppercase leading-[0.95] tracking-tight text-text-heading"
           >
-            {["THE PROBLEMS", "THAT SLOW", "STARTUPS DOWN."].map((line) => (
+            {["YOUR STARTUP'S", "AI PARTNER."].map((line) => (
               <span key={line} className="block overflow-hidden">
                 <span data-line className="block">
                   {line}
@@ -95,8 +96,9 @@ export function Services() {
             ))}
           </h2>
           <p className="mt-6 font-inter text-base leading-relaxed text-text-body">
-            You&apos;re not alone — we hear these from founders every week. We built
-            AppRoots to take exactly these problems off your plate.
+            We specialize in AI-based solutions. Add AI to the product you already
+            have, make your current system smarter, or launch a completely new AI
+            SaaS with us.
           </p>
         </div>
 
@@ -104,9 +106,9 @@ export function Services() {
           ref={cardsRef}
           className="flex flex-col gap-5 md:flex-row md:gap-5"
         >
-          {painPoints.map((point) => (
+          {aiPaths.map((path) => (
             <motion.div
-              key={point.number}
+              key={path.number}
               whileHover={{
                 y: -8,
                 borderColor: "rgba(123,47,255,0.3)",
@@ -115,20 +117,31 @@ export function Services() {
               className="group w-full shrink-0 rounded-2xl border border-white/[0.07] bg-bg-surface p-10 md:w-[420px]"
             >
               <span className="font-satoshi text-[80px] font-black leading-none text-white/[0.06] transition-all duration-300 group-hover:gradient-text">
-                {point.number}
+                {path.number}
               </span>
               <h3 className="mt-4 font-satoshi text-[22px] font-black uppercase leading-tight text-text-heading">
-                {point.title}
+                {path.title}
               </h3>
               <p className="mt-4 font-inter text-base leading-relaxed text-text-body">
-                {point.body}
+                {path.body}
               </p>
-              <p className="mt-4 font-inter text-sm font-medium text-brand-cyan">
-                → {point.solution}
-              </p>
+              <div className="mt-6 flex flex-wrap gap-2">
+                {path.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full border border-white/[0.08] px-3 py-1 font-inter text-[11px] text-text-body"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
             </motion.div>
           ))}
         </div>
+      </div>
+
+      <div className="container mt-12 text-center">
+        <MagneticButton href="#ai-chatbot">Discuss your AI idea →</MagneticButton>
       </div>
     </section>
   );

@@ -85,7 +85,6 @@ export function Hero() {
         if (cancelled) return;
         framesRef.current = frames;
         setReady(true);
-        // Force redraw with newly loaded frames
         window.dispatchEvent(new Event("scroll"));
       });
 
@@ -148,11 +147,11 @@ export function Hero() {
           className="absolute bottom-[10%] left-0 z-[3] w-full px-6 pt-28 lg:px-12"
         >
           <p className="mb-4 font-inter text-[11px] font-medium uppercase tracking-[0.12em] text-white/30">
-            — Software Studio · AI · 3D Web · SaaS
+            Your development partner
           </p>
 
-          <h1 className="mb-6 font-satoshi text-[clamp(48px,8vw,120px)] font-black uppercase leading-[0.92] tracking-tighter text-text-heading">
-            {["WE BUILD", "WHAT OTHERS", "CAN'T IMAGINE"].map((line) => (
+          <h1 className="mb-6 font-satoshi text-[clamp(40px,7vw,96px)] font-black uppercase leading-[0.92] tracking-tighter text-text-heading">
+            {["YOU FOCUS ON", "GROWTH. WE BUILD", "THE PRODUCT."].map((line) => (
               <span key={line} className="block overflow-hidden">
                 <span data-line className="block opacity-0">
                   {line}
@@ -162,24 +161,22 @@ export function Hero() {
           </h1>
 
           <p className="hero-sub mb-8 max-w-xl font-inter text-lg text-text-body opacity-0">
-            Premium software engineering for startups, scale-ups, and enterprises
-            who refuse to compromise on quality.
+            AppRoots takes web, mobile, and backend development off your plate — so
+            you can spend your time on marketing, sales, and customers. We also
+            build AI solutions — integrate AI into your existing system or launch a
+            new AI SaaS.
           </p>
 
           <div className="flex flex-wrap items-center gap-6">
-            <MagneticButton href="#contact">Start a Project →</MagneticButton>
+            <MagneticButton href="/register">Let&apos;s talk →</MagneticButton>
             <a
-              href="#work"
+              href="/products"
               className="link-underline font-inter text-sm font-semibold uppercase tracking-[0.06em] text-text-heading"
               data-cursor="hover"
             >
-              View Our Work
+              See Our Products
             </a>
           </div>
-
-          <p className="mt-10 font-inter text-xs text-white/25">
-            Trusted by startups, scale-ups &amp; enterprises
-          </p>
         </div>
       </div>
     </div>

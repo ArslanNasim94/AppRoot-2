@@ -5,14 +5,27 @@ import { gsap } from "@/lib/gsap";
 import { SectionTag } from "@/components/ui/SectionTag";
 import { useNizekHeading } from "@/components/animations/useNizekHeading";
 
-// TODO: Replace with real data
 const stats = [
-  { value: 120, suffix: "+", label: "Projects Delivered" },
-  { value: 80, suffix: "+", label: "Global Clients" },
-  { value: 96, suffix: "%", label: "Client Retention Rate" },
-  { value: 40, prefix: "$", suffix: "M+", label: "Revenue Generated for Clients" },
-  { value: 99.9, suffix: "%", label: "Average Uptime Across Products" },
-  { value: 18, suffix: "+", label: "Countries Served" },
+  {
+    display: "React Native · SwiftUI · Kotlin · Laravel · Next.js",
+    label: "Core stacks",
+    large: false,
+  },
+  {
+    display: "3+",
+    label: "Products running in production",
+    large: true,
+  },
+  {
+    display: "1 team",
+    label: "Dedicated squad per project",
+    large: true,
+  },
+  {
+    display: "Weekly",
+    label: "Demos & honest progress updates",
+    large: true,
+  },
 ];
 
 export function Metrics() {
@@ -25,37 +38,29 @@ export function Metrics() {
     if (!grid || window.matchMedia("(prefers-reduced-motion: reduce)").matches)
       return;
 
-    const items = grid.querySelectorAll("[data-stat-value]");
-    items.forEach((el, i) => {
-      const stat = stats[i];
-      const obj = { val: 0 };
-      gsap.to(obj, {
-        val: stat.value,
-        duration: 2,
-        ease: "power2.out",
-        delay: i * 0.1,
-        snap: { val: stat.value % 1 === 0 ? 1 : 0.1 },
-        scrollTrigger: { trigger: el, start: "top 80%", once: true },
-        onUpdate: () => {
-          const display =
-            stat.value % 1 === 0
-              ? Math.round(obj.val)
-              : obj.val.toFixed(1);
-          el.textContent = `${stat.prefix ?? ""}${display}${stat.suffix}`;
-        },
-      });
-    });
+    gsap.fromTo(
+      grid.children,
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.12,
+        ease: "power3.out",
+        scrollTrigger: { trigger: grid, start: "top 80%", once: true },
+      }
+    );
   }, []);
 
   return (
     <section className="section-padding bg-bg">
       <div className="container">
-        <SectionTag>(By The Numbers)</SectionTag>
+        <SectionTag>(Partnership Stats)</SectionTag>
         <h2
           ref={headingRef}
-          className="mb-16 text-center font-satoshi text-[clamp(56px,7vw,100px)] font-black uppercase leading-[0.95] tracking-tight text-text-heading"
+          className="mb-16 text-center font-satoshi text-[clamp(40px,6vw,72px)] font-black uppercase leading-[0.95] tracking-tight text-text-heading"
         >
-          {["RESULTS", "THAT", "SPEAK."].map((line) => (
+          {["ONE PARTNERSHIP.", "CLEAR ROLES."].map((line) => (
             <span key={line} className="block overflow-hidden">
               <span data-line className="block">
                 {line}
@@ -66,7 +71,7 @@ export function Metrics() {
 
         <div
           ref={gridRef}
-          className="mx-auto grid max-w-[900px] grid-cols-2 gap-10 md:grid-cols-3"
+          className="mx-auto grid max-w-[900px] grid-cols-1 gap-10 md:grid-cols-2"
         >
           {stats.map((stat) => (
             <div
@@ -74,10 +79,13 @@ export function Metrics() {
               className="border-b border-white/[0.05] pb-8 text-center"
             >
               <div
-                data-stat-value
-                className="font-satoshi text-[clamp(56px,6vw,80px)] font-black text-text-heading"
+                className={`font-satoshi font-black text-text-heading ${
+                  stat.large
+                    ? "text-[clamp(36px,5vw,56px)]"
+                    : "text-base leading-relaxed md:text-lg"
+                }`}
               >
-                {stat.prefix ?? ""}0{stat.suffix}
+                {stat.display}
               </div>
               <p className="mt-2 font-inter text-sm text-text-body">
                 {stat.label}

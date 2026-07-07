@@ -8,10 +8,11 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 
 const navLinks = [
-  { label: "Work", href: "#work" },
-  { label: "Services", href: "#services" },
-  { label: "About", href: "#team" },
-  { label: "Insights", href: "#insights" },
+  { label: "Why Us", href: "/#why-different" },
+  { label: "AI for Startups", href: "/#ai-for-startups" },
+  { label: "Problems", href: "/#pain-points" },
+  { label: "How it works", href: "/#steps" },
+  { label: "Products", href: "/products" },
 ];
 
 export function Navigation() {
@@ -80,7 +81,7 @@ export function Navigation() {
           <Link href="/" className="relative z-[201] flex shrink-0 items-center">
             <Image
               src="/images/App_Roots_Logo.jpeg"
-              alt="App Roots"
+              alt="AppRoots"
               width={180}
               height={48}
               className="h-12 w-auto object-contain transition-[filter] duration-300 hover:drop-shadow-[0_0_12px_rgba(0,200,255,0.4)]"
@@ -88,7 +89,7 @@ export function Navigation() {
             />
           </Link>
 
-          <div className="hidden items-center gap-10 lg:flex">
+          <div className="hidden items-center gap-8 lg:flex">
             {navLinks.map((link) => (
               <Link
                 key={link.label}
@@ -99,7 +100,14 @@ export function Navigation() {
                 {link.label}
               </Link>
             ))}
-            <MagneticButton href="#contact">Let&apos;s Build →</MagneticButton>
+            <Link
+              href="/login"
+              className="link-underline font-inter text-[13px] font-medium tracking-[0.04em] text-white/55 transition-colors hover:text-text-heading"
+              data-cursor="hover"
+            >
+              Login
+            </Link>
+            <MagneticButton href="/register">Let&apos;s talk →</MagneticButton>
           </div>
 
           <button
@@ -127,8 +135,15 @@ export function Navigation() {
             {link.label}
           </Link>
         ))}
-        <MagneticButton href="#contact" onClick={() => setMenuOpen(false)}>
-          Let&apos;s Build →
+        <Link
+          href="/login"
+          onClick={() => setMenuOpen(false)}
+          className="font-satoshi text-3xl font-black uppercase text-text-heading"
+        >
+          Login
+        </Link>
+        <MagneticButton href="/register" onClick={() => setMenuOpen(false)}>
+          Let&apos;s talk →
         </MagneticButton>
       </div>
     </>

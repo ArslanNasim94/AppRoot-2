@@ -4,12 +4,11 @@ import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsap";
 
 const items = [
-  "AI Engineering",
-  "3D Web Experiences",
-  "SaaS Platforms",
-  "Mobile Apps",
-  "Product Strategy",
-  "Cloud Architecture",
+  "React Native",
+  "SwiftUI",
+  "Kotlin",
+  "Laravel",
+  "Next.js",
 ];
 
 export function Marquee() {

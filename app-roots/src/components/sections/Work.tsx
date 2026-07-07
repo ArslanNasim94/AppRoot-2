@@ -2,46 +2,13 @@
 
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { gsap } from "@/lib/gsap";
 import { SectionTag } from "@/components/ui/SectionTag";
 import { useNizekHeading } from "@/components/animations/useNizekHeading";
+import { products, formatPrice } from "@/data/products";
 
-// TODO: Replace with real data
-const projects = [
-  {
-    id: "01",
-    title: "Luminary AI",
-    category: "SaaS · Web App",
-    outcome: "Scaled to 50,000 users in 4 months",
-    color: "#1A0A2E",
-    tag: "Featured",
-    span: "col-span-2 row-span-2",
-  },
-  {
-    id: "02",
-    title: "Vertex 3D",
-    category: "3D Web · Immersive Experience",
-    outcome: "4.2M impressions in launch week",
-    color: "#0A1A2E",
-    span: "col-span-2 row-span-1",
-  },
-  {
-    id: "03",
-    title: "FlowOps",
-    category: "AI Automation",
-    outcome: "Reduced manual workload by 78%",
-    color: "#0A1A1A",
-    span: "col-span-1 row-span-2",
-  },
-  {
-    id: "04",
-    title: "Orbis Commerce",
-    category: "Mobile App",
-    outcome: "4.9★ App Store rating · 200k downloads",
-    color: "#1A1A0A",
-    span: "col-span-3 row-span-1",
-  },
-];
+const featuredProducts = products.slice(0, 4);
 
 export function Work() {
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -72,12 +39,12 @@ export function Work() {
   return (
     <section id="work" className="section-padding bg-bg">
       <div className="container">
-        <SectionTag>(Selected Work)</SectionTag>
+        <SectionTag>(Our Products)</SectionTag>
         <h2
           ref={headingRef}
-          className="mb-16 font-satoshi text-[clamp(56px,7vw,100px)] font-black uppercase leading-[0.95] tracking-tight text-text-heading"
+          className="mb-16 font-satoshi text-[clamp(40px,6vw,72px)] font-black uppercase leading-[0.95] tracking-tight text-text-heading"
         >
-          {["PROJECTS", "THAT", "PROVE IT."].map((line) => (
+          {["READY-MADE", "PRODUCTS &", "SERVICES."].map((line) => (
             <span key={line} className="block overflow-hidden">
               <span data-line className="block">
                 {line}
@@ -90,44 +57,59 @@ export function Work() {
           ref={gridRef}
           className="grid grid-cols-1 gap-5 md:grid-cols-4 md:auto-rows-[240px]"
         >
-          {projects.map((project) => (
-            <motion.a
-              key={project.id}
-              href="#"
+          {featuredProducts.map((product, index) => (
+            <motion.div
+              key={product.slug}
               data-project-card
-              data-cursor="view"
               whileHover={{ scale: 1.02 }}
-              className={`group relative flex flex-col justify-between overflow-hidden rounded-[20px] border border-white/[0.07] p-10 ${project.span}`}
-              style={{ backgroundColor: project.color }}
+              className={`group relative flex flex-col justify-between overflow-hidden rounded-[20px] border border-white/[0.07] p-10 ${product.span}`}
+              style={{ backgroundColor: product.color }}
             >
               <div>
-                {project.tag && (
+                {product.tag && (
                   <span className="font-inter text-[11px] font-medium uppercase tracking-[0.12em] text-white/30">
-                    {project.tag}
+                    {product.tag}
                   </span>
                 )}
                 <p className="mt-2 font-inter text-[11px] font-medium uppercase tracking-[0.12em] text-white/30">
-                  {project.category}
+                  {product.category}
                 </p>
               </div>
 
               <div>
-                <h3 className="font-satoshi text-[clamp(28px,4vw,48px)] font-black uppercase text-text-heading">
-                  {project.title}
+                <h3 className="font-satoshi text-[clamp(22px,3vw,36px)] font-black uppercase text-text-heading">
+                  {product.name}
                 </h3>
-                <p className="mt-2 font-inter text-sm text-text-body">
-                  {project.outcome}
+                <p className="mt-2 line-clamp-2 font-inter text-sm text-text-body">
+                  {product.description}
                 </p>
-                <span className="mt-4 inline-block font-inter text-sm text-text-body opacity-0 transition-opacity group-hover:opacity-100">
-                  View Case Study →
-                </span>
+                <p className="mt-2 font-inter text-sm font-medium text-brand-cyan">
+                  {formatPrice(product.price)}
+                </p>
+                <Link
+                  href={`/products/${product.slug}`}
+                  className="mt-4 inline-block font-inter text-sm text-text-body opacity-0 transition-opacity group-hover:opacity-100"
+                  data-cursor="view"
+                >
+                  View Details →
+                </Link>
               </div>
 
               <span className="pointer-events-none absolute bottom-4 right-6 font-satoshi text-[120px] font-black leading-none text-white/[0.04] transition-opacity group-hover:text-white/[0.08]">
-                {project.id}
+                {String(index + 1).padStart(2, "0")}
               </span>
-            </motion.a>
+            </motion.div>
           ))}
+        </div>
+
+        <div className="mt-12 text-center">
+          <Link
+            href="/products"
+            className="link-underline font-inter text-sm font-semibold uppercase tracking-[0.06em] text-text-heading"
+            data-cursor="hover"
+          >
+            View All Products →
+          </Link>
         </div>
       </div>
     </section>
