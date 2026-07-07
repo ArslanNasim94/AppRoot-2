@@ -5,11 +5,10 @@ import { gsap } from "@/lib/gsap";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import {
   initHeroScroll,
-  preloadAllFrames,
   renderFrame,
-  loadFrame,
   getFramePath,
   HERO_SCROLL_VH,
+  HeroFrameCache,
 } from "@/components/animations/heroSequence";
 
 function revealHeadline(headlineEl: HTMLElement) {
@@ -41,14 +40,15 @@ export function Hero() {
   const trackRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const headlineRef = useRef<HTMLDivElement>(null);
-  const framesRef = useRef<(HTMLImageElement | undefined)[]>([]);
+  const cacheRef = useRef<HeroFrameCache | null>(null);
   const headlineShownRef = useRef(false);
-  const [loadProgress, setLoadProgress] = useState(0);
-  const [ready, setReady] = useState(false);
+  const [canvasReady, setCanvasReady] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
     let cleanupScroll: (() => void) | undefined;
+    const cache = new HeroFrameCache();
+    cacheRef.current = cache;
 
     const setup = async () => {
       await new Promise<void>((r) => requestAnimationFrame(() => r()));
@@ -58,11 +58,14 @@ export function Hero() {
       if (!track || !canvas || cancelled) return;
 
       try {
-        framesRef.current[0] = await loadFrame(0);
+        await cache.loadFirst();
         const ctx = canvas.getContext("2d");
-        if (ctx) renderFrame(ctx, canvas, framesRef.current[0]);
+        if (ctx && !cancelled) {
+          renderFrame(ctx, canvas, cache.resolve(0));
+          setCanvasReady(true);
+        }
       } catch {
-        // canvas may still work once frames load
+        // fallback img stays visible
       }
 
       if (cancelled) return;
@@ -70,7 +73,7 @@ export function Hero() {
       cleanupScroll = initHeroScroll({
         trackEl: track,
         canvas,
-        getFrames: () => framesRef.current,
+        cache,
         onProgress: (progress) => {
           if (progress >= 0.08 && !headlineShownRef.current && headlineRef.current) {
             headlineShownRef.current = true;
@@ -80,13 +83,7 @@ export function Hero() {
       });
 
       window.dispatchEvent(new CustomEvent("hero-sequence-ready"));
-
-      preloadAllFrames(setLoadProgress).then((frames) => {
-        if (cancelled) return;
-        framesRef.current = frames;
-        setReady(true);
-        window.dispatchEvent(new Event("scroll"));
-      });
+      cache.prefetchAround(0);
 
       setTimeout(() => {
         if (!cancelled && headlineRef.current && !headlineShownRef.current) {
@@ -116,7 +113,10 @@ export function Hero() {
           src={getFramePath(0)}
           alt=""
           aria-hidden
-          className="absolute inset-0 h-full w-full object-cover"
+          fetchPriority="high"
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
+            canvasReady ? "opacity-0" : "opacity-100"
+          }`}
         />
 
         <canvas
@@ -132,15 +132,6 @@ export function Hero() {
               "linear-gradient(to top, rgba(10,10,15,0.88) 0%, rgba(10,10,15,0.35) 50%, rgba(10,10,15,0.55) 100%)",
           }}
         />
-
-        {!ready && (
-          <div className="absolute bottom-0 left-0 z-20 h-1 w-full bg-white/5">
-            <div
-              className="h-full bg-gradient-to-r from-brand-purple to-brand-cyan transition-all duration-200"
-              style={{ width: `${loadProgress * 100}%` }}
-            />
-          </div>
-        )}
 
         <div
           ref={headlineRef}

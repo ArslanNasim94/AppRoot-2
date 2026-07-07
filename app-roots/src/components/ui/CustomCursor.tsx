@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { gsap } from "@/lib/gsap";
 
 export function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
   const circleRef = useRef<HTMLDivElement>(null);
   const labelRef = useRef<HTMLSpanElement>(null);
+  const scaleRef = useRef(1);
+  const rafRef = useRef(0);
 
   useEffect(() => {
     if (
@@ -22,50 +23,48 @@ export function CustomCursor() {
     const label = labelRef.current;
     if (!dot || !circle) return;
 
-    const xToDot = gsap.quickTo(dot, "x", { duration: 0.1, ease: "power3.out" });
-    const yToDot = gsap.quickTo(dot, "y", { duration: 0.1, ease: "power3.out" });
-    const xToCircle = gsap.quickTo(circle, "x", { duration: 0.15, ease: "power3.out" });
-    const yToCircle = gsap.quickTo(circle, "y", { duration: 0.15, ease: "power3.out" });
+    let mx = -100;
+    let my = -100;
+    let cx = -100;
+    let cy = -100;
+    let hovering = false;
+    let isCard = false;
+
+    const applyStyles = () => {
+      dot.style.transform = `translate3d(${mx}px, ${my}px, 0) translate(-50%, -50%)`;
+      dot.style.opacity = hovering ? "0" : "1";
+
+      const size = hovering ? 64 : 40;
+      circle.style.width = `${size}px`;
+      circle.style.height = `${size}px`;
+      circle.style.borderColor = hovering
+        ? "rgba(123,47,255,0.6)"
+        : "rgba(255,255,255,0.15)";
+      circle.style.transform = `translate3d(${cx}px, ${cy}px, 0) translate(-50%, -50%) scale(${scaleRef.current})`;
+
+      if (label) {
+        label.style.opacity = hovering && isCard ? "1" : "0";
+      }
+    };
+
+    const tick = () => {
+      cx += (mx - cx) * 0.55;
+      cy += (my - cy) * 0.4;
+      applyStyles();
+      rafRef.current = requestAnimationFrame(tick);
+    };
 
     const onMove = (e: MouseEvent) => {
-      xToDot(e.clientX);
-      yToDot(e.clientY);
-      xToCircle(e.clientX);
-      yToCircle(e.clientY);
+      mx = e.clientX;
+      my = e.clientY;
     };
 
     const onDown = () => {
-      gsap.to(circle, { scale: 0.75, duration: 0.2 });
+      scaleRef.current = 0.75;
     };
 
     const onUp = () => {
-      gsap.to(circle, { scale: 1, duration: 0.3, ease: "elastic.out(1, 0.5)" });
-    };
-
-    const setHover = (isCard: boolean) => {
-      gsap.to(dot, { opacity: 0, duration: 0.2 });
-      gsap.to(circle, {
-        width: 64,
-        height: 64,
-        borderColor: "rgba(123,47,255,0.6)",
-        duration: 0.3,
-      });
-      if (label) {
-        gsap.to(label, { opacity: isCard ? 1 : 0, duration: 0.2 });
-      }
-    };
-
-    const resetHover = () => {
-      gsap.to(dot, { opacity: 1, duration: 0.2 });
-      gsap.to(circle, {
-        width: 40,
-        height: 40,
-        borderColor: "rgba(255,255,255,0.15)",
-        duration: 0.3,
-      });
-      if (label) {
-        gsap.to(label, { opacity: 0, duration: 0.2 });
-      }
+      scaleRef.current = 1;
     };
 
     const interactiveSelector = "a, button, [data-cursor='hover']";
@@ -74,9 +73,11 @@ export function CustomCursor() {
     const onMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       if (target.closest(cardSelector)) {
-        setHover(true);
+        hovering = true;
+        isCard = true;
       } else if (target.closest(interactiveSelector)) {
-        setHover(false);
+        hovering = true;
+        isCard = false;
       }
     };
 
@@ -86,17 +87,20 @@ export function CustomCursor() {
         !related?.closest(interactiveSelector) &&
         !related?.closest(cardSelector)
       ) {
-        resetHover();
+        hovering = false;
+        isCard = false;
       }
     };
 
-    window.addEventListener("mousemove", onMove);
-    window.addEventListener("mousedown", onDown);
-    window.addEventListener("mouseup", onUp);
-    document.addEventListener("mouseover", onMouseOver);
-    document.addEventListener("mouseout", onMouseOut);
+    rafRef.current = requestAnimationFrame(tick);
+    window.addEventListener("mousemove", onMove, { passive: true });
+    window.addEventListener("mousedown", onDown, { passive: true });
+    window.addEventListener("mouseup", onUp, { passive: true });
+    document.addEventListener("mouseover", onMouseOver, { passive: true });
+    document.addEventListener("mouseout", onMouseOut, { passive: true });
 
     return () => {
+      cancelAnimationFrame(rafRef.current);
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mousedown", onDown);
       window.removeEventListener("mouseup", onUp);
@@ -109,19 +113,16 @@ export function CustomCursor() {
     <div className="pointer-events-none fixed inset-0 z-[9999] hidden md:block">
       <div
         ref={dotRef}
-        className="fixed top-0 left-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white mix-blend-difference"
+        className="fixed top-0 left-0 h-2 w-2 rounded-full bg-white will-change-transform"
+        style={{ transform: "translate3d(-100px, -100px, 0)" }}
       />
       <div
         ref={circleRef}
-        className="fixed top-0 left-0 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-white/5"
-        style={{
-          background:
-            "linear-gradient(#0A0A0F, #0A0A0F) padding-box, linear-gradient(135deg, #7B2FFF, #00C8FF) border-box",
-        }}
+        className="fixed top-0 left-0 flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-[rgba(10,10,15,0.85)] will-change-transform"
       >
         <span
           ref={labelRef}
-          className="font-inter text-[10px] font-semibold uppercase tracking-widest text-white opacity-0"
+          className="font-inter text-[10px] font-semibold uppercase tracking-widest text-white opacity-0 transition-opacity duration-150"
         >
           View
         </span>

@@ -2,7 +2,6 @@
 
 import { useRef, useEffect } from "react";
 import Link from "next/link";
-import { gsap } from "@/lib/gsap";
 
 interface MagneticButtonProps {
   children: React.ReactNode;
@@ -20,31 +19,39 @@ export function MagneticButton({
   className = "",
 }: MagneticButtonProps) {
   const btnRef = useRef<HTMLAnchorElement & HTMLButtonElement>(null);
+  const rafRef = useRef(0);
+  const offsetRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const btn = btnRef.current;
-    if (!btn || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!btn || window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+      return;
 
     const handleMove = (e: MouseEvent) => {
-      const rect = btn.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width / 2;
-      const y = e.clientY - rect.top - rect.height / 2;
-      gsap.to(btn, {
-        x: Math.max(Math.min(x * 0.15, 12), -12),
-        y: Math.max(Math.min(y * 0.15, 12), -12),
-        duration: 0.3,
-        ease: "power2.out",
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(() => {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        offsetRef.current = {
+          x: Math.max(Math.min(x * 0.12, 10), -10),
+          y: Math.max(Math.min(y * 0.12, 10), -10),
+        };
+        btn.style.transform = `translate3d(${offsetRef.current.x}px, ${offsetRef.current.y}px, 0)`;
       });
     };
 
     const handleLeave = () => {
-      gsap.to(btn, { x: 0, y: 0, duration: 0.6, ease: "elastic.out(1, 0.5)" });
+      cancelAnimationFrame(rafRef.current);
+      offsetRef.current = { x: 0, y: 0 };
+      btn.style.transform = "translate3d(0, 0, 0)";
     };
 
-    btn.addEventListener("mousemove", handleMove);
-    btn.addEventListener("mouseleave", handleLeave);
+    btn.addEventListener("mousemove", handleMove, { passive: true });
+    btn.addEventListener("mouseleave", handleLeave, { passive: true });
 
     return () => {
+      cancelAnimationFrame(rafRef.current);
       btn.removeEventListener("mousemove", handleMove);
       btn.removeEventListener("mouseleave", handleLeave);
     };

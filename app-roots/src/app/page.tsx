@@ -1,15 +1,38 @@
+import dynamic from "next/dynamic";
 import { Hero } from "@/components/sections/Hero";
 import { Marquee } from "@/components/sections/Marquee";
-import { Manifesto } from "@/components/sections/Manifesto";
-import { Services } from "@/components/sections/Services";
-import { AiForStartups } from "@/components/sections/AiForStartups";
-import { AiAgents } from "@/components/sections/AiAgents";
-import { WhyUs } from "@/components/sections/WhyUs";
-import { Industries } from "@/components/sections/Industries";
-import { Work } from "@/components/sections/Work";
-import { Metrics } from "@/components/sections/Metrics";
-import { Process } from "@/components/sections/Process";
-import { FinalCTA } from "@/components/sections/FinalCTA";
+
+const Manifesto = dynamic(
+  () => import("@/components/sections/Manifesto").then((m) => m.Manifesto),
+  { ssr: false }
+);
+const Services = dynamic(
+  () => import("@/components/sections/Services").then((m) => m.Services)
+);
+const AiForStartups = dynamic(
+  () => import("@/components/sections/AiForStartups").then((m) => m.AiForStartups)
+);
+const AiAgents = dynamic(
+  () => import("@/components/sections/AiAgents").then((m) => m.AiAgents)
+);
+const WhyUs = dynamic(
+  () => import("@/components/sections/WhyUs").then((m) => m.WhyUs)
+);
+const Industries = dynamic(
+  () => import("@/components/sections/Industries").then((m) => m.Industries)
+);
+const Work = dynamic(
+  () => import("@/components/sections/Work").then((m) => m.Work)
+);
+const Metrics = dynamic(
+  () => import("@/components/sections/Metrics").then((m) => m.Metrics)
+);
+const Process = dynamic(
+  () => import("@/components/sections/Process").then((m) => m.Process)
+);
+const FinalCTA = dynamic(
+  () => import("@/components/sections/FinalCTA").then((m) => m.FinalCTA)
+);
 
 export default function Home() {
   return (

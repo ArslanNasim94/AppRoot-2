@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { gsap } from "@/lib/gsap";
 import { SectionTag } from "@/components/ui/SectionTag";
 import { useNizekHeading } from "@/components/animations/useNizekHeading";
 
@@ -41,7 +41,6 @@ export function Services() {
     let mm: gsap.MatchMedia | undefined;
 
     const init = () => {
-      ScrollTrigger.refresh(true);
       mm = gsap.matchMedia();
 
       mm.add("(min-width: 768px)", () => {
@@ -52,7 +51,7 @@ export function Services() {
             end: () =>
               `+=${Math.max(cards.scrollWidth - window.innerWidth + 200, 200)}`,
             pin: true,
-            scrub: 1,
+            scrub: 0.5,
             invalidateOnRefresh: true,
           },
         });
@@ -65,7 +64,7 @@ export function Services() {
     };
 
     window.addEventListener("hero-sequence-ready", init, { once: true });
-    setTimeout(init, 1500);
+    setTimeout(init, 800);
 
     return () => {
       window.removeEventListener("hero-sequence-ready", init);

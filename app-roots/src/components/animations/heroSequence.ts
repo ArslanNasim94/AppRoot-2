@@ -3,9 +3,8 @@
 import { gsap } from "@/lib/gsap";
 
 export const FRAME_COUNT = 208;
-export const HERO_SCROLL_VH = 3; // 3x viewport of scroll distance after first screen
-
-const BATCH_SIZE = 12;
+export const HERO_SCROLL_VH = 3;
+const PREFETCH_RADIUS = 24;
 
 export function getFramePath(index: number): string {
   return `/hero/${String(index + 1).padStart(4, "0")}.webp`;
@@ -22,43 +21,50 @@ export function loadFrame(index: number): Promise<HTMLImageElement> {
   });
 }
 
-export async function preloadAllFrames(
-  onProgress?: (progress: number) => void
-): Promise<HTMLImageElement[]> {
-  const frames: HTMLImageElement[] = new Array(FRAME_COUNT);
-  let loaded = 0;
-  const report = () => onProgress?.(loaded / FRAME_COUNT);
+export class HeroFrameCache {
+  private frames: (HTMLImageElement | undefined)[] = new Array(FRAME_COUNT);
+  private loading = new Set<number>();
 
-  if (!frames[0]) {
-    frames[0] = await loadFrame(0);
-  }
-  loaded++;
-  report();
-
-  for (let start = 1; start < FRAME_COUNT; start += BATCH_SIZE) {
-    const end = Math.min(start + BATCH_SIZE, FRAME_COUNT);
-    const batch = Array.from({ length: end - start }, (_, i) => start + i);
-
-    await Promise.all(
-      batch.map(async (index) => {
-        if (frames[index]?.naturalWidth) {
-          loaded++;
-          report();
-          return;
-        }
-        try {
-          frames[index] = await loadFrame(index);
-        } catch {
-          // skip
-        } finally {
-          loaded++;
-          report();
-        }
-      })
-    );
+  get(index: number): HTMLImageElement | undefined {
+    return this.frames[index];
   }
 
-  return frames;
+  resolve(index: number): HTMLImageElement | null {
+    if (this.frames[index]?.naturalWidth) return this.frames[index]!;
+    for (let i = index; i >= 0; i--) {
+      if (this.frames[i]?.naturalWidth) return this.frames[i]!;
+    }
+    return this.frames.find((f) => f?.naturalWidth) ?? null;
+  }
+
+  async ensure(index: number): Promise<void> {
+    const clamped = Math.max(0, Math.min(index, FRAME_COUNT - 1));
+    if (this.frames[clamped]?.naturalWidth || this.loading.has(clamped)) return;
+
+    this.loading.add(clamped);
+    try {
+      this.frames[clamped] = await loadFrame(clamped);
+    } catch {
+      // skip failed frame
+    } finally {
+      this.loading.delete(clamped);
+    }
+  }
+
+  prefetchAround(index: number) {
+    const start = Math.max(0, index - PREFETCH_RADIUS);
+    const end = Math.min(FRAME_COUNT - 1, index + PREFETCH_RADIUS);
+
+    for (let i = start; i <= end; i++) {
+      if (!this.frames[i]?.naturalWidth && !this.loading.has(i)) {
+        void this.ensure(i);
+      }
+    }
+  }
+
+  async loadFirst(): Promise<void> {
+    await this.ensure(0);
+  }
 }
 
 export function renderFrame(
@@ -72,7 +78,7 @@ export function renderFrame(
   const h = canvas.clientHeight || window.innerHeight;
   if (!w || !h) return;
 
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
 
   if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
     canvas.width = w * dpr;
@@ -88,42 +94,35 @@ export function renderFrame(
   ctx.drawImage(img, x, y, img.naturalWidth * scale, img.naturalHeight * scale);
 }
 
-export function resolveFrame(
-  frames: (HTMLImageElement | undefined)[],
-  index: number
-): HTMLImageElement | null {
-  if (frames[index]?.naturalWidth) return frames[index]!;
-  for (let i = index; i >= 0; i--) {
-    if (frames[i]?.naturalWidth) return frames[i]!;
-  }
-  return frames.find((f) => f?.naturalWidth) ?? null;
-}
-
 interface HeroScrollOptions {
   trackEl: HTMLElement;
   canvas: HTMLCanvasElement;
-  getFrames: () => (HTMLImageElement | undefined)[];
+  cache: HeroFrameCache;
   onProgress?: (progress: number) => void;
 }
 
 export function initHeroScroll({
   trackEl,
   canvas,
-  getFrames,
+  cache,
   onProgress,
 }: HeroScrollOptions) {
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext("2d", { alpha: false });
   if (!ctx) return () => {};
 
   let currentFrame = -1;
+  let ticking = false;
+  let lastProgress = -1;
 
   const draw = (index: number) => {
     if (index === currentFrame) return;
     currentFrame = index;
-    renderFrame(ctx, canvas, resolveFrame(getFrames(), index));
+    renderFrame(ctx, canvas, cache.resolve(index));
+    cache.prefetchAround(index);
   };
 
   const update = () => {
+    ticking = false;
     const rect = trackEl.getBoundingClientRect();
     const scrollable = trackEl.offsetHeight - window.innerHeight;
     if (scrollable <= 0) return;
@@ -133,19 +132,31 @@ export function initHeroScroll({
       Math.round(progress * (FRAME_COUNT - 1)),
       FRAME_COUNT - 1
     );
+
     draw(index);
-    onProgress?.(progress);
+
+    if (Math.abs(progress - lastProgress) > 0.02) {
+      lastProgress = progress;
+      onProgress?.(progress);
+    }
+  };
+
+  const onScroll = () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(update);
+    }
   };
 
   draw(0);
   update();
 
-  window.addEventListener("scroll", update, { passive: true });
-  window.addEventListener("resize", update);
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll, { passive: true });
 
   return () => {
-    window.removeEventListener("scroll", update);
-    window.removeEventListener("resize", update);
+    window.removeEventListener("scroll", onScroll);
+    window.removeEventListener("resize", onScroll);
   };
 }
 
