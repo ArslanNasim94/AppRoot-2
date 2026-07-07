@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { SectionTag } from "@/components/ui/SectionTag";
+import { ProductDetailHeading } from "@/components/pages/ProductsPageHeader";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { getProductBySlug, products, formatPrice } from "@/data/products";
 
@@ -37,10 +37,10 @@ export default function ProductDetailPage({ params }: Props) {
           ← Back to Products
         </Link>
 
-        <SectionTag>{product.category}</SectionTag>
-        <h1 className="mb-4 font-satoshi text-[clamp(36px,5vw,64px)] font-black uppercase leading-[0.95] tracking-tight text-text-heading">
-          {product.name}
-        </h1>
+        <span className="section-tag mb-6 block font-inter text-[11px] font-medium uppercase tracking-[0.12em] text-white/30">
+          {product.category}
+        </span>
+        <ProductDetailHeading title={product.name} />
         <p className="mb-2 font-inter text-2xl font-medium text-brand-cyan">
           {formatPrice(product.price)}
         </p>

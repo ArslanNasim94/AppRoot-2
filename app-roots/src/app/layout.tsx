@@ -31,7 +31,7 @@ export default function RootLayout({
       <body>
         <CustomCursor />
         <Navigation />
-        <main>{children}</main>
+        <main className="relative z-0 pt-20">{children}</main>
         <Footer />
         <AiChatbot />
       </body>

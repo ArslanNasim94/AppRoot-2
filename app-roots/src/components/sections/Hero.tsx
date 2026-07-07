@@ -3,6 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import {
+  applyHeadingLetterReveal,
+  collectHeadingLetters,
+  setHeadingLettersInitial,
+} from "@/components/animations/headingShadowEffect";
+import {
   initHeroScroll,
   renderFrame,
   getFramePath,
@@ -18,7 +23,8 @@ function clamp(value: number, min: number, max: number) {
 function applyExitPhase(
   state: HeroScrollState,
   visualEl: HTMLElement,
-  contentEl: HTMLElement
+  contentEl: HTMLElement,
+  headingLetters: HTMLElement[]
 ) {
   const exit = state.exitProgress;
 
@@ -26,7 +32,6 @@ function applyExitPhase(
   visualEl.style.transform = `translate3d(0, ${heroShift}vh, 0)`;
   visualEl.style.opacity = String(1 - clamp(exit / 0.55, 0, 1) * 0.35);
 
-  const lines = contentEl.querySelectorAll<HTMLElement>("[data-line]");
   const eyebrow = contentEl.querySelector<HTMLElement>(".hero-eyebrow");
   const ctas = contentEl.querySelector<HTMLElement>(".hero-ctas");
 
@@ -34,10 +39,7 @@ function applyExitPhase(
     contentEl.style.visibility = "hidden";
     contentEl.style.pointerEvents = "none";
     contentEl.style.opacity = "0";
-    lines.forEach((line) => {
-      line.style.transform = "translate3d(80vw, 0, 0)";
-      line.style.opacity = "0";
-    });
+    setHeadingLettersInitial(headingLetters, 80);
     if (eyebrow) {
       eyebrow.style.opacity = "0";
       eyebrow.style.transform = "translate3d(0, 16px, 0)";
@@ -56,14 +58,7 @@ function applyExitPhase(
   contentEl.style.opacity = "1";
 
   const reveal = (exit - 0.5) / 0.5;
-
-  lines.forEach((line, index) => {
-    const start = index * 0.22;
-    const end = start + 0.2;
-    const t = clamp((reveal - start) / (end - start), 0, 1);
-    line.style.transform = `translate3d(${(1 - t) * 80}vw, 0, 0)`;
-    line.style.opacity = String(t);
-  });
+  applyHeadingLetterReveal(headingLetters, reveal, 80);
 
   const supportStart = 0.62;
   const supportT = clamp((reveal - supportStart) / (1 - supportStart), 0, 1);
@@ -86,6 +81,7 @@ export function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const visualRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLDivElement>(null);
+  const headingLettersRef = useRef<HTMLElement[]>([]);
   const cacheRef = useRef<HeroFrameCache | null>(null);
   const [canvasReady, setCanvasReady] = useState(false);
 
@@ -109,7 +105,7 @@ export function Hero() {
         return;
       }
 
-      applyExitPhase(state, visual, content);
+      applyExitPhase(state, visual, content, headingLettersRef.current);
     };
 
     const setup = async () => {
@@ -117,7 +113,13 @@ export function Hero() {
 
       const track = trackRef.current;
       const canvas = canvasRef.current;
+      const content = headlineRef.current;
       if (!track || !canvas || cancelled) return;
+
+      if (content) {
+        headingLettersRef.current = collectHeadingLetters(content);
+        setHeadingLettersInitial(headingLettersRef.current, 80);
+      }
 
       try {
         await cache.loadFirst();
@@ -156,9 +158,9 @@ export function Hero() {
       id="idea"
       ref={trackRef}
       className="relative"
-      style={{ height: `calc(100svh + ${HERO_TOTAL_VH * 100}svh)` }}
+      style={{ height: `calc(100svh - 5rem + ${HERO_TOTAL_VH * 100}svh)` }}
     >
-      <div className="sticky top-0 z-[100] h-svh w-full overflow-hidden bg-bg">
+      <div className="sticky top-20 z-[10] h-[calc(100svh-5rem)] w-full overflow-hidden bg-bg">
         <div ref={visualRef} className="absolute inset-0 will-change-transform">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -166,7 +168,7 @@ export function Hero() {
             alt=""
             aria-hidden
             fetchPriority="high"
-            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
+            className={`absolute inset-0 h-full w-full object-cover object-[center_62%] transition-opacity duration-300 ${
               canvasReady ? "opacity-0" : "opacity-100"
             }`}
           />
@@ -181,14 +183,14 @@ export function Hero() {
             className="pointer-events-none absolute inset-0 z-[2]"
             style={{
               background:
-                "linear-gradient(to top, rgba(10,10,15,0.88) 0%, rgba(10,10,15,0.35) 50%, rgba(10,10,15,0.55) 100%)",
+                "linear-gradient(to top, rgba(10,10,15,0.9) 0%, rgba(10,10,15,0.35) 50%, rgba(10,10,15,0.55) 100%)",
             }}
           />
         </div>
 
         <div
           ref={headlineRef}
-          className="hero-content invisible pointer-events-none absolute inset-0 z-[3] flex flex-col items-center justify-center px-6 pt-24 text-center opacity-0 lg:px-12"
+          className="hero-content invisible pointer-events-none absolute inset-0 z-[3] flex flex-col items-center justify-center px-6 text-center opacity-0 lg:px-12"
         >
           <p className="hero-eyebrow mb-4 font-inter text-[11px] font-medium uppercase tracking-[0.12em] text-white/30">
             Your development partner

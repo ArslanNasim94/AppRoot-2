@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SectionTag } from "@/components/ui/SectionTag";
+import { ProductsPageHeader } from "@/components/pages/ProductsPageHeader";
 import { products, formatPrice } from "@/data/products";
 
 export const metadata: Metadata = {
@@ -13,10 +13,7 @@ export default function ProductsPage() {
   return (
     <div className="section-padding pt-32">
       <div className="container">
-        <SectionTag>(Products)</SectionTag>
-        <h1 className="mb-4 font-satoshi text-[clamp(40px,6vw,72px)] font-black uppercase leading-[0.95] tracking-tight text-text-heading">
-          Ready-Made Products &amp; Services
-        </h1>
+        <ProductsPageHeader />
         <p className="mb-16 max-w-2xl font-inter text-lg text-text-body">
           Explore our collection of production-ready SaaS products, services, and
           mobile apps available for purchase or partnership.

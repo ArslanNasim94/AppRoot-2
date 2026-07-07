@@ -8,9 +8,9 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 
 const navLinks = [
-  { label: "Why Us", href: "/#why-different" },
-  { label: "AI for Startups", href: "/#ai-for-startups" },
   { label: "Problems", href: "/#pain-points" },
+  { label: "AI for Startups", href: "/#ai-for-startups" },
+  { label: "Why Us", href: "/#why-different" },
   { label: "How it works", href: "/#steps" },
   { label: "Products", href: "/products" },
 ];
@@ -30,9 +30,8 @@ export function Navigation() {
       onEnter: () => {
         setScrolled(true);
         gsap.to(nav, {
-          backdropFilter: "blur(20px)",
-          backgroundColor: "rgba(10,10,15,0.92)",
           borderBottom: "0.5px solid rgba(255,255,255,0.07)",
+          boxShadow: "0 12px 40px rgba(10,10,15,0.55)",
           duration: 0.4,
           ease: "cubic-bezier(0.16,1,0.3,1)",
         });
@@ -40,9 +39,8 @@ export function Navigation() {
       onLeaveBack: () => {
         setScrolled(false);
         gsap.to(nav, {
-          backdropFilter: "blur(12px)",
-          backgroundColor: "rgba(10,10,15,0.75)",
-          borderBottom: "0.5px solid rgba(255,255,255,0.04)",
+          borderBottom: "0.5px solid rgba(255,255,255,0.06)",
+          boxShadow: "0 4px 24px rgba(10,10,15,0.35)",
           duration: 0.4,
           ease: "cubic-bezier(0.16,1,0.3,1)",
         });
@@ -71,10 +69,10 @@ export function Navigation() {
     <>
       <nav
         ref={navRef}
-        className={`fixed top-0 z-[200] w-full border-b transition-all ${
+        className={`fixed top-0 z-[500] w-full border-b bg-[#0A0A0F] transition-[border-color,box-shadow] ${
           scrolled
-            ? "border-white/[0.07] bg-[rgba(10,10,15,0.92)] backdrop-blur-[20px]"
-            : "border-white/[0.04] bg-gradient-to-b from-[rgba(10,10,15,0.85)] via-[rgba(10,10,15,0.55)] to-transparent backdrop-blur-[12px]"
+            ? "border-white/[0.07] shadow-[0_12px_40px_rgba(10,10,15,0.55)]"
+            : "border-white/[0.06] shadow-[0_4px_24px_rgba(10,10,15,0.35)]"
         }`}
       >
         <div className="container flex h-20 items-center justify-between">
@@ -123,7 +121,7 @@ export function Navigation() {
 
       <div
         ref={menuRef}
-        className="fixed inset-0 z-[199] flex translate-x-full flex-col items-center justify-center gap-8 bg-bg/95 backdrop-blur-xl lg:hidden"
+        className="fixed inset-0 z-[499] flex translate-x-full flex-col items-center justify-center gap-8 bg-bg backdrop-blur-xl lg:hidden"
       >
         {navLinks.map((link) => (
           <Link

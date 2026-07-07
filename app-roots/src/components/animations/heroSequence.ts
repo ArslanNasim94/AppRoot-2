@@ -88,7 +88,7 @@ export function renderFrame(
 
   const scale = Math.max(w / img.naturalWidth, h / img.naturalHeight);
   const x = (w - img.naturalWidth * scale) / 2;
-  const y = (h - img.naturalHeight * scale) / 2;
+  const y = (h - img.naturalHeight * scale) / 2 + h * 0.1;
 
   ctx.clearRect(0, 0, w, h);
   ctx.drawImage(img, x, y, img.naturalWidth * scale, img.naturalHeight * scale);
