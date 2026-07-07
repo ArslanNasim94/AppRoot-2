@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import { FounderPipeline } from "@/components/layout/FounderPipeline";
 import { Hero } from "@/components/sections/Hero";
 import { Marquee } from "@/components/sections/Marquee";
 
@@ -37,6 +38,7 @@ const FinalCTA = dynamic(
 export default function Home() {
   return (
     <>
+      <FounderPipeline />
       <Hero />
       <Marquee />
       <Manifesto />

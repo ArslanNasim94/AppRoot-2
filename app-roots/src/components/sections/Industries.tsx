@@ -52,7 +52,7 @@ export function Industries() {
   }, []);
 
   return (
-    <section id="services" className="section-padding bg-bg">
+    <section id="tech-stack" className="section-padding bg-bg">
       <div className="container grid gap-16 lg:grid-cols-2">
         <div>
           <SectionTag>04 · Tech stack</SectionTag>

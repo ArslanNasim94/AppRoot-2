@@ -103,6 +103,7 @@ export function Hero() {
 
   return (
     <div
+      id="idea"
       ref={trackRef}
       className="relative"
       style={{ height: `calc(100svh + ${HERO_SCROLL_VH * 100}svh)` }}
