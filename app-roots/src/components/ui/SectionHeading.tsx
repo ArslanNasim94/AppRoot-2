@@ -21,10 +21,10 @@ export function SectionHeading({
 
   return (
     <>
-      {tag && <span className="section-tag mb-6 block font-inter text-[11px] font-medium uppercase tracking-[0.12em] text-white/30">{tag}</span>}
+      {tag && <span className="section-tag mb-3 block font-inter text-[11px] font-medium uppercase tracking-[0.12em] text-white/30">{tag}</span>}
       <Tag
         ref={headingRef}
-        className={`font-satoshi text-[clamp(56px,7vw,100px)] font-black uppercase leading-[0.95] tracking-tight text-text-heading ${className}`}
+        className={`text-heading-display ${className}`}
       >
         {lines.map((line, i) => (
           <span key={i} className="block overflow-hidden">

@@ -63,13 +63,10 @@ export function Process() {
 
   return (
     <section id="steps" className="section-padding bg-bg">
-      <div className="container grid gap-16 lg:grid-cols-2">
+      <div className="container section-grid">
         <div className="lg:sticky lg:top-32 lg:self-start">
           <SectionTag>06 · How we work</SectionTag>
-          <h2
-            ref={headingRef}
-            className="font-satoshi text-[clamp(40px,6vw,72px)] font-black uppercase leading-[0.95] tracking-tight text-text-heading"
-          >
+          <h2 ref={headingRef} className="text-heading-section">
             {["THREE STEPS,", "NO OVERHEAD."].map((line) => (
               <span key={line} className="block overflow-hidden">
                 <span data-line className="block">
@@ -80,7 +77,7 @@ export function Process() {
           </h2>
         </div>
 
-        <div className="relative space-y-16 pl-8">
+        <div className="relative space-y-12 pl-8">
           <div
             className="absolute left-3 top-0 h-full w-px bg-white/10"
             style={{
@@ -106,27 +103,20 @@ export function Process() {
               <p className="font-inter text-[11px] font-medium uppercase tracking-[0.12em] text-brand-cyan">
                 {step.role}
               </p>
-              <h3 className="font-satoshi text-[28px] font-black uppercase text-text-heading">
-                {step.title}
-              </h3>
-              <p className="mt-3 font-inter text-base text-text-body">
-                {step.body}
-              </p>
+              <h3 className="heading-card mt-1">{step.title}</h3>
+              <p className="text-card">{step.body}</p>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="container mt-20 grid gap-6 md:grid-cols-3">
+      <div className="card-grid container mt-12 lg:mt-16 md:grid-cols-3">
         {notes.map((note) => (
-          <div
-            key={note.title}
-            className="rounded-2xl border border-white/[0.07] bg-bg-surface p-6"
-          >
+          <div key={note.title} className="card-surface">
             <h3 className="font-satoshi text-sm font-black uppercase text-text-heading">
               {note.title}
             </h3>
-            <p className="mt-2 font-inter text-sm text-text-body">{note.body}</p>
+            <p className="text-card">{note.body}</p>
           </div>
         ))}
       </div>

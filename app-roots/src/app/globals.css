@@ -16,6 +16,11 @@
   --purple: #7b2fff;
   --cyan: #00c8ff;
   --gradient: linear-gradient(135deg, #7b2fff 0%, #00c8ff 100%);
+  /* 8px spacing scale */
+  --space-section-y: 5rem;
+  --space-section-y-lg: 7.5rem;
+  --space-block: 3rem;
+  --space-block-lg: 4rem;
 }
 
 * {
@@ -72,8 +77,58 @@ h4 {
   font-weight: 900;
   color: var(--text-head);
   text-transform: uppercase;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+
+.text-heading-display {
+  font-family: "Satoshi", sans-serif;
+  font-weight: 900;
+  color: var(--text-head);
+  text-transform: uppercase;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  font-size: clamp(28px, 4.5vw, 52px);
+}
+
+.text-heading-section {
+  font-family: "Satoshi", sans-serif;
+  font-weight: 900;
+  color: var(--text-head);
+  text-transform: uppercase;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  font-size: clamp(24px, 3.5vw, 44px);
+}
+
+.text-heading-page {
+  font-family: "Satoshi", sans-serif;
+  font-weight: 900;
+  color: var(--text-head);
+  text-transform: uppercase;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  font-size: clamp(26px, 3.8vw, 46px);
+}
+
+.text-heading-cta {
+  font-family: "Satoshi", sans-serif;
+  font-weight: 900;
+  color: var(--text-head);
+  text-transform: uppercase;
   line-height: 0.92;
   letter-spacing: -0.04em;
+  font-size: clamp(28px, 4.8vw, 60px);
+}
+
+.text-heading-idea {
+  font-family: "Satoshi", sans-serif;
+  font-weight: 900;
+  color: var(--text-head);
+  text-transform: uppercase;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  font-size: clamp(28px, 4.8vw, 56px);
 }
 
 .gradient-text {
@@ -96,14 +151,124 @@ h4 {
 }
 
 .section-padding {
-  padding-top: 128px;
-  padding-bottom: 128px;
+  padding-top: var(--space-section-y);
+  padding-bottom: var(--space-section-y);
 }
 
 @media (min-width: 1024px) {
   .section-padding {
-    padding-top: 192px;
-    padding-bottom: 192px;
+    padding-top: var(--space-section-y-lg);
+    padding-bottom: var(--space-section-y-lg);
+  }
+}
+
+@layer components {
+  .section-intro {
+    margin-bottom: var(--space-block);
+  }
+
+  @media (min-width: 1024px) {
+    .section-intro {
+      margin-bottom: var(--space-block-lg);
+    }
+  }
+
+  .copy-lead {
+    margin-top: 1.5rem;
+    max-width: 65ch;
+    font-family: "Inter", sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-body);
+  }
+
+  @media (min-width: 1024px) {
+    .copy-lead {
+      font-size: 1.125rem;
+    }
+  }
+
+  .copy-body {
+    font-family: "Inter", sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-body);
+  }
+
+  .card-surface {
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    background-color: var(--bg-surface);
+    padding: 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .card-surface {
+      padding: 2rem;
+    }
+  }
+
+  .section-grid {
+    display: grid;
+    gap: 2rem;
+  }
+
+  @media (min-width: 1024px) {
+    .section-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 3rem;
+    }
+  }
+
+  .card-grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .btn-row-center {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2.5rem;
+  }
+
+  .heading-card {
+    font-family: "Satoshi", sans-serif;
+    font-size: 1.125rem;
+    font-weight: 900;
+    line-height: 1.2;
+    text-transform: uppercase;
+    color: var(--text-head);
+  }
+
+  @media (min-width: 1024px) {
+    .heading-card {
+      font-size: 1.25rem;
+    }
+  }
+
+  .text-card {
+    margin-top: 0.75rem;
+    font-family: "Inter", sans-serif;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--text-body);
+  }
+
+  @media (min-width: 1024px) {
+    .text-card {
+      font-size: 1rem;
+    }
   }
 }
 

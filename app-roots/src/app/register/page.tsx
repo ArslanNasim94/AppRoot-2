@@ -14,18 +14,17 @@ export default function RegisterPage() {
     <div className="flex min-h-[calc(100svh-5rem)] items-center justify-center px-6 py-16 lg:py-24">
       <div className="w-full max-w-[440px]">
         <SectionTag>(Get Started)</SectionTag>
-        <AnimatedHeading
-          as="h1"
-          className="mb-3 font-satoshi text-[clamp(36px,5vw,56px)] font-black uppercase leading-[0.95] tracking-tight text-text-heading"
-        >
+        <AnimatedHeading as="h1" className="text-heading-page">
           Let&apos;s Talk
         </AnimatedHeading>
-        <p className="mb-8 font-inter text-base leading-relaxed text-text-body">
+        <p className="copy-lead">
           Tell us what you&apos;re building. Create your account to start a
           project, purchase products, or connect with our startup community.
         </p>
 
-        <AuthForm mode="register" />
+        <div className="mt-8">
+          <AuthForm mode="register" />
+        </div>
       </div>
     </div>
   );

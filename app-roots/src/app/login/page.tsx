@@ -13,18 +13,17 @@ export default function LoginPage() {
     <div className="flex min-h-[calc(100svh-5rem)] items-center justify-center px-6 py-16 lg:py-24">
       <div className="w-full max-w-[440px]">
         <SectionTag>(Account)</SectionTag>
-        <AnimatedHeading
-          as="h1"
-          className="mb-3 font-satoshi text-[clamp(36px,5vw,56px)] font-black uppercase leading-[0.95] tracking-tight text-text-heading"
-        >
+        <AnimatedHeading as="h1" className="text-heading-page">
           Login
         </AnimatedHeading>
-        <p className="mb-8 font-inter text-base leading-relaxed text-text-body">
+        <p className="copy-lead">
           Sign in to your AppRoots account to manage projects, track progress,
           and access your dashboard.
         </p>
 
-        <AuthForm mode="login" />
+        <div className="mt-8">
+          <AuthForm mode="login" />
+        </div>
       </div>
     </div>
   );

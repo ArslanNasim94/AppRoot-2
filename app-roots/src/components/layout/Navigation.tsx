@@ -69,7 +69,7 @@ export function Navigation() {
     <>
       <nav
         ref={navRef}
-        className={`fixed top-0 z-[500] w-full border-b bg-[#0A0A0F] transition-[border-color,box-shadow] ${
+        className={`fixed top-0 z-[500] w-full border-b bg-[#0A0A0F] isolation-isolate transition-[border-color,box-shadow] ${
           scrolled
             ? "border-white/[0.07] shadow-[0_12px_40px_rgba(10,10,15,0.55)]"
             : "border-white/[0.06] shadow-[0_4px_24px_rgba(10,10,15,0.35)]"
@@ -128,7 +128,7 @@ export function Navigation() {
             key={link.label}
             href={link.href}
             onClick={() => setMenuOpen(false)}
-            className="font-satoshi text-3xl font-black uppercase text-text-heading"
+            className="font-satoshi text-2xl font-black uppercase text-text-heading"
           >
             {link.label}
           </Link>
@@ -136,7 +136,7 @@ export function Navigation() {
         <Link
           href="/login"
           onClick={() => setMenuOpen(false)}
-          className="font-satoshi text-3xl font-black uppercase text-text-heading"
+          className="font-satoshi text-2xl font-black uppercase text-text-heading"
         >
           Login
         </Link>

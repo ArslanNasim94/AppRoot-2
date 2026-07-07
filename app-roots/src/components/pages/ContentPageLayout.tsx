@@ -48,22 +48,15 @@ export function ContentPageHero({
   meta,
 }: ContentPageHeroProps) {
   return (
-    <header className="mb-12 lg:mb-16">
+    <header className="section-intro">
       <SectionTag>{tag}</SectionTag>
-      <AnimatedHeading
-        as="h1"
-        className="font-satoshi text-[clamp(36px,5vw,64px)] font-black uppercase leading-[0.95] tracking-tight text-text-heading"
-      >
+      <AnimatedHeading as="h1" className="text-heading-page">
         {title}
       </AnimatedHeading>
       {meta && (
         <p className="mt-3 font-inter text-sm text-white/40">{meta}</p>
       )}
-      {description && (
-        <p className="mt-6 max-w-2xl font-inter text-base leading-relaxed text-text-body lg:text-lg">
-          {description}
-        </p>
-      )}
+      {description && <p className="copy-lead">{description}</p>}
     </header>
   );
 }

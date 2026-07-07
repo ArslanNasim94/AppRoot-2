@@ -53,13 +53,10 @@ export function Industries() {
 
   return (
     <section id="tech-stack" className="section-padding bg-bg">
-      <div className="container grid gap-16 lg:grid-cols-2">
+      <div className="container section-grid">
         <div>
           <SectionTag>05 · Tech stack</SectionTag>
-          <h2
-            ref={headingRef}
-            className="font-satoshi text-[clamp(40px,6vw,72px)] font-black uppercase leading-[0.95] tracking-tight text-text-heading"
-          >
+          <h2 ref={headingRef} className="text-heading-section">
             {["FULL-STACK", "DEVELOPMENT,", "ONE PARTNER."].map((line) => (
               <span key={line} className="block overflow-hidden">
                 <span data-line className="block">
@@ -70,18 +67,14 @@ export function Industries() {
           </h2>
         </div>
 
-        <div ref={tilesRef} className="flex flex-col gap-4">
+        <div ref={tilesRef} className="flex flex-col gap-6">
           {stackCards.map((card) => (
             <div
               key={card.name}
-              className="rounded-2xl border border-white/[0.07] bg-bg-surface p-8 transition-colors hover:border-brand-purple/30"
+              className="card-surface transition-colors hover:border-brand-purple/30"
             >
-              <h3 className="font-satoshi text-xl font-black uppercase text-text-heading">
-                {card.name}
-              </h3>
-              <p className="mt-3 font-inter text-sm leading-relaxed text-text-body">
-                {card.description}
-              </p>
+              <h3 className="heading-card">{card.name}</h3>
+              <p className="text-card">{card.description}</p>
               <span className="mt-4 inline-block rounded-full border border-white/[0.08] px-3 py-1 font-inter text-[11px] text-text-body">
                 {card.tag}
               </span>
@@ -90,7 +83,7 @@ export function Industries() {
         </div>
       </div>
 
-      <div className="container mt-12 text-center">
+      <div className="btn-row-center container">
         <MagneticButton href="/products">See Our Products →</MagneticButton>
       </div>
     </section>

@@ -64,13 +64,10 @@ export function AiForStartups() {
       className="section-padding relative overflow-hidden bg-bg"
     >
       <div className="container">
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,380px)_1fr] lg:items-start lg:gap-16 xl:grid-cols-[minmax(0,420px)_1fr]">
+        <div className="section-grid lg:grid-cols-[minmax(0,380px)_1fr] lg:items-start xl:grid-cols-[minmax(0,420px)_1fr]">
           <div className="lg:sticky lg:top-32">
             <SectionTag>03 · AI path</SectionTag>
-            <h2
-              ref={headingRef}
-              className="font-satoshi text-[clamp(32px,4vw,52px)] font-black uppercase leading-[1.02] tracking-tight text-text-heading"
-            >
+            <h2 ref={headingRef} className="text-heading-section">
               {["YOUR STARTUP'S", "AI PARTNER."].map((line) => (
                 <span key={line} className="block overflow-hidden">
                   <span data-line className="block">
@@ -79,14 +76,14 @@ export function AiForStartups() {
                 </span>
               ))}
             </h2>
-            <p className="mt-6 font-inter text-base leading-relaxed text-text-body">
+            <p className="copy-lead">
               We specialize in AI-based solutions. Add AI to the product you already
               have, make your current system smarter, or launch a completely new AI
               SaaS with us.
             </p>
           </div>
 
-          <div ref={cardsRef} className="flex flex-col gap-5">
+          <div ref={cardsRef} className="flex flex-col gap-6">
             {aiPaths.map((path) => (
               <motion.div
                 key={path.number}
@@ -95,18 +92,14 @@ export function AiForStartups() {
                   borderColor: "rgba(123,47,255,0.3)",
                   transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] },
                 }}
-                className="group w-full rounded-2xl border border-white/[0.07] bg-bg-surface p-8 lg:p-10"
+                className="card-surface group w-full"
               >
-                <span className="font-satoshi text-[64px] font-black leading-none text-white/[0.06] transition-all duration-300 group-hover:gradient-text lg:text-[72px]">
+                <span className="font-satoshi text-[56px] font-black leading-none text-white/[0.06] transition-all duration-300 group-hover:gradient-text lg:text-[64px]">
                   {path.number}
                 </span>
-                <h3 className="mt-3 font-satoshi text-xl font-black uppercase leading-tight text-text-heading lg:text-[22px]">
-                  {path.title}
-                </h3>
-                <p className="mt-4 font-inter text-[15px] leading-relaxed text-text-body lg:text-base">
-                  {path.body}
-                </p>
-                <div className="mt-5 flex flex-wrap gap-2">
+                <h3 className="heading-card mt-3">{path.title}</h3>
+                <p className="text-card">{path.body}</p>
+                <div className="mt-4 flex flex-wrap gap-2">
                   {path.tags.map((tag) => (
                     <span
                       key={tag}
@@ -121,7 +114,7 @@ export function AiForStartups() {
           </div>
         </div>
 
-        <div className="mt-12 text-center">
+        <div className="btn-row-center">
           <MagneticButton href="#ai-chatbot">Discuss your AI idea →</MagneticButton>
         </div>
       </div>

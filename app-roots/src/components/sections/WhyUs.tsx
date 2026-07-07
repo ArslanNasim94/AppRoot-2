@@ -67,10 +67,7 @@ export function WhyUs() {
     <section id="why-different" className="section-padding bg-bg">
       <div className="container">
         <SectionTag>04 · Why us</SectionTag>
-        <h2
-          ref={headingRef}
-          className="mb-8 font-satoshi text-[clamp(40px,6vw,72px)] font-black uppercase leading-[0.95] tracking-tight text-text-heading"
-        >
+        <h2 ref={headingRef} className="text-heading-section">
           {["BUILT FOR", "FOUNDERS."].map((line) => (
             <span key={line} className="block overflow-hidden">
               <span data-line className="block">
@@ -79,7 +76,7 @@ export function WhyUs() {
             </span>
           ))}
         </h2>
-        <p className="mb-16 max-w-3xl font-inter text-lg leading-relaxed text-text-body">
+        <p className="copy-lead section-intro max-w-3xl">
           Most startups juggle freelancers, agencies, and hiring. AppRoots gives you
           one dedicated squad that ships web, mobile, AI, and backend — so you stay
           focused on customers. Our experienced team brings 20+ years in the IT
@@ -87,11 +84,9 @@ export function WhyUs() {
           or startup product.
         </p>
 
-        <div className="mb-16 grid gap-6 md:grid-cols-2">
-          <div className="rounded-2xl border border-white/[0.07] bg-bg-surface p-8">
-            <h3 className="font-satoshi text-lg font-black uppercase text-white/40">
-              The usual path
-            </h3>
+        <div className="card-grid section-intro md:grid-cols-2">
+          <div className="card-surface">
+            <h3 className="heading-card text-white/40">The usual path</h3>
             <ul className="mt-6 space-y-4">
               {usualPath.map((item) => (
                 <li
@@ -103,10 +98,8 @@ export function WhyUs() {
               ))}
             </ul>
           </div>
-          <div className="rounded-2xl border border-brand-purple/30 bg-brand-purple/5 p-8">
-            <h3 className="font-satoshi text-lg font-black uppercase gradient-text">
-              With AppRoots
-            </h3>
+          <div className="card-surface border-brand-purple/30 bg-brand-purple/5">
+            <h3 className="heading-card gradient-text">With AppRoots</h3>
             <ul className="mt-6 space-y-4">
               {withAppRoots.map((item) => (
                 <li
@@ -120,27 +113,22 @@ export function WhyUs() {
           </div>
         </div>
 
-        <div ref={cardsRef} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div ref={cardsRef} className="card-grid sm:grid-cols-2 lg:grid-cols-4">
           {miniCards.map((card) => (
-            <div
-              key={card.title}
-              className="rounded-2xl border border-white/[0.07] bg-bg-surface p-6"
-            >
+            <div key={card.title} className="card-surface">
               <h3 className="font-satoshi text-sm font-black uppercase text-text-heading">
                 {card.title}
               </h3>
-              <p className="mt-3 font-inter text-sm leading-relaxed text-text-body">
-                {card.body}
-              </p>
+              <p className="text-card">{card.body}</p>
             </div>
           ))}
         </div>
 
-        <p className="mt-12 text-center font-satoshi text-xl font-black uppercase text-text-heading">
+        <p className="mt-10 text-center font-satoshi text-lg font-black uppercase text-text-heading lg:text-xl">
           You stay in founder mode. We stay in build mode.
         </p>
 
-        <div className="mt-8 flex flex-wrap justify-center gap-4">
+        <div className="btn-row-center">
           <MagneticButton href="#steps">See how we work →</MagneticButton>
           <a
             href="/products"

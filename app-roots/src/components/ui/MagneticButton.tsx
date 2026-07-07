@@ -9,6 +9,7 @@ interface MagneticButtonProps {
   href?: string;
   onClick?: () => void;
   className?: string;
+  type?: "button" | "submit";
 }
 
 export function MagneticButton({
@@ -17,6 +18,7 @@ export function MagneticButton({
   href,
   onClick,
   className = "",
+  type = "button",
 }: MagneticButtonProps) {
   const btnRef = useRef<HTMLAnchorElement & HTMLButtonElement>(null);
 
@@ -46,12 +48,12 @@ export function MagneticButton({
   }, []);
 
   const base =
-    "relative inline-flex items-center justify-center rounded-lg text-[14px] font-semibold uppercase tracking-[0.06em] transition-shadow duration-300 will-change-transform";
+    "relative inline-flex min-h-12 items-center justify-center rounded-lg px-6 py-3 text-[14px] font-semibold uppercase tracking-[0.06em] transition-shadow duration-300 will-change-transform";
   const variants = {
     primary:
-      "bg-gradient-to-br from-brand-purple to-brand-cyan px-7 py-3.5 text-white hover:shadow-[0_0_24px_rgba(123,47,255,0.35)] hover:scale-[1.03]",
+      "bg-gradient-to-br from-brand-purple to-brand-cyan text-white hover:shadow-[0_0_24px_rgba(123,47,255,0.35)] hover:scale-[1.03]",
     secondary:
-      "border border-white/10 bg-transparent px-7 py-3.5 text-text-heading hover:border-brand-purple/30",
+      "border border-white/10 bg-transparent text-text-heading hover:border-brand-purple/30",
   };
 
   const classes = `${base} ${variants[variant]} ${className}`;
@@ -65,7 +67,7 @@ export function MagneticButton({
   }
 
   return (
-    <button ref={btnRef} type="button" onClick={onClick} className={classes}>
+    <button ref={btnRef} type={type} onClick={onClick} className={classes}>
       {children}
     </button>
   );

@@ -13,19 +13,16 @@ export function IdeaSection() {
   return (
     <section
       id="idea"
-      className="section-padding flex min-h-[85vh] items-center bg-bg"
+      className="relative z-20 -mt-px scroll-mt-20 border-t border-white/[0.06] bg-bg section-padding flex min-h-[70vh] items-center"
     >
       <div className="container max-w-5xl text-center">
         <SectionTag>01 · Idea</SectionTag>
 
-        <p className="mb-4 font-inter text-[11px] font-medium uppercase tracking-[0.12em] text-white/30">
+        <p className="mb-3 font-inter text-[11px] font-medium uppercase tracking-[0.12em] text-white/30">
           Your development partner
         </p>
 
-        <h2
-          ref={headingRef}
-          className="mx-auto mb-8 font-satoshi text-[clamp(40px,7vw,96px)] font-black uppercase leading-[0.92] tracking-tighter text-text-heading"
-        >
+        <h2 ref={headingRef} className="mx-auto text-heading-idea">
           {["YOU FOCUS ON", "GROWTH. WE BUILD", "THE PRODUCT."].map((line) => (
             <span key={line} className="block overflow-hidden">
               <span data-line className="block">
@@ -35,13 +32,13 @@ export function IdeaSection() {
           ))}
         </h2>
 
-        <p className="mx-auto mb-10 max-w-2xl font-inter text-base leading-relaxed text-text-body lg:text-lg">
+        <p className="copy-lead mx-auto">
           AppRoots takes web, mobile, and backend development off your plate — so
           you can focus on marketing, sales, and customers while we ship the
           product.
         </p>
 
-        <div className="flex flex-wrap items-center justify-center gap-6">
+        <div className="btn-row-center">
           <MagneticButton href="/register">Let&apos;s talk →</MagneticButton>
           <Link
             href="/products"

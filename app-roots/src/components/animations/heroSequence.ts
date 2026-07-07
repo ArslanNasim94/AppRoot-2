@@ -3,12 +3,19 @@
 import { gsap } from "@/lib/gsap";
 
 export const FRAME_COUNT = 208;
-export const HERO_FRAME_VH = 2;
+export const NAV_HEIGHT_PX = 80;
+export const HERO_FRAME_VH = 2.75;
+export const HERO_HOLD_VH = 0.4;
 export const HERO_EXIT_VH = 1;
-export const HERO_TOTAL_VH = HERO_FRAME_VH + HERO_EXIT_VH;
+export const HERO_TOTAL_VH = HERO_FRAME_VH + HERO_HOLD_VH + HERO_EXIT_VH;
 
 const PREFETCH_RADIUS = 40;
 const FRAME_PHASE_END = HERO_FRAME_VH / HERO_TOTAL_VH;
+const HOLD_PHASE_END = (HERO_FRAME_VH + HERO_HOLD_VH) / HERO_TOTAL_VH;
+
+export function getHeroViewportHeight() {
+  return Math.max(window.innerHeight - NAV_HEIGHT_PX, 1);
+}
 
 export function getFramePath(index: number): string {
   return `/hero/${String(index + 1).padStart(4, "0")}.webp`;
@@ -70,12 +77,13 @@ export class HeroFrameCache {
 export function renderFrame(
   ctx: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement,
-  img: HTMLImageElement | null | undefined
+  img: HTMLImageElement | null | undefined,
+  frameIndex = 0
 ) {
   if (!img?.complete || !img.naturalWidth || !img.naturalHeight) return;
 
   const w = canvas.clientWidth || window.innerWidth;
-  const h = canvas.clientHeight || window.innerHeight;
+  const h = canvas.clientHeight || getHeroViewportHeight();
   if (!w || !h) return;
 
   const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
@@ -86,15 +94,23 @@ export function renderFrame(
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
-  const scale = Math.max(w / img.naturalWidth, h / img.naturalHeight);
-  const x = (w - img.naturalWidth * scale) / 2;
-  const y = (h - img.naturalHeight * scale) / 2 + h * 0.1;
+  const progress = frameIndex / Math.max(FRAME_COUNT - 1, 1);
+  const scaleCover = Math.max(w / img.naturalWidth, h / img.naturalHeight);
+  const scaleContain = Math.min(w / img.naturalWidth, h / img.naturalHeight);
+  const containBlend = Math.min(Math.max((progress - 0.78) / 0.22, 0), 1);
+  const scale = scaleCover * (1 - containBlend) + scaleContain * containBlend;
+
+  const scaledW = img.naturalWidth * scale;
+  const scaledH = img.naturalHeight * scale;
+  const x = (w - scaledW) / 2;
+  const focalY = 0.5 - progress * 0.2;
+  const y = (h - scaledH) * focalY;
 
   ctx.clearRect(0, 0, w, h);
-  ctx.drawImage(img, x, y, img.naturalWidth * scale, img.naturalHeight * scale);
+  ctx.drawImage(img, x, y, scaledW, scaledH);
 }
 
-export type HeroScrollPhase = "frames" | "exit";
+export type HeroScrollPhase = "frames" | "hold" | "exit";
 
 export interface HeroScrollState {
   phase: HeroScrollPhase;
@@ -118,10 +134,19 @@ export function getHeroScrollState(trackEl: HTMLElement): HeroScrollState {
     };
   }
 
+  if (overall <= HOLD_PHASE_END) {
+    return {
+      phase: "hold",
+      frameProgress: 1,
+      exitProgress: 0,
+      overall,
+    };
+  }
+
   return {
     phase: "exit",
     frameProgress: 1,
-    exitProgress: (overall - FRAME_PHASE_END) / (1 - FRAME_PHASE_END),
+    exitProgress: (overall - HOLD_PHASE_END) / (1 - HOLD_PHASE_END),
     overall,
   };
 }
@@ -148,12 +173,12 @@ export function initHeroScroll({
 
   const draw = (frameProgress: number) => {
     const index = Math.min(
-      Math.floor(frameProgress * (FRAME_COUNT - 1)),
+      Math.round(frameProgress * (FRAME_COUNT - 1)),
       FRAME_COUNT - 1
     );
     if (index === currentFrame) return;
     currentFrame = index;
-    renderFrame(ctx, canvas, cache.resolve(index));
+    renderFrame(ctx, canvas, cache.resolve(index), index);
     cache.prefetchAround(index);
   };
 

@@ -47,16 +47,16 @@ export function AuthForm({ mode }: AuthFormProps) {
 
   if (submitted) {
     return (
-      <div className="rounded-2xl border border-white/[0.08] bg-bg-surface p-8 text-center sm:p-10">
+      <div className="card-surface text-center">
         <p className="font-inter text-base text-text-heading">
           {isLogin ? "Thanks!" : "Welcome aboard!"}
         </p>
-        <p className="mt-3 font-inter text-sm leading-relaxed text-text-body">
+        <p className="text-card">
           Account access is launching soon. We&apos;ve noted your interest — in
           the meantime, tell us what you&apos;re building and we&apos;ll get
           back to you right away.
         </p>
-        <div className="mt-8 flex flex-col gap-3">
+        <div className="btn-row flex-col sm:flex-row">
           <Link
             href="/#contact"
             className="inline-flex h-12 items-center justify-center rounded-xl bg-gradient-to-br from-brand-purple to-brand-cyan px-7 text-[14px] font-semibold uppercase tracking-[0.06em] text-white transition-transform hover:scale-[1.02]"
@@ -77,7 +77,7 @@ export function AuthForm({ mode }: AuthFormProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-2xl border border-white/[0.08] bg-bg-surface p-8 sm:p-10"
+      className="card-surface"
     >
       <div className="flex flex-col gap-6">
         {!isLogin && (

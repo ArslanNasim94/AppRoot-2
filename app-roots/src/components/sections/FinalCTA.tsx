@@ -43,7 +43,7 @@ export function FinalCTA() {
   return (
     <section
       id="contact"
-      className="relative flex min-h-screen items-center justify-center bg-bg section-padding"
+      className="section-padding relative flex min-h-[80vh] items-center justify-center bg-bg"
     >
       <div
         ref={glowRef}
@@ -56,10 +56,7 @@ export function FinalCTA() {
 
       <div className="container relative z-10 text-center">
         <SectionTag>07 · Launch</SectionTag>
-        <h2
-          ref={headingRef}
-          className="font-satoshi text-[clamp(48px,8vw,120px)] font-black uppercase leading-[0.92] tracking-tighter text-text-heading"
-        >
+        <h2 ref={headingRef} className="text-heading-cta">
           {["STOP JUGGLING", "DEVELOPMENT.", "START BUILDING", "MOMENTUM."].map(
             (line) => (
               <span key={line} className="block overflow-hidden">
@@ -71,15 +68,13 @@ export function FinalCTA() {
           )}
         </h2>
 
-        <p className="mx-auto mt-8 max-w-[520px] font-inter text-lg text-text-body">
+        <p className="copy-lead mx-auto max-w-[520px]">
           Tell us what you&apos;re building. We&apos;ll figure out the first step
           together.
         </p>
 
-        <div className="mt-10 flex flex-col items-center justify-center gap-6 sm:flex-row">
-          <MagneticButton href="/register" className="px-8 py-4">
-            Let&apos;s talk →
-          </MagneticButton>
+        <div className="btn-row-center">
+          <MagneticButton href="/register">Let&apos;s talk →</MagneticButton>
           <a
             href="#ai-chatbot"
             className="link-underline font-inter text-sm font-semibold uppercase tracking-[0.06em] text-text-heading"
@@ -91,7 +86,7 @@ export function FinalCTA() {
 
         <p
           ref={reassuranceRef}
-          className="mt-10 font-inter text-[13px] text-white/25 opacity-0"
+          className="mt-8 font-inter text-[13px] text-white/25 opacity-0"
         >
           No commitment. No hard sell. Just an honest conversation about
           what&apos;s possible.
