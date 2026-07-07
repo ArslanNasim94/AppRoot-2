@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 const STEPS = [
@@ -16,6 +16,8 @@ const STEPS = [
 export function FounderPipeline() {
   const [active, setActive] = useState(0);
   const [visible, setVisible] = useState(false);
+  const progressRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef(0);
 
   useEffect(() => {
     const sections = STEPS.map((step) =>
@@ -35,15 +37,27 @@ export function FounderPipeline() {
 
       setActive(current);
       setVisible(window.scrollY > 120);
+
+      if (progressRef.current) {
+        const progressHeight =
+          STEPS.length > 1 ? (current / (STEPS.length - 1)) * 100 : 0;
+        progressRef.current.style.height = `${progressHeight}%`;
+      }
+    };
+
+    const onScroll = () => {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(updateActive);
     };
 
     updateActive();
-    window.addEventListener("scroll", updateActive, { passive: true });
-    window.addEventListener("resize", updateActive, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
 
     return () => {
-      window.removeEventListener("scroll", updateActive);
-      window.removeEventListener("resize", updateActive);
+      cancelAnimationFrame(rafRef.current);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
     };
   }, []);
 
@@ -52,82 +66,81 @@ export function FounderPipeline() {
   return (
     <aside
       aria-label="Founder pipeline navigation"
-      className={`fixed left-6 top-1/2 z-[150] hidden -translate-y-1/2 transition-all duration-500 xl:block ${
-        visible ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"
+      className={`fixed left-5 top-0 z-[150] hidden h-screen w-[160px] flex-col pt-28 pb-10 xl:flex 2xl:left-8 ${
+        visible ? "opacity-100" : "pointer-events-none opacity-0"
       }`}
+      style={{ transition: "opacity 0.3s ease" }}
     >
-      <div className="w-[148px]">
+      <div className="shrink-0 px-1">
         <p className="font-inter text-[11px] font-medium uppercase tracking-[0.14em] text-brand-cyan">
           {current.label} {active + 1} / {STEPS.length}
         </p>
         <p className="mt-1 font-inter text-[10px] font-medium uppercase tracking-[0.18em] text-white/30">
           Founder Pipeline
         </p>
+      </div>
 
-        <div className="relative mt-6">
-          <div className="absolute bottom-2 left-[7px] top-2 w-px bg-white/[0.08]" />
-          <div
-            className="absolute left-[7px] top-2 w-px bg-gradient-to-b from-brand-purple to-brand-cyan transition-all duration-500"
-            style={{
-              height: `${Math.max(0, (active / (STEPS.length - 1)) * 100)}%`,
-              maxHeight: "calc(100% - 16px)",
-            }}
-          />
+      <div className="relative mt-8 min-h-0 flex-1">
+        <div className="absolute bottom-0 left-[7px] top-0 w-px bg-white/[0.08]" />
+        <div
+          ref={progressRef}
+          className="absolute left-[7px] top-0 w-px bg-gradient-to-b from-brand-purple to-brand-cyan"
+          style={{ height: "0%" }}
+        />
 
-          <ul className="relative space-y-4">
-            {STEPS.map((step, index) => {
-              const isActive = index === active;
-              const isPast = index < active;
+        <ul className="relative flex h-full flex-col justify-between py-1">
+          {STEPS.map((step, index) => {
+            const isActive = index === active;
+            const isPast = index < active;
 
-              return (
-                <li key={step.id}>
-                  <Link
-                    href={`#${step.id}`}
-                    className={`group flex items-center gap-3 transition-colors duration-300 ${
+            return (
+              <li key={step.id}>
+                <Link
+                  href={`#${step.id}`}
+                  className={`group flex items-center gap-3 ${
+                    isActive
+                      ? "text-text-heading"
+                      : isPast
+                        ? "text-white/45 hover:text-text-heading"
+                        : "text-white/25 hover:text-white/45"
+                  }`}
+                >
+                  <span
+                    className={`relative z-10 flex h-[15px] w-[15px] shrink-0 items-center justify-center rounded-full border ${
                       isActive
-                        ? "text-text-heading"
+                        ? "border-brand-cyan bg-brand-cyan/20 shadow-[0_0_12px_rgba(0,200,255,0.35)]"
                         : isPast
-                          ? "text-white/45 hover:text-text-heading"
-                          : "text-white/25 hover:text-white/45"
+                          ? "border-brand-purple/50 bg-brand-purple/10"
+                          : "border-white/15 bg-bg"
                     }`}
                   >
                     <span
-                      className={`relative z-10 flex h-[15px] w-[15px] shrink-0 items-center justify-center rounded-full border transition-all duration-300 ${
+                      className={`h-1.5 w-1.5 rounded-full ${
                         isActive
-                          ? "border-brand-cyan bg-brand-cyan/20 shadow-[0_0_12px_rgba(0,200,255,0.35)]"
+                          ? "bg-brand-cyan"
                           : isPast
-                            ? "border-brand-purple/50 bg-brand-purple/10"
-                            : "border-white/15 bg-bg"
+                            ? "bg-brand-purple"
+                            : "bg-transparent"
+                      }`}
+                    />
+                  </span>
+                  <span className="flex items-baseline gap-1.5 whitespace-nowrap">
+                    <span
+                      className={`font-satoshi text-[10px] font-black tracking-wider ${
+                        isActive ? "text-brand-cyan" : "text-white/30"
                       }`}
                     >
-                      <span
-                        className={`h-1.5 w-1.5 rounded-full transition-colors duration-300 ${
-                          isActive
-                            ? "bg-brand-cyan"
-                            : isPast
-                              ? "bg-brand-purple"
-                              : "bg-transparent"
-                        }`}
-                      />
+                      {step.num}
                     </span>
-                    <span className="flex items-baseline gap-1.5">
-                      <span
-                        className={`font-satoshi text-[10px] font-black tracking-wider ${
-                          isActive ? "text-brand-cyan" : "text-white/30"
-                        }`}
-                      >
-                        {step.num}
-                      </span>
-                      <span className="font-inter text-[11px] font-medium leading-none">
-                        {step.label}
-                      </span>
+                    <span className="font-inter text-[11px] font-medium leading-none">
+                      {step.label}
                     </span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </aside>
   );

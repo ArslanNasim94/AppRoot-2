@@ -48,8 +48,8 @@ export function CustomCursor() {
     };
 
     const tick = () => {
-      cx += (mx - cx) * 0.55;
-      cy += (my - cy) * 0.4;
+      cx += (mx - cx) * 0.82;
+      cy += (my - cy) * 0.72;
       applyStyles();
       rafRef.current = requestAnimationFrame(tick);
     };
@@ -122,7 +122,7 @@ export function CustomCursor() {
       >
         <span
           ref={labelRef}
-          className="font-inter text-[10px] font-semibold uppercase tracking-widest text-white opacity-0 transition-opacity duration-150"
+          className="font-inter text-[10px] font-semibold uppercase tracking-widest text-white opacity-0"
         >
           View
         </span>

@@ -19,8 +19,6 @@ export function MagneticButton({
   className = "",
 }: MagneticButtonProps) {
   const btnRef = useRef<HTMLAnchorElement & HTMLButtonElement>(null);
-  const rafRef = useRef(0);
-  const offsetRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const btn = btnRef.current;
@@ -28,22 +26,13 @@ export function MagneticButton({
       return;
 
     const handleMove = (e: MouseEvent) => {
-      cancelAnimationFrame(rafRef.current);
-      rafRef.current = requestAnimationFrame(() => {
-        const rect = btn.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-        offsetRef.current = {
-          x: Math.max(Math.min(x * 0.12, 10), -10),
-          y: Math.max(Math.min(y * 0.12, 10), -10),
-        };
-        btn.style.transform = `translate3d(${offsetRef.current.x}px, ${offsetRef.current.y}px, 0)`;
-      });
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      btn.style.transform = `translate3d(${Math.max(Math.min(x * 0.12, 10), -10)}px, ${Math.max(Math.min(y * 0.12, 10), -10)}px, 0)`;
     };
 
     const handleLeave = () => {
-      cancelAnimationFrame(rafRef.current);
-      offsetRef.current = { x: 0, y: 0 };
       btn.style.transform = "translate3d(0, 0, 0)";
     };
 
@@ -51,7 +40,6 @@ export function MagneticButton({
     btn.addEventListener("mouseleave", handleLeave, { passive: true });
 
     return () => {
-      cancelAnimationFrame(rafRef.current);
       btn.removeEventListener("mousemove", handleMove);
       btn.removeEventListener("mouseleave", handleLeave);
     };

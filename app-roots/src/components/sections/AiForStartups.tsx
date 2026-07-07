@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { gsap } from "@/lib/gsap";
 import { SectionTag } from "@/components/ui/SectionTag";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { useNizekHeading } from "@/components/animations/useNizekHeading";
@@ -35,43 +35,26 @@ export function AiForStartups() {
   useNizekHeading(headingRef);
 
   useEffect(() => {
-    const section = sectionRef.current;
     const cards = cardsRef.current;
-    if (!section || !cards) return;
+    if (!cards || window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+      return;
 
-    let mm: gsap.MatchMedia | undefined;
-
-    const init = () => {
-      ScrollTrigger.refresh(true);
-      mm = gsap.matchMedia();
-
-      mm.add("(min-width: 768px)", () => {
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: section,
-            start: "top top",
-            end: () =>
-              `+=${Math.max(cards.scrollWidth - window.innerWidth + 200, 200)}`,
-            pin: true,
-            scrub: 1,
-            invalidateOnRefresh: true,
-          },
-        });
-
-        tl.to(cards, {
-          x: () => -(cards.scrollWidth - window.innerWidth + 200),
-          ease: "none",
-        });
-      });
-    };
-
-    window.addEventListener("hero-sequence-ready", init, { once: true });
-    setTimeout(init, 1500);
-
-    return () => {
-      window.removeEventListener("hero-sequence-ready", init);
-      mm?.revert();
-    };
+    gsap.fromTo(
+      cards.children,
+      { x: 120, opacity: 0 },
+      {
+        x: 0,
+        opacity: 1,
+        duration: 0.85,
+        stagger: 0.18,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: cards,
+          start: "top 80%",
+          once: true,
+        },
+      }
+    );
   }, []);
 
   return (
@@ -80,68 +63,67 @@ export function AiForStartups() {
       ref={sectionRef}
       className="section-padding relative overflow-hidden bg-bg"
     >
-      <div className="container flex flex-col gap-16 md:flex-row">
-        <div className="md:sticky md:top-32 md:w-1/3 md:self-start">
-          <SectionTag>02 · AI path</SectionTag>
-          <h2
-            ref={headingRef}
-            className="font-satoshi text-[clamp(40px,6vw,72px)] font-black uppercase leading-[0.95] tracking-tight text-text-heading"
-          >
-            {["YOUR STARTUP'S", "AI PARTNER."].map((line) => (
-              <span key={line} className="block overflow-hidden">
-                <span data-line className="block">
-                  {line}
-                </span>
-              </span>
-            ))}
-          </h2>
-          <p className="mt-6 font-inter text-base leading-relaxed text-text-body">
-            We specialize in AI-based solutions. Add AI to the product you already
-            have, make your current system smarter, or launch a completely new AI
-            SaaS with us.
-          </p>
-        </div>
-
-        <div
-          ref={cardsRef}
-          className="flex flex-col gap-5 md:flex-row md:gap-5"
-        >
-          {aiPaths.map((path) => (
-            <motion.div
-              key={path.number}
-              whileHover={{
-                y: -8,
-                borderColor: "rgba(123,47,255,0.3)",
-                transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] },
-              }}
-              className="group w-full shrink-0 rounded-2xl border border-white/[0.07] bg-bg-surface p-10 md:w-[420px]"
+      <div className="container">
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,380px)_1fr] lg:items-start lg:gap-16 xl:grid-cols-[minmax(0,420px)_1fr]">
+          <div className="lg:sticky lg:top-32">
+            <SectionTag>02 · AI path</SectionTag>
+            <h2
+              ref={headingRef}
+              className="font-satoshi text-[clamp(32px,4vw,52px)] font-black uppercase leading-[1.02] tracking-tight text-text-heading"
             >
-              <span className="font-satoshi text-[80px] font-black leading-none text-white/[0.06] transition-all duration-300 group-hover:gradient-text">
-                {path.number}
-              </span>
-              <h3 className="mt-4 font-satoshi text-[22px] font-black uppercase leading-tight text-text-heading">
-                {path.title}
-              </h3>
-              <p className="mt-4 font-inter text-base leading-relaxed text-text-body">
-                {path.body}
-              </p>
-              <div className="mt-6 flex flex-wrap gap-2">
-                {path.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded-full border border-white/[0.08] px-3 py-1 font-inter text-[11px] text-text-body"
-                  >
-                    {tag}
+              {["YOUR STARTUP'S", "AI PARTNER."].map((line) => (
+                <span key={line} className="block overflow-hidden">
+                  <span data-line className="block">
+                    {line}
                   </span>
-                ))}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
+                </span>
+              ))}
+            </h2>
+            <p className="mt-6 font-inter text-base leading-relaxed text-text-body">
+              We specialize in AI-based solutions. Add AI to the product you already
+              have, make your current system smarter, or launch a completely new AI
+              SaaS with us.
+            </p>
+          </div>
 
-      <div className="container mt-12 text-center">
-        <MagneticButton href="#ai-chatbot">Discuss your AI idea →</MagneticButton>
+          <div ref={cardsRef} className="flex flex-col gap-5">
+            {aiPaths.map((path) => (
+              <motion.div
+                key={path.number}
+                whileHover={{
+                  y: -6,
+                  borderColor: "rgba(123,47,255,0.3)",
+                  transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] },
+                }}
+                className="group w-full rounded-2xl border border-white/[0.07] bg-bg-surface p-8 lg:p-10"
+              >
+                <span className="font-satoshi text-[64px] font-black leading-none text-white/[0.06] transition-all duration-300 group-hover:gradient-text lg:text-[72px]">
+                  {path.number}
+                </span>
+                <h3 className="mt-3 font-satoshi text-xl font-black uppercase leading-tight text-text-heading lg:text-[22px]">
+                  {path.title}
+                </h3>
+                <p className="mt-4 font-inter text-[15px] leading-relaxed text-text-body lg:text-base">
+                  {path.body}
+                </p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {path.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-full border border-white/[0.08] px-3 py-1 font-inter text-[11px] text-text-body"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-12 text-center">
+          <MagneticButton href="#ai-chatbot">Discuss your AI idea →</MagneticButton>
+        </div>
       </div>
     </section>
   );

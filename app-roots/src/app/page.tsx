@@ -1,7 +1,6 @@
 import dynamic from "next/dynamic";
 import { FounderPipeline } from "@/components/layout/FounderPipeline";
 import { Hero } from "@/components/sections/Hero";
-import { Marquee } from "@/components/sections/Marquee";
 
 const Manifesto = dynamic(
   () => import("@/components/sections/Manifesto").then((m) => m.Manifesto),
@@ -40,7 +39,6 @@ export default function Home() {
     <>
       <FounderPipeline />
       <Hero />
-      <Marquee />
       <Manifesto />
       <Services />
       <AiForStartups />

@@ -158,15 +158,13 @@ export function Manifesto() {
         <SectionTag>(How We Work Together)</SectionTag>
         <h2
           ref={headingRef}
-          className="mb-16 font-satoshi text-[clamp(40px,6vw,72px)] font-black uppercase leading-[0.95] tracking-tight text-text-heading"
+          className="mb-16 font-satoshi text-[clamp(24px,4.5vw,68px)] font-black uppercase leading-[0.95] tracking-tight text-text-heading whitespace-nowrap"
         >
-          {["YOU → APPROOTS →", "LAUNCH."].map((line) => (
-            <span key={line} className="block overflow-hidden">
-              <span data-line className="block">
-                {line}
-              </span>
+          <span className="block overflow-hidden">
+            <span data-line className="block">
+              YOU → APPROOTS → LAUNCH.
             </span>
-          ))}
+          </span>
         </h2>
 
         <div ref={cardsRef} className="grid gap-6 md:grid-cols-2">

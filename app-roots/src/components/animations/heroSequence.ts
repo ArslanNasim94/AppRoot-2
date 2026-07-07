@@ -3,8 +3,12 @@
 import { gsap } from "@/lib/gsap";
 
 export const FRAME_COUNT = 208;
-export const HERO_SCROLL_VH = 3;
-const PREFETCH_RADIUS = 24;
+export const HERO_FRAME_VH = 2;
+export const HERO_EXIT_VH = 1;
+export const HERO_TOTAL_VH = HERO_FRAME_VH + HERO_EXIT_VH;
+
+const PREFETCH_RADIUS = 40;
+const FRAME_PHASE_END = HERO_FRAME_VH / HERO_TOTAL_VH;
 
 export function getFramePath(index: number): string {
   return `/hero/${String(index + 1).padStart(4, "0")}.webp`;
@@ -24,10 +28,6 @@ export function loadFrame(index: number): Promise<HTMLImageElement> {
 export class HeroFrameCache {
   private frames: (HTMLImageElement | undefined)[] = new Array(FRAME_COUNT);
   private loading = new Set<number>();
-
-  get(index: number): HTMLImageElement | undefined {
-    return this.frames[index];
-  }
 
   resolve(index: number): HTMLImageElement | null {
     if (this.frames[index]?.naturalWidth) return this.frames[index]!;
@@ -94,69 +94,101 @@ export function renderFrame(
   ctx.drawImage(img, x, y, img.naturalWidth * scale, img.naturalHeight * scale);
 }
 
+export type HeroScrollPhase = "frames" | "exit";
+
+export interface HeroScrollState {
+  phase: HeroScrollPhase;
+  frameProgress: number;
+  exitProgress: number;
+  overall: number;
+}
+
+export function getHeroScrollState(trackEl: HTMLElement): HeroScrollState {
+  const scrollable = trackEl.offsetHeight - window.innerHeight;
+  const rect = trackEl.getBoundingClientRect();
+  const overall =
+    scrollable <= 0 ? 0 : Math.min(Math.max(-rect.top / scrollable, 0), 1);
+
+  if (overall <= FRAME_PHASE_END) {
+    return {
+      phase: "frames",
+      frameProgress: overall / FRAME_PHASE_END,
+      exitProgress: 0,
+      overall,
+    };
+  }
+
+  return {
+    phase: "exit",
+    frameProgress: 1,
+    exitProgress: (overall - FRAME_PHASE_END) / (1 - FRAME_PHASE_END),
+    overall,
+  };
+}
+
 interface HeroScrollOptions {
   trackEl: HTMLElement;
   canvas: HTMLCanvasElement;
   cache: HeroFrameCache;
-  onProgress?: (progress: number) => void;
+  onState?: (state: HeroScrollState) => void;
 }
 
 export function initHeroScroll({
   trackEl,
   canvas,
   cache,
-  onProgress,
+  onState,
 }: HeroScrollOptions) {
   const ctx = canvas.getContext("2d", { alpha: false });
   if (!ctx) return () => {};
 
   let currentFrame = -1;
-  let ticking = false;
-  let lastProgress = -1;
+  let rafId = 0;
+  let running = true;
 
-  const draw = (index: number) => {
+  const draw = (frameProgress: number) => {
+    const index = Math.min(
+      Math.floor(frameProgress * (FRAME_COUNT - 1)),
+      FRAME_COUNT - 1
+    );
     if (index === currentFrame) return;
     currentFrame = index;
     renderFrame(ctx, canvas, cache.resolve(index));
     cache.prefetchAround(index);
   };
 
-  const update = () => {
-    ticking = false;
+  const tick = () => {
+    if (!running) return;
+
     const rect = trackEl.getBoundingClientRect();
-    const scrollable = trackEl.offsetHeight - window.innerHeight;
-    if (scrollable <= 0) return;
+    const inView = rect.bottom > 0 && rect.top < window.innerHeight;
 
-    const progress = Math.min(Math.max(-rect.top / scrollable, 0), 1);
-    const index = Math.min(
-      Math.round(progress * (FRAME_COUNT - 1)),
-      FRAME_COUNT - 1
-    );
-
-    draw(index);
-
-    if (Math.abs(progress - lastProgress) > 0.02) {
-      lastProgress = progress;
-      onProgress?.(progress);
+    if (inView) {
+      const state = getHeroScrollState(trackEl);
+      draw(state.frameProgress);
+      onState?.(state);
     }
-  };
 
-  const onScroll = () => {
-    if (!ticking) {
-      ticking = true;
-      requestAnimationFrame(update);
-    }
+    rafId = requestAnimationFrame(tick);
   };
 
   draw(0);
-  update();
+  onState?.(getHeroScrollState(trackEl));
+  rafId = requestAnimationFrame(tick);
 
-  window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", onScroll, { passive: true });
+  const onResize = () => {
+    const state = getHeroScrollState(trackEl);
+    currentFrame = -1;
+    draw(state.frameProgress);
+    onState?.(state);
+  };
+
+  window.addEventListener("resize", onResize, { passive: true });
 
   return () => {
-    window.removeEventListener("scroll", onScroll);
-    window.removeEventListener("resize", onScroll);
+    running = false;
+    cancelAnimationFrame(rafId);
+    window.removeEventListener("resize", onResize);
   };
 }
 
