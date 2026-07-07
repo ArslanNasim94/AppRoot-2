@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
-import { gsap } from "@/lib/gsap";
+import { useRef } from "react";
 import { SectionTag } from "@/components/ui/SectionTag";
+import { ContainerScroll, CardSticky } from "@/components/ui/cards-stack";
 import { useNizekHeading } from "@/components/animations/useNizekHeading";
 
 const painPoints = [
@@ -29,32 +28,8 @@ const painPoints = [
 
 export function Services() {
   const sectionRef = useRef<HTMLElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   useNizekHeading(headingRef);
-
-  useEffect(() => {
-    const cards = cardsRef.current;
-    if (!cards || window.matchMedia("(prefers-reduced-motion: reduce)").matches)
-      return;
-
-    gsap.fromTo(
-      cards.children,
-      { x: 120, opacity: 0 },
-      {
-        x: 0,
-        opacity: 1,
-        duration: 0.85,
-        stagger: 0.18,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: cards,
-          start: "top 80%",
-          once: true,
-        },
-      }
-    );
-  }, []);
 
   return (
     <section
@@ -63,8 +38,8 @@ export function Services() {
       className="section-padding relative overflow-hidden bg-bg"
     >
       <div className="container">
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,380px)_1fr] lg:items-start lg:gap-16 xl:grid-cols-[minmax(0,420px)_1fr]">
-          <div className="lg:sticky lg:top-32">
+        <div className="grid gap-12 md:grid-cols-2 md:gap-8 lg:gap-16 xl:gap-12">
+          <div className="left-0 top-0 md:sticky md:top-32 md:self-start md:py-8 lg:top-36">
             <SectionTag>01 · Pain points — Sound familiar?</SectionTag>
             <h2
               ref={headingRef}
@@ -78,27 +53,27 @@ export function Services() {
                 </span>
               ))}
             </h2>
-            <p className="mt-6 font-inter text-base leading-relaxed text-text-body">
-              You&apos;re not alone — we hear these from founders every week. We built
-              AppRoots to take exactly these problems off your plate.
+            <p className="mt-6 max-w-prose font-inter text-base leading-relaxed text-text-body">
+              You&apos;re not alone — we hear these from founders every week. We
+              built AppRoots to take exactly these problems off your plate.
             </p>
           </div>
 
-          <div ref={cardsRef} className="flex flex-col gap-5">
-            {painPoints.map((point) => (
-              <motion.div
+          <ContainerScroll className="min-h-[220vh] space-y-6 py-8 md:py-12">
+            {painPoints.map((point, index) => (
+              <CardSticky
                 key={point.number}
-                whileHover={{
-                  y: -6,
-                  borderColor: "rgba(123,47,255,0.3)",
-                  transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] },
-                }}
-                className="group w-full rounded-2xl border border-white/[0.07] bg-bg-surface p-8 lg:p-10"
+                index={index + 2}
+                incrementY={14}
+                incrementZ={10}
+                className="group w-full rounded-2xl border border-white/[0.08] bg-bg-surface/95 p-8 shadow-[0_8px_32px_rgba(10,10,15,0.45)] backdrop-blur-md lg:p-10"
               >
-                <span className="font-satoshi text-[64px] font-black leading-none text-white/[0.06] transition-all duration-300 group-hover:gradient-text lg:text-[72px]">
-                  {point.number}
-                </span>
-                <h3 className="mt-3 font-satoshi text-xl font-black uppercase leading-tight text-text-heading lg:text-[22px]">
+                <div className="flex items-start justify-between gap-4">
+                  <span className="font-satoshi text-[56px] font-black leading-none text-white/[0.06] transition-all duration-300 group-hover:gradient-text lg:text-[64px]">
+                    {point.number}
+                  </span>
+                </div>
+                <h3 className="mt-2 font-satoshi text-xl font-black uppercase leading-tight text-text-heading lg:text-[22px]">
                   {point.title}
                 </h3>
                 <p className="mt-4 font-inter text-[15px] leading-relaxed text-text-body lg:text-base">
@@ -107,9 +82,9 @@ export function Services() {
                 <p className="mt-5 font-inter text-sm font-medium text-brand-cyan">
                   → {point.solution}
                 </p>
-              </motion.div>
+              </CardSticky>
             ))}
-          </div>
+          </ContainerScroll>
         </div>
       </div>
     </section>
