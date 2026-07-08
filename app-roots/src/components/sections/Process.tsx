@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ScrollTrigger } from "@/lib/gsap";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { SectionTag } from "@/components/ui/SectionTag";
-import { useNizekHeading } from "@/components/animations/useNizekHeading";
+import { AnimatedHeading } from "@/components/ui/AnimatedHeading";
 import {
   SectionBodyCol,
   SectionHeadingCol,
@@ -48,74 +48,158 @@ const notes = [
 ];
 
 export function Process() {
-  const headingRef = useRef<HTMLHeadingElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const pathRef = useRef<SVGPathElement>(null);
+  const glowRef = useRef<SVGCircleElement>(null);
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [activeStep, setActiveStep] = useState(0);
-  useNizekHeading(headingRef);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const section = sectionRef.current;
+    const path = pathRef.current;
+    const glow = glowRef.current;
+    if (!section || !path) return;
 
-    stepRefs.current.forEach((step, i) => {
-      if (!step) return;
-      ScrollTrigger.create({
-        trigger: step,
-        start: "top 60%",
-        onEnter: () => setActiveStep(i),
-        onLeaveBack: () => setActiveStep(Math.max(0, i - 1)),
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const ctx = gsap.context(() => {
+      if (reduced) return;
+
+      const length = path.getTotalLength();
+      path.style.strokeDasharray = `${length}`;
+      path.style.strokeDashoffset = `${length}`;
+
+      gsap.to(path, {
+        strokeDashoffset: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: section,
+          start: "top 70%",
+          end: "bottom 30%",
+          scrub: 0.8,
+        },
       });
-    });
+
+      if (glow) {
+        ScrollTrigger.create({
+          trigger: section,
+          start: "top 70%",
+          end: "bottom 30%",
+          scrub: 0.8,
+          onUpdate: (self) => {
+            const point = path.getPointAtLength(length * self.progress);
+            glow.setAttribute("cx", String(point.x));
+            glow.setAttribute("cy", String(point.y));
+          },
+        });
+      }
+
+      stepRefs.current.forEach((step, i) => {
+        if (!step) return;
+        ScrollTrigger.create({
+          trigger: step,
+          start: "top 60%",
+          onEnter: () => setActiveStep(i),
+          onLeaveBack: () => setActiveStep(Math.max(0, i - 1)),
+        });
+
+        gsap.fromTo(
+          step,
+          { opacity: 0.35, x: 12 },
+          {
+            opacity: 1,
+            x: 0,
+            scrollTrigger: {
+              trigger: step,
+              start: "top 75%",
+              end: "top 45%",
+              scrub: 0.5,
+            },
+          }
+        );
+      });
+    }, section);
+
+    return () => ctx.revert();
   }, []);
 
   return (
-    <section id="steps" className="site-section bg-bg-surface">
+    <section
+      id="steps"
+      ref={sectionRef}
+      className="site-section bg-bg-surface"
+      style={{ perspective: 1200 }}
+    >
       <SectionShell>
         <SectionSplit>
           <SectionHeadingCol>
-            <SectionTag>06 · How we work</SectionTag>
-            <h2 ref={headingRef} className="text-heading-section">
-              {["THREE STEPS,", "NO OVERHEAD."].map((line) => (
-                <span key={line} className="block overflow-hidden">
-                  <span data-line className="block">
-                    {line}
-                  </span>
-                </span>
-              ))}
-            </h2>
+            <AnimatedHeading
+              eyebrow={<SectionTag>06 · How we work</SectionTag>}
+              lines={["THREE STEPS,", "NO OVERHEAD."]}
+            />
           </SectionHeadingCol>
 
           <SectionBodyCol>
-          <div className="relative space-y-10 pl-8 lg:space-y-12">
-          <div
-            className="absolute left-3 top-0 h-full w-px bg-white/10"
-            style={{
-              background: `linear-gradient(to bottom, rgba(123,47,255,0.5) 0%, rgba(123,47,255,0.5) ${((activeStep + 1) / steps.length) * 100}%, rgba(255,255,255,0.1) ${((activeStep + 1) / steps.length) * 100}%)`,
-            }}
-          />
-
-          {steps.map((step, i) => (
-            <div
-              key={step.number}
-              ref={(el) => {
-                stepRefs.current[i] = el;
-              }}
-              className="relative"
-            >
-              <span
-                className={`absolute -left-8 font-satoshi text-lg font-black transition-all duration-300 ${
-                  activeStep >= i ? "gradient-text" : "text-white/20"
-                }`}
+            <div className="relative space-y-10 pl-8 lg:space-y-12">
+              <svg
+                className="pointer-events-none absolute left-0 top-0 h-full w-8 overflow-visible"
+                viewBox="0 0 32 400"
+                preserveAspectRatio="none"
+                aria-hidden
               >
-                {step.number}
-              </span>
-              <p className="font-inter text-[11px] font-medium uppercase tracking-[0.12em] text-brand-cyan">
-                {step.role}
-              </p>
-              <h3 className="heading-card mt-1">{step.title}</h3>
-              <p className="text-card">{step.body}</p>
+                <defs>
+                  <linearGradient id="process-beam" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="rgba(123,47,255,0.6)" />
+                    <stop offset="100%" stopColor="rgba(0,212,255,0.4)" />
+                  </linearGradient>
+                  <filter id="process-glow">
+                    <feGaussianBlur stdDeviation="3" result="blur" />
+                    <feMerge>
+                      <feMergeNode in="blur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                </defs>
+                <path
+                  ref={pathRef}
+                  d="M 16 0 C 16 80, 24 120, 16 160 S 8 240, 16 280 S 24 340, 16 400"
+                  fill="none"
+                  stroke="url(#process-beam)"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                <circle
+                  ref={glowRef}
+                  r="5"
+                  fill="rgba(0,212,255,0.9)"
+                  filter="url(#process-glow)"
+                />
+              </svg>
+
+              {steps.map((step, i) => (
+                <div
+                  key={step.number}
+                  ref={(el) => {
+                    stepRefs.current[i] = el;
+                  }}
+                  className="relative transition-opacity duration-300"
+                  data-process-step
+                  style={{ opacity: activeStep >= i ? 1 : 0.4 }}
+                >
+                  <span
+                    className={`absolute -left-8 font-satoshi text-lg font-black transition-all duration-300 ${
+                      activeStep >= i ? "gradient-text" : "text-white/20"
+                    }`}
+                  >
+                    {step.number}
+                  </span>
+                  <p className="font-inter text-[11px] font-medium uppercase tracking-[0.12em] text-brand-cyan">
+                    {step.role}
+                  </p>
+                  <h3 className="heading-card mt-1">{step.title}</h3>
+                  <p className="text-card">{step.body}</p>
+                </div>
+              ))}
             </div>
-          ))}
-          </div>
           </SectionBodyCol>
         </SectionSplit>
 

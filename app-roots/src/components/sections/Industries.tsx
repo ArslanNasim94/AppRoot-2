@@ -1,10 +1,13 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { gsap } from "@/lib/gsap";
 import { SectionTag } from "@/components/ui/SectionTag";
+import { AnimatedHeading } from "@/components/ui/AnimatedHeading";
 import { MagneticButton } from "@/components/ui/MagneticButton";
-import { useNizekHeading } from "@/components/animations/useNizekHeading";
+import {
+  DepthRevealTile,
+  initDepthRevealScroll,
+} from "@/components/animations/DepthRevealTile";
 import {
   SectionBodyCol,
   SectionHeadingCol,
@@ -34,61 +37,36 @@ const stackCards = [
 ];
 
 export function Industries() {
-  const headingRef = useRef<HTMLHeadingElement>(null);
   const tilesRef = useRef<HTMLDivElement>(null);
-  useNizekHeading(headingRef);
 
   useEffect(() => {
     const tiles = tilesRef.current;
-    if (!tiles || window.matchMedia("(prefers-reduced-motion: reduce)").matches)
-      return;
-
-    gsap.fromTo(
-      tiles.children,
-      { scale: 0.8, opacity: 0 },
-      {
-        scale: 1,
-        opacity: 1,
-        duration: 0.6,
-        stagger: 0.08,
-        ease: "power3.out",
-        scrollTrigger: { trigger: tiles, start: "top 80%", once: true },
-      }
-    );
+    if (!tiles) return;
+    return initDepthRevealScroll(tiles);
   }, []);
 
   return (
-    <section id="tech-stack" className="site-section bg-bg">
+    <section id="tech-stack" className="site-section bg-bg" style={{ perspective: 1200 }}>
       <SectionShell>
         <SectionSplit>
           <SectionHeadingCol>
-            <SectionTag>05 · Tech stack</SectionTag>
-            <h2 ref={headingRef} className="text-heading-section">
-              {["FULL-STACK", "DEVELOPMENT,", "ONE PARTNER."].map((line) => (
-                <span key={line} className="block overflow-hidden">
-                  <span data-line className="block">
-                    {line}
-                  </span>
-                </span>
-              ))}
-            </h2>
+            <AnimatedHeading
+              eyebrow={<SectionTag>05 · Tech stack</SectionTag>}
+              lines={["FULL-STACK", "DEVELOPMENT,", "ONE PARTNER."]}
+            />
           </SectionHeadingCol>
 
           <SectionBodyCol>
-          <div ref={tilesRef} className="flex flex-col gap-6">
-          {stackCards.map((card) => (
-            <div
-              key={card.name}
-              className="card-surface transition-colors hover:border-brand-purple/30"
-            >
-              <h3 className="heading-card">{card.name}</h3>
-              <p className="text-card">{card.description}</p>
-              <span className="mt-4 inline-block rounded-full border border-white/[0.08] px-3 py-1 font-inter text-[11px] text-text-body">
-                {card.tag}
-              </span>
+            <div ref={tilesRef} className="flex flex-col gap-6">
+              {stackCards.map((card) => (
+                <DepthRevealTile
+                  key={card.name}
+                  name={card.name}
+                  description={card.description}
+                  tag={card.tag}
+                />
+              ))}
             </div>
-          ))}
-          </div>
           </SectionBodyCol>
         </SectionSplit>
 

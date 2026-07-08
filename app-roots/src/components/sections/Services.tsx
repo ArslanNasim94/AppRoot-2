@@ -1,9 +1,12 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { gsap } from "@/lib/gsap";
 import { SectionTag } from "@/components/ui/SectionTag";
-import { useNizekHeading } from "@/components/animations/useNizekHeading";
+import { AnimatedHeading } from "@/components/ui/AnimatedHeading";
+import {
+  TiltFlipCard,
+  animateTiltFlipEntrance,
+} from "@/components/animations/TiltFlipCard";
 import {
   SectionBodyCol,
   SectionHeadingCol,
@@ -35,26 +38,11 @@ const painPoints = [
 export function Services() {
   const sectionRef = useRef<HTMLElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  useNizekHeading(headingRef);
 
   useEffect(() => {
     const cards = cardsRef.current;
-    if (!cards || window.matchMedia("(prefers-reduced-motion: reduce)").matches)
-      return;
-
-    gsap.fromTo(
-      cards.children,
-      { scale: 0.8, opacity: 0 },
-      {
-        scale: 1,
-        opacity: 1,
-        duration: 0.6,
-        stagger: 0.08,
-        ease: "power3.out",
-        scrollTrigger: { trigger: cards, start: "top 80%", once: true },
-      }
-    );
+    if (!cards) return;
+    return animateTiltFlipEntrance(cards);
   }, []);
 
   return (
@@ -62,21 +50,16 @@ export function Services() {
       id="pain-points"
       ref={sectionRef}
       className="site-section relative overflow-hidden bg-bg-surface"
+      style={{ perspective: 1200 }}
     >
       <SectionShell>
         <SectionSplit>
           <SectionHeadingCol>
-            <SectionTag>02 · Pain points — Sound familiar?</SectionTag>
-            <h2 ref={headingRef} className="text-heading-section">
-              {["THE PROBLEMS", "THAT SLOW STARTUPS DOWN."].map((line) => (
-                <span key={line} className="block overflow-hidden">
-                  <span data-line className="block lg:whitespace-nowrap">
-                    {line}
-                  </span>
-                </span>
-              ))}
-            </h2>
-            <p className="copy-lead max-w-[36ch]">
+            <AnimatedHeading
+              eyebrow={<SectionTag>02 · Pain points — Sound familiar?</SectionTag>}
+              lines={["THE PROBLEMS", "THAT SLOW STARTUPS DOWN."]}
+            />
+            <p className="copy-lead mt-6 max-w-[36ch]">
               You&apos;re not alone — we hear these from founders every week. We
               built AppRoots to take exactly these problems off your plate.
             </p>
@@ -85,19 +68,13 @@ export function Services() {
           <SectionBodyCol>
             <div ref={cardsRef} className="flex flex-col gap-6">
               {painPoints.map((point) => (
-                <div
+                <TiltFlipCard
                   key={point.number}
-                  className="card-surface group transition-colors hover:border-brand-purple/30"
-                >
-                  <span className="font-satoshi text-[48px] font-black leading-none text-white/[0.06] transition-all duration-300 group-hover:gradient-text lg:text-[56px]">
-                    {point.number}
-                  </span>
-                  <h3 className="heading-card mt-3">{point.title}</h3>
-                  <p className="text-card">{point.body}</p>
-                  <p className="mt-4 font-inter text-sm font-medium text-brand-cyan">
-                    → {point.solution}
-                  </p>
-                </div>
+                  number={point.number}
+                  title={point.title}
+                  body={point.body}
+                  solution={point.solution}
+                />
               ))}
             </div>
           </SectionBodyCol>

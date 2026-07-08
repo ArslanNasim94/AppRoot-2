@@ -188,14 +188,9 @@ export function initHeroScroll({
   const tick = () => {
     if (!running) return;
 
-    const rect = trackEl.getBoundingClientRect();
-    const inView = rect.bottom > 0 && rect.top < window.innerHeight;
-
-    if (inView) {
-      const state = getHeroScrollState(trackEl);
-      draw(state.frameProgress);
-      onState?.(state);
-    }
+    const state = getHeroScrollState(trackEl);
+    draw(state.frameProgress);
+    onState?.(state);
 
     rafId = requestAnimationFrame(tick);
   };

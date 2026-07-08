@@ -1,42 +1,30 @@
 "use client";
 
-import { useRef } from "react";
 import Link from "next/link";
 import { Sparkles } from "lucide-react";
 import { HERO_EXIT_OVERLAP_SVH } from "@/components/animations/heroSequence";
 import { SectionTag } from "@/components/ui/SectionTag";
+import { AnimatedHeading } from "@/components/ui/AnimatedHeading";
 import { MagneticButton } from "@/components/ui/MagneticButton";
-import { useNizekHeading } from "@/components/animations/useNizekHeading";
 import { IdeaPartnership } from "@/components/sections/IdeaPartnership";
+import { SectionShell } from "@/components/layout/SectionLayout";
 
 export function IdeaSection() {
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  useNizekHeading(headingRef);
-
   return (
     <section
       id="idea"
       className="site-section relative z-20 scroll-mt-20 bg-bg !pt-8 lg:!pt-12"
-      style={{ marginTop: `calc(-1 * ${HERO_EXIT_OVERLAP_SVH}svh)` }}
+      style={{ marginTop: `calc(-1 * ${HERO_EXIT_OVERLAP_SVH}svh)`, perspective: 1200 }}
     >
-      <div className="container max-w-6xl py-4 text-center lg:py-6">
-        <SectionTag>01 · Idea</SectionTag>
+      <SectionShell className="py-4 text-center lg:py-6">
+        <AnimatedHeading
+          eyebrow={<SectionTag>01 · Idea</SectionTag>}
+          lines={["YOU FOCUS ON GROWTH.", "WE BUILD THE PRODUCT."]}
+          headingClassName="text-heading-idea mx-auto"
+          className="mx-auto max-w-4xl"
+        />
 
-        <p className="mb-3 font-inter text-[11px] font-medium uppercase tracking-[0.12em] text-white/30">
-          Your development partner
-        </p>
-
-        <h2 ref={headingRef} className="mx-auto text-heading-idea">
-          {["YOU FOCUS ON GROWTH.", "WE BUILD THE PRODUCT."].map((line) => (
-            <span key={line} className="block overflow-hidden">
-              <span data-line className="block">
-                {line}
-              </span>
-            </span>
-          ))}
-        </h2>
-
-        <p className="copy-lead mx-auto">
+        <p className="copy-lead mx-auto mt-6 max-w-2xl">
           AppRoots takes web, mobile, and backend development off your plate — so
           you can focus on marketing, sales, and customers while we ship the
           product.
@@ -65,7 +53,7 @@ export function IdeaSection() {
         </div>
 
         <IdeaPartnership />
-      </div>
+      </SectionShell>
     </section>
   );
 }

@@ -1,10 +1,13 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { gsap } from "@/lib/gsap";
 import { SectionTag } from "@/components/ui/SectionTag";
+import { AnimatedHeading } from "@/components/ui/AnimatedHeading";
 import { MagneticButton } from "@/components/ui/MagneticButton";
-import { useNizekHeading } from "@/components/animations/useNizekHeading";
+import {
+  PedestalCard,
+  animatePedestalEntrance,
+} from "@/components/animations/PedestalCard";
 import {
   SectionBodyCol,
   SectionHeadingCol,
@@ -36,30 +39,12 @@ const aiPaths = [
 export function AiForStartups() {
   const sectionRef = useRef<HTMLElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  useNizekHeading(headingRef);
+  const baselineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const cards = cardsRef.current;
-    if (!cards || window.matchMedia("(prefers-reduced-motion: reduce)").matches)
-      return;
-
-    gsap.fromTo(
-      cards.children,
-      { scale: 0.8, opacity: 0 },
-      {
-        scale: 1,
-        opacity: 1,
-        duration: 0.6,
-        stagger: 0.08,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: cards,
-          start: "top 80%",
-          once: true,
-        },
-      }
-    );
+    if (!cards) return;
+    return animatePedestalEntrance(cards, baselineRef.current ?? undefined);
   }, []);
 
   return (
@@ -67,21 +52,16 @@ export function AiForStartups() {
       id="ai-for-startups"
       ref={sectionRef}
       className="site-section relative overflow-hidden bg-bg"
+      style={{ perspective: 1200 }}
     >
       <SectionShell>
         <SectionSplit>
           <SectionHeadingCol>
-            <SectionTag>03 · AI path</SectionTag>
-            <h2 ref={headingRef} className="text-heading-section">
-              {["YOUR STARTUP'S", "AI PARTNER."].map((line) => (
-                <span key={line} className="block overflow-hidden">
-                  <span data-line className="block">
-                    {line}
-                  </span>
-                </span>
-              ))}
-            </h2>
-            <p className="copy-lead">
+            <AnimatedHeading
+              eyebrow={<SectionTag>03 · AI path</SectionTag>}
+              lines={["YOUR STARTUP'S", "AI PARTNER."]}
+            />
+            <p className="copy-lead mt-6">
               We specialize in AI-based solutions. Add AI to the product you already
               have, make your current system smarter, or launch a completely new AI
               SaaS with us.
@@ -89,28 +69,20 @@ export function AiForStartups() {
           </SectionHeadingCol>
 
           <SectionBodyCol>
+            <div
+              ref={baselineRef}
+              className="mb-6 h-px w-full origin-left bg-brand-cyan/30"
+              aria-hidden
+            />
             <div ref={cardsRef} className="flex flex-col gap-6">
               {aiPaths.map((path) => (
-                <div
+                <PedestalCard
                   key={path.number}
-                  className="card-surface group transition-colors hover:border-brand-purple/30"
-                >
-                  <span className="font-satoshi text-[56px] font-black leading-none text-white/[0.06] transition-all duration-300 group-hover:gradient-text lg:text-[64px]">
-                    {path.number}
-                  </span>
-                  <h3 className="heading-card mt-3">{path.title}</h3>
-                  <p className="text-card">{path.body}</p>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {path.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-full border border-white/[0.08] px-3 py-1 font-inter text-[11px] text-text-body"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+                  number={path.number}
+                  title={path.title}
+                  body={path.body}
+                  tags={path.tags}
+                />
               ))}
             </div>
           </SectionBodyCol>

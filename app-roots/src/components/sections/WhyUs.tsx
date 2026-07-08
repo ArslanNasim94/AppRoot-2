@@ -1,143 +1,87 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { gsap } from "@/lib/gsap";
 import { SectionTag } from "@/components/ui/SectionTag";
+import { AnimatedHeading } from "@/components/ui/AnimatedHeading";
 import { MagneticButton } from "@/components/ui/MagneticButton";
-import { useNizekHeading } from "@/components/animations/useNizekHeading";
+import {
+  FlipFocusCard,
+  animateFanEntrance,
+} from "@/components/animations/FlipFocusCard";
 import { SectionShell } from "@/components/layout/SectionLayout";
 
-const usualPath = [
-  "Rotating freelancers who lose context every sprint",
-  "Account managers — never the engineers who ship",
-  "Separate vendors for web, mobile, and AI",
-  "Surprise scope creep and invoices you didn't expect",
-];
-
-const withAppRoots = [
-  "One dedicated squad that knows your product inside out",
-  "Talk directly to the devs building your MVP",
-  "Web, mobile, backend & AI agents — one partner",
-  "Milestone pricing, weekly demos, zero surprises",
+const reasons = [
+  {
+    number: "01",
+    title: "We think like founders",
+    body: "We understand runway, launch pressure, and the need to move fast. Every decision we make is about getting you to market — not padding a scope.",
+  },
+  {
+    number: "02",
+    title: "One team, full stack",
+    body: "Web, mobile, backend, and AI — all under one roof. No juggling freelancers or agencies. One team that knows your product inside out.",
+  },
+  {
+    number: "03",
+    title: "We stay after launch",
+    body: "Launch is just the start. We maintain, improve, and scale your product as you grow — so you never have to rebuild from scratch.",
+  },
 ];
 
 const miniCards = [
-  {
-    title: "A dedicated, professional team",
-    body: "One squad that ships web, mobile, AI, and backend — so you stay focused on customers.",
-  },
-  {
-    title: "Direct, honest communication",
-    body: "Talk to the people building it — no account managers between you and your dev team.",
-  },
-  {
-    title: "Full development support",
-    body: "From MVP to launch and beyond — we maintain, improve, and grow with you.",
-  },
-  {
-    title: "Multiple stacks, one partner",
-    body: "React Native, SwiftUI, Kotlin, Laravel, and Next.js — all under one roof.",
-  },
+  { label: "Core stacks", value: "Laravel · Next.js · React Native" },
+  { label: "Dedicated team", value: "3+ engineers on your product" },
+  { label: "Communication", value: "Weekly demos & updates" },
 ];
 
 export function WhyUs() {
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
-  useNizekHeading(headingRef);
+  const fanRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const el = cardsRef.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches)
-      return;
-
-    gsap.fromTo(
-      el.children,
-      { opacity: 0, y: 40 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: "power3.out",
-        scrollTrigger: { trigger: el, start: "top 80%", once: true },
-      }
-    );
+    const fan = fanRef.current;
+    if (!fan) return;
+    return animateFanEntrance(fan);
   }, []);
 
   return (
-    <section id="why-different" className="site-section bg-bg-surface">
-      <SectionShell>
-        <div className="section-header mx-auto max-w-3xl text-center">
-          <SectionTag>04 · Why us</SectionTag>
-          <h2 ref={headingRef} className="text-heading-section">
-            <span className="block overflow-hidden">
-              <span data-line className="block lg:whitespace-nowrap">
-                BUILT FOR FOUNDERS.
+    <section id="why-us" className="site-section bg-bg-surface" style={{ perspective: 1200 }}>
+      <SectionShell className="text-center">
+        <AnimatedHeading
+          eyebrow={<SectionTag>04 · Why us</SectionTag>}
+          lines={["BUILT FOR FOUNDERS."]}
+          align="center"
+          headingClassName="text-heading-section mx-auto"
+          className="mx-auto max-w-3xl"
+        />
+
+        <p className="copy-lead mx-auto mt-6 max-w-2xl">
+          We&apos;re not a generic dev shop. We partner with founders who need a
+          reliable product team — so they can stay focused on growth.
+        </p>
+
+        <div className="mx-auto mt-10 max-w-4xl space-y-8 text-left lg:mt-12">
+          {reasons.map((reason) => (
+            <div key={reason.number} className="border-b border-white/10 pb-8 last:border-0">
+              <span className="font-satoshi text-sm font-black gradient-text">
+                {reason.number}
               </span>
-            </span>
-          </h2>
-          <p className="copy-lead mx-auto max-w-2xl">
-            Most startups juggle freelancers, agencies, and hiring. AppRoots gives you
-            one dedicated squad that ships web, mobile, AI, and backend — so you stay
-            focused on customers. Our experienced team brings 20+ years in the IT
-            industry, using that expertise to boost, refine, and polish your SaaS, MVP,
-            or startup product.
-          </p>
-        </div>
-
-        <div className="card-grid md:grid-cols-2">
-          <div className="card-surface">
-            <h3 className="heading-card text-white/40">The usual path</h3>
-            <ul className="mt-6 space-y-4">
-              {usualPath.map((item) => (
-                <li
-                  key={item}
-                  className="font-inter text-sm text-text-body before:mr-2 before:text-white/20 before:content-['✕']"
-                >
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="card-surface border-brand-purple/30 bg-brand-purple/5">
-            <h3 className="heading-card gradient-text">With AppRoots</h3>
-            <ul className="mt-6 space-y-4">
-              {withAppRoots.map((item) => (
-                <li
-                  key={item}
-                  className="font-inter text-sm text-text-body before:mr-2 before:text-brand-cyan before:content-['✓']"
-                >
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        <div ref={cardsRef} className="card-grid mt-10 sm:grid-cols-2 lg:mt-12 lg:grid-cols-4">
-          {miniCards.map((card) => (
-            <div key={card.title} className="card-surface">
-              <h3 className="font-satoshi text-sm font-black uppercase text-text-heading">
-                {card.title}
-              </h3>
-              <p className="text-card">{card.body}</p>
+              <h3 className="heading-card mt-2">{reason.title}</h3>
+              <p className="text-card mt-2">{reason.body}</p>
             </div>
           ))}
         </div>
 
-        <p className="mt-10 text-center font-satoshi text-lg font-black uppercase text-text-heading lg:text-xl">
-          You stay in founder mode. We stay in build mode.
-        </p>
+        <div
+          ref={fanRef}
+          className="mx-auto mt-10 grid max-w-4xl gap-4 sm:grid-cols-3 lg:mt-12"
+        >
+          {miniCards.map((card) => (
+            <FlipFocusCard key={card.label} title={card.label} body={card.value} />
+          ))}
+        </div>
 
         <div className="btn-row-center">
-          <MagneticButton href="#steps">See how we work →</MagneticButton>
-          <a
-            href="/products"
-            className="link-underline font-inter text-sm font-semibold uppercase tracking-[0.06em] text-text-heading"
-            data-cursor="hover"
-          >
-            See Our Products
-          </a>
+          <MagneticButton href="/register">Start a project →</MagneticButton>
         </div>
       </SectionShell>
     </section>

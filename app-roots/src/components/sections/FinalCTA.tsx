@@ -4,14 +4,12 @@ import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsap";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { SectionTag } from "@/components/ui/SectionTag";
-import { useNizekHeading } from "@/components/animations/useNizekHeading";
+import { AnimatedHeading } from "@/components/ui/AnimatedHeading";
 import { SectionShell } from "@/components/layout/SectionLayout";
 
 export function FinalCTA() {
-  const headingRef = useRef<HTMLHeadingElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
   const reassuranceRef = useRef<HTMLParagraphElement>(null);
-  useNizekHeading(headingRef, { fromX: 32 });
 
   useEffect(() => {
     const glow = glowRef.current;
@@ -42,10 +40,7 @@ export function FinalCTA() {
   }, []);
 
   return (
-    <section
-      id="contact"
-      className="site-section relative bg-bg"
-    >
+    <section id="contact" className="site-section relative bg-bg" style={{ perspective: 1200 }}>
       <div
         ref={glowRef}
         className="pointer-events-none absolute inset-0 opacity-30"
@@ -57,21 +52,13 @@ export function FinalCTA() {
 
       <SectionShell className="relative z-10 py-4 text-center lg:py-6">
         <div className="mx-auto w-full max-w-5xl px-1 sm:px-2">
-          <SectionTag>07 · Launch</SectionTag>
-          <h2 ref={headingRef} className="text-heading-cta overflow-visible">
-            {["STOP JUGGLING DEVELOPMENT.", "START BUILDING MOMENTUM."].map(
-              (line) => (
-                <span key={line} className="block overflow-visible">
-                  <span
-                    data-line
-                    className="block overflow-visible whitespace-nowrap text-[clamp(16px,2.8vw,48px)] leading-[0.92] tracking-[-0.03em]"
-                  >
-                    {line}
-                  </span>
-                </span>
-              )
-            )}
-          </h2>
+          <AnimatedHeading
+            eyebrow={<SectionTag>07 · Launch</SectionTag>}
+            lines={["STOP JUGGLING DEVELOPMENT.", "START BUILDING MOMENTUM."]}
+            align="center"
+            headingClassName="text-heading-cta overflow-visible mx-auto"
+            className="mx-auto"
+          />
 
           <p className="copy-lead mx-auto mt-4 max-w-none text-[clamp(12px,2.6vw,18px)] leading-snug whitespace-nowrap sm:text-base lg:text-lg">
             Tell us what you&apos;re building. We&apos;ll figure out the first step together.

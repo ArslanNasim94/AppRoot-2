@@ -19,6 +19,8 @@ export function ScrollTriggerRefresh() {
 
     window.addEventListener("load", refreshSoon);
     window.addEventListener("resize", refreshSoon, { passive: true });
+    window.addEventListener("hero-sequence-ready", refreshSoon);
+    window.addEventListener("hero-animation-complete", refreshSoon);
 
     const observer = new ResizeObserver(refreshSoon);
     observer.observe(document.body);
@@ -26,6 +28,8 @@ export function ScrollTriggerRefresh() {
     return () => {
       window.removeEventListener("load", refreshSoon);
       window.removeEventListener("resize", refreshSoon);
+      window.removeEventListener("hero-sequence-ready", refreshSoon);
+      window.removeEventListener("hero-animation-complete", refreshSoon);
       observer.disconnect();
     };
   }, []);

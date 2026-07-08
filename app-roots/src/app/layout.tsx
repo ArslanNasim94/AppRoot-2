@@ -5,6 +5,7 @@ import { Footer } from "@/components/layout/Footer";
 import { CustomCursor } from "@/components/ui/CustomCursor";
 import { AiChatbot } from "@/components/ui/AiChatbot";
 import { ScrollTriggerRefresh } from "@/components/animations/ScrollTriggerRefresh";
+import { AmbientParticles } from "@/components/animations/AmbientParticles";
 
 export const metadata: Metadata = {
   title: "AppRoots — Your Development Partner for Startups",
@@ -31,6 +32,7 @@ export default function RootLayout({
     <html lang="en" className="dark" suppressHydrationWarning>
       <body>
         <ScrollTriggerRefresh />
+        <AmbientParticles />
         <CustomCursor />
         <Navigation />
         <main className="relative isolate z-0 pt-20 md:pl-[var(--pipeline-rail)]">

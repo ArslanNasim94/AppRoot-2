@@ -110,7 +110,7 @@ export function CustomCursor() {
   }, []);
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-[9999] hidden md:block">
+    <div className="pointer-events-none fixed inset-0 z-[9999] max-[767px]:hidden">
       <div
         ref={dotRef}
         className="fixed top-0 left-0 h-2 w-2 rounded-full bg-white will-change-transform"

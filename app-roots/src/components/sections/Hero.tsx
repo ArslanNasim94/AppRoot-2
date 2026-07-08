@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import {
   initHeroScroll,
   renderFrame,
@@ -27,7 +27,6 @@ export function Hero() {
   const visualRef = useRef<HTMLDivElement>(null);
   const cacheRef = useRef<HeroFrameCache | null>(null);
   const completeDispatchedRef = useRef(false);
-  const [canvasReady, setCanvasReady] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -69,9 +68,6 @@ export function Hero() {
         const ctx = canvas.getContext("2d");
         if (ctx && !cancelled) {
           renderFrame(ctx, canvas, cache.resolve(0), 0);
-          if (cache.resolve(0)) {
-            setCanvasReady(true);
-          }
         }
       } catch {
         // fallback img stays visible
@@ -113,9 +109,7 @@ export function Hero() {
             alt=""
             aria-hidden
             fetchPriority="high"
-            className={`absolute inset-0 h-full w-full object-contain object-center transition-opacity duration-300 sm:object-cover sm:object-[center_45%] ${
-              canvasReady ? "opacity-0" : "opacity-100"
-            }`}
+            className="absolute inset-0 h-full w-full object-contain object-center sm:object-cover sm:object-[center_45%]"
           />
 
           <canvas
