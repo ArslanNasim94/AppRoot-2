@@ -5,7 +5,7 @@ import { gsap } from "@/lib/gsap";
 import { SectionTag } from "@/components/ui/SectionTag";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { useNizekHeading } from "@/components/animations/useNizekHeading";
-import { SectionHeadingCol, SectionShell } from "@/components/layout/SectionLayout";
+import { SectionShell } from "@/components/layout/SectionLayout";
 
 const usualPath = [
   "Rotating freelancers who lose context every sprint",
@@ -67,25 +67,23 @@ export function WhyUs() {
   return (
     <section id="why-different" className="site-section bg-bg-surface">
       <SectionShell>
-        <SectionHeadingCol sticky="none" className="section-header">
+        <div className="section-header mx-auto max-w-3xl text-center">
           <SectionTag>04 · Why us</SectionTag>
           <h2 ref={headingRef} className="text-heading-section">
-            {["BUILT FOR", "FOUNDERS."].map((line) => (
-              <span key={line} className="block overflow-hidden">
-                <span data-line className="block">
-                  {line}
-                </span>
+            <span className="block overflow-hidden">
+              <span data-line className="block lg:whitespace-nowrap">
+                BUILT FOR FOUNDERS.
               </span>
-            ))}
+            </span>
           </h2>
-          <p className="copy-lead max-w-[36ch]">
+          <p className="copy-lead mx-auto max-w-2xl">
             Most startups juggle freelancers, agencies, and hiring. AppRoots gives you
             one dedicated squad that ships web, mobile, AI, and backend — so you stay
             focused on customers. Our experienced team brings 20+ years in the IT
             industry, using that expertise to boost, refine, and polish your SaaS, MVP,
             or startup product.
           </p>
-        </SectionHeadingCol>
+        </div>
 
         <div className="card-grid md:grid-cols-2">
           <div className="card-surface">
@@ -131,7 +129,7 @@ export function WhyUs() {
           You stay in founder mode. We stay in build mode.
         </p>
 
-        <div className="btn-row">
+        <div className="btn-row-center">
           <MagneticButton href="#steps">See how we work →</MagneticButton>
           <a
             href="/products"

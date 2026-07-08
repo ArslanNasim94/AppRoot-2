@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
 import { gsap } from "@/lib/gsap";
 import { SectionTag } from "@/components/ui/SectionTag";
 import { MagneticButton } from "@/components/ui/MagneticButton";
@@ -47,12 +46,12 @@ export function AiForStartups() {
 
     gsap.fromTo(
       cards.children,
-      { x: 120, opacity: 0 },
+      { scale: 0.8, opacity: 0 },
       {
-        x: 0,
+        scale: 1,
         opacity: 1,
-        duration: 0.85,
-        stagger: 0.18,
+        duration: 0.6,
+        stagger: 0.08,
         ease: "power3.out",
         scrollTrigger: {
           trigger: cards,
@@ -90,35 +89,30 @@ export function AiForStartups() {
           </SectionHeadingCol>
 
           <SectionBodyCol>
-          <div ref={cardsRef} className="flex flex-col gap-6">
-            {aiPaths.map((path) => (
-              <motion.div
-                key={path.number}
-                whileHover={{
-                  y: -6,
-                  borderColor: "rgba(123,47,255,0.3)",
-                  transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] },
-                }}
-                className="card-surface group w-full"
-              >
-                <span className="font-satoshi text-[56px] font-black leading-none text-white/[0.06] transition-all duration-300 group-hover:gradient-text lg:text-[64px]">
-                  {path.number}
-                </span>
-                <h3 className="heading-card mt-3">{path.title}</h3>
-                <p className="text-card">{path.body}</p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {path.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full border border-white/[0.08] px-3 py-1 font-inter text-[11px] text-text-body"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+            <div ref={cardsRef} className="flex flex-col gap-6">
+              {aiPaths.map((path) => (
+                <div
+                  key={path.number}
+                  className="card-surface group transition-colors hover:border-brand-purple/30"
+                >
+                  <span className="font-satoshi text-[56px] font-black leading-none text-white/[0.06] transition-all duration-300 group-hover:gradient-text lg:text-[64px]">
+                    {path.number}
+                  </span>
+                  <h3 className="heading-card mt-3">{path.title}</h3>
+                  <p className="text-card">{path.body}</p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {path.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-full border border-white/[0.08] px-3 py-1 font-inter text-[11px] text-text-body"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </motion.div>
-            ))}
-          </div>
+              ))}
+            </div>
           </SectionBodyCol>
         </SectionSplit>
 

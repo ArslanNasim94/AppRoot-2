@@ -5,13 +5,13 @@ import { gsap } from "@/lib/gsap";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { SectionTag } from "@/components/ui/SectionTag";
 import { useNizekHeading } from "@/components/animations/useNizekHeading";
-import { SectionHeadingCol, SectionShell } from "@/components/layout/SectionLayout";
+import { SectionShell } from "@/components/layout/SectionLayout";
 
 export function FinalCTA() {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
   const reassuranceRef = useRef<HTMLParagraphElement>(null);
-  useNizekHeading(headingRef);
+  useNizekHeading(headingRef, { fromX: 32 });
 
   useEffect(() => {
     const glow = glowRef.current;
@@ -55,14 +55,17 @@ export function FinalCTA() {
         }}
       />
 
-      <SectionShell className="relative z-10 py-4 lg:py-6">
-        <SectionHeadingCol sticky="none">
+      <SectionShell className="relative z-10 py-4 text-center lg:py-6">
+        <div className="mx-auto w-full max-w-5xl px-1 sm:px-2">
           <SectionTag>07 · Launch</SectionTag>
-          <h2 ref={headingRef} className="text-heading-cta">
-            {["STOP JUGGLING", "DEVELOPMENT.", "START BUILDING", "MOMENTUM."].map(
+          <h2 ref={headingRef} className="text-heading-cta overflow-visible">
+            {["STOP JUGGLING DEVELOPMENT.", "START BUILDING MOMENTUM."].map(
               (line) => (
-                <span key={line} className="block overflow-hidden">
-                  <span data-line className="block">
+                <span key={line} className="block overflow-visible">
+                  <span
+                    data-line
+                    className="block overflow-visible whitespace-nowrap text-[clamp(16px,2.8vw,48px)] leading-[0.92] tracking-[-0.03em]"
+                  >
                     {line}
                   </span>
                 </span>
@@ -70,31 +73,28 @@ export function FinalCTA() {
             )}
           </h2>
 
-          <p className="copy-lead max-w-[36ch]">
-            Tell us what you&apos;re building. We&apos;ll figure out the first step
-            together.
+          <p className="copy-lead mx-auto mt-4 max-w-none text-[clamp(12px,2.6vw,18px)] leading-snug whitespace-nowrap sm:text-base lg:text-lg">
+            Tell us what you&apos;re building. We&apos;ll figure out the first step together.
           </p>
-        </SectionHeadingCol>
 
-        <div className="max-w-3xl">
-        <div className="btn-row">
-          <MagneticButton href="/register">Let&apos;s talk →</MagneticButton>
-          <a
-            href="#ai-chatbot"
-            className="link-underline font-inter text-sm font-semibold uppercase tracking-[0.06em] text-text-heading"
-            data-cursor="hover"
+          <div className="btn-row-center">
+            <MagneticButton href="/register">Let&apos;s talk →</MagneticButton>
+            <a
+              href="#ai-chatbot"
+              className="link-underline font-inter text-sm font-semibold uppercase tracking-[0.06em] text-text-heading"
+              data-cursor="hover"
+            >
+              Talk to us
+            </a>
+          </div>
+
+          <p
+            ref={reassuranceRef}
+            className="mt-8 font-inter text-[13px] text-white/25 opacity-0"
           >
-            Talk to us
-          </a>
-        </div>
-
-        <p
-          ref={reassuranceRef}
-          className="mt-8 font-inter text-[13px] text-white/25 opacity-0"
-        >
-          No commitment. No hard sell. Just an honest conversation about
-          what&apos;s possible.
-        </p>
+            No commitment. No hard sell. Just an honest conversation about
+            what&apos;s possible.
+          </p>
         </div>
       </SectionShell>
     </section>

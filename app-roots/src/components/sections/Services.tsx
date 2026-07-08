@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsap";
 import { SectionTag } from "@/components/ui/SectionTag";
-import { ContainerScroll, CardSticky } from "@/components/ui/cards-stack";
 import { useNizekHeading } from "@/components/animations/useNizekHeading";
 import {
   SectionBodyCol,
@@ -41,30 +40,21 @@ export function Services() {
 
   useEffect(() => {
     const cards = cardsRef.current;
-    if (!cards) return;
-
-    const items = cards.querySelectorAll("[data-pain-card]");
-    if (!items.length) return;
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      gsap.set(items, { x: 0, opacity: 1 });
+    if (!cards || window.matchMedia("(prefers-reduced-motion: reduce)").matches)
       return;
-    }
 
-    gsap.set(items, { x: 160, opacity: 0 });
-
-    gsap.to(items, {
-      x: 0,
-      opacity: 1,
-      duration: 0.9,
-      stagger: 0.2,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: cards,
-        start: "top 78%",
-        once: true,
-      },
-    });
+    gsap.fromTo(
+      cards.children,
+      { scale: 0.8, opacity: 0 },
+      {
+        scale: 1,
+        opacity: 1,
+        duration: 0.6,
+        stagger: 0.08,
+        ease: "power3.out",
+        scrollTrigger: { trigger: cards, start: "top 80%", once: true },
+      }
+    );
   }, []);
 
   return (
@@ -75,12 +65,12 @@ export function Services() {
     >
       <SectionShell>
         <SectionSplit>
-          <SectionHeadingCol sticky="center">
+          <SectionHeadingCol>
             <SectionTag>02 · Pain points — Sound familiar?</SectionTag>
             <h2 ref={headingRef} className="text-heading-section">
-              {["THE PROBLEMS THAT", "SLOW STARTUPS DOWN."].map((line) => (
+              {["THE PROBLEMS", "THAT SLOW STARTUPS DOWN."].map((line) => (
                 <span key={line} className="block overflow-hidden">
-                  <span data-line className="block">
+                  <span data-line className="block lg:whitespace-nowrap">
                     {line}
                   </span>
                 </span>
@@ -92,31 +82,24 @@ export function Services() {
             </p>
           </SectionHeadingCol>
 
-          <SectionBodyCol className="section-body-col--narrow">
-          <ContainerScroll
-            ref={cardsRef}
-            className="min-h-[80vh] space-y-4 md:min-h-[92vh]"
-          >
-            {painPoints.map((point, index) => (
-              <CardSticky
-                key={point.number}
-                index={index + 1}
-                incrementY={8}
-                incrementZ={10}
-                data-pain-card
-                className="card-surface group w-full !p-5 shadow-[0_8px_32px_rgba(10,10,15,0.45)] backdrop-blur-md will-change-transform lg:!p-6"
-              >
-                <span className="font-satoshi text-[48px] font-black leading-none text-white/[0.06] transition-all duration-300 group-hover:gradient-text lg:text-[56px]">
-                  {point.number}
-                </span>
-                <h3 className="heading-card mt-3">{point.title}</h3>
-                <p className="text-card">{point.body}</p>
-                <p className="mt-4 font-inter text-sm font-medium text-brand-cyan">
-                  → {point.solution}
-                </p>
-              </CardSticky>
-            ))}
-          </ContainerScroll>
+          <SectionBodyCol>
+            <div ref={cardsRef} className="flex flex-col gap-6">
+              {painPoints.map((point) => (
+                <div
+                  key={point.number}
+                  className="card-surface group transition-colors hover:border-brand-purple/30"
+                >
+                  <span className="font-satoshi text-[48px] font-black leading-none text-white/[0.06] transition-all duration-300 group-hover:gradient-text lg:text-[56px]">
+                    {point.number}
+                  </span>
+                  <h3 className="heading-card mt-3">{point.title}</h3>
+                  <p className="text-card">{point.body}</p>
+                  <p className="mt-4 font-inter text-sm font-medium text-brand-cyan">
+                    → {point.solution}
+                  </p>
+                </div>
+              ))}
+            </div>
           </SectionBodyCol>
         </SectionSplit>
       </SectionShell>
