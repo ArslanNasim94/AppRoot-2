@@ -53,7 +53,7 @@ export const products: Product[] = [
     price: 0,
     color: "#0A1A2E",
     span: "col-span-2 row-span-1",
-    websiteUrl: "https://approots.net/products/drinx-hydration",
+    websiteUrl: "https://storage.googleapis.com/drinx/index.html",
     badges: ["Mobile App Available", "iOS App"],
     about:
       "Stay hydrated and boost your health with Drinx — the ultimate hydration companion! Track your daily water intake, get personalized reminders, and discover insights to build healthy hydration habits. Whether you're at home, work, or on the go, Drinx ensures you meet your goals with style.",
@@ -80,6 +80,7 @@ export const products: Product[] = [
     price: 0,
     color: "#0A1A1A",
     span: "col-span-1 row-span-2",
+    websiteUrl: "https://siparh.com",
     badges: ["Mobile App Available", "iOS App"],
     about:
       "Achieve your health goals with SipAR! Track your hydration, count your steps, and visualize your progress through augmented reality. SipAR is your ultimate hydration tracker and activity monitor — with AR visualization, smart reminders, and support for English, French, Spanish, Dutch, Chinese, Japanese, Urdu, Hindi, and more.",
@@ -106,6 +107,7 @@ export const products: Product[] = [
     price: 0,
     color: "#1A1A0A",
     span: "col-span-1 row-span-1",
+    websiteUrl: "https://storage.googleapis.com/fittracking/index.html",
     badges: ["Mobile App Available", "iOS App"],
     about:
       "Fit Tracking is your all-in-one health companion, designed to simplify fitness and wellness management. Whether you want to monitor your BMI, calculate your ideal weight, track your water intake, or set calorie goals, Fit Tracking provides a suite of powerful tools to help you achieve your health targets.",
@@ -132,6 +134,7 @@ export const products: Product[] = [
     price: 0,
     color: "#0A2E1A",
     span: "col-span-1 row-span-1",
+    websiteUrl: "https://mindsyncai.app",
     badges: ["Mobile App Available", "iOS App"],
     about:
       "Discover MindSync: your personalized mental wellness companion. Harness cutting-edge AI and beautiful design to achieve balance, clarity, and control over your emotional well-being — with mood tracking, guided meditations, and actionable insights.",
@@ -217,4 +220,27 @@ export function formatPrice(price: number): string {
 
 export function hasProductImage(product: Product): boolean {
   return Boolean(product.imageSrc && product.imageSrc.trim().length > 0);
+}
+
+const INVALID_WEBSITE_HOSTS = new Set(["approots.net", "www.approots.net"]);
+
+function isInvalidWebsiteHost(hostname: string): boolean {
+  const host = hostname.toLowerCase();
+  if (INVALID_WEBSITE_HOSTS.has(host)) return true;
+  if (host.endsWith(".approots.net")) return true;
+  if (host === "example.com" || host.endsWith(".example.com")) return true;
+  return false;
+}
+
+export function getProductWebsiteUrl(product: Product): string | undefined {
+  const url = product.websiteUrl?.trim();
+  if (!url) return undefined;
+
+  try {
+    const parsed = new URL(url);
+    if (isInvalidWebsiteHost(parsed.hostname)) return undefined;
+    return parsed.toString();
+  } catch {
+    return undefined;
+  }
 }

@@ -51,8 +51,7 @@ export function AiForStartups() {
     <section
       id="ai-for-startups"
       ref={sectionRef}
-      className="site-section relative overflow-hidden bg-bg"
-      style={{ perspective: 1200 }}
+      className="site-section bg-bg"
     >
       <SectionShell>
         <SectionSplit>
@@ -66,6 +65,9 @@ export function AiForStartups() {
               have, make your current system smarter, or launch a completely new AI
               SaaS with us.
             </p>
+            <div className="btn-row">
+              <MagneticButton href="#ai-chatbot">Discuss your AI idea →</MagneticButton>
+            </div>
           </SectionHeadingCol>
 
           <SectionBodyCol>
@@ -74,7 +76,11 @@ export function AiForStartups() {
               className="mb-6 h-px w-full origin-left bg-brand-cyan/30"
               aria-hidden
             />
-            <div ref={cardsRef} className="flex flex-col gap-6">
+            <div
+              ref={cardsRef}
+              className="flex flex-col gap-6"
+              style={{ perspective: 1200 }}
+            >
               {aiPaths.map((path) => (
                 <PedestalCard
                   key={path.number}
@@ -87,10 +93,6 @@ export function AiForStartups() {
             </div>
           </SectionBodyCol>
         </SectionSplit>
-
-        <div className="btn-row">
-          <MagneticButton href="#ai-chatbot">Discuss your AI idea →</MagneticButton>
-        </div>
       </SectionShell>
     </section>
   );

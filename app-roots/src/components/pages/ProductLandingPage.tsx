@@ -11,6 +11,7 @@ import { ProductInquiryForm } from "@/components/pages/ProductInquiryForm";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import {
   formatPrice,
+  getProductWebsiteUrl,
   hasProductImage,
   type Product,
 } from "@/data/products";
@@ -94,6 +95,7 @@ function ProductHeroVisual({ product }: { product: Product }) {
 
 export function ProductLandingPage({ product }: { product: Product }) {
   const rootRef = useRef<HTMLDivElement>(null);
+  const websiteUrl = getProductWebsiteUrl(product);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -203,8 +205,8 @@ export function ProductLandingPage({ product }: { product: Product }) {
             </p>
 
             <div className="btn-row" data-hero-fade>
-              {product.websiteUrl && (
-                <MagneticButton href={product.websiteUrl}>
+              {websiteUrl && (
+                <MagneticButton href={websiteUrl}>
                   Visit Website
                 </MagneticButton>
               )}
