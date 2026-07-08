@@ -18,7 +18,7 @@ function applyExitPhase(state: HeroScrollState, visualEl: HTMLElement) {
   const exit = state.exitProgress;
   // Fade only — never shift upward into the nav bar.
   visualEl.style.transform = "translate3d(0, 0, 0)";
-  visualEl.style.opacity = String(1 - clamp(exit / 0.92, 0, 1));
+  visualEl.style.opacity = String(1 - clamp(exit / 0.55, 0, 1));
 }
 
 export function Hero() {
@@ -41,7 +41,8 @@ export function Hero() {
 
       if (
         !completeDispatchedRef.current &&
-        (state.phase === "hold" || state.phase === "exit")
+        state.phase === "frames" &&
+        state.frameProgress >= 0.98
       ) {
         completeDispatchedRef.current = true;
         window.dispatchEvent(new CustomEvent("hero-animation-complete"));

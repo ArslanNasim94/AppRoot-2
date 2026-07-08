@@ -5,9 +5,12 @@ import { gsap } from "@/lib/gsap";
 export const FRAME_COUNT = 208;
 export const NAV_HEIGHT_PX = 80;
 export const HERO_FRAME_VH = 2.5;
-export const HERO_HOLD_VH = 0.25;
-export const HERO_EXIT_VH = 0.75;
+export const HERO_HOLD_VH = 0;
+export const HERO_EXIT_VH = 0.3;
 export const HERO_TOTAL_VH = HERO_FRAME_VH + HERO_HOLD_VH + HERO_EXIT_VH;
+
+/** Pull the first section up to overlap the hero exit fade — matches exit scroll distance. */
+export const HERO_EXIT_OVERLAP_SVH = HERO_EXIT_VH * 100;
 
 const PREFETCH_RADIUS = 40;
 const FRAME_PHASE_END = HERO_FRAME_VH / HERO_TOTAL_VH;
