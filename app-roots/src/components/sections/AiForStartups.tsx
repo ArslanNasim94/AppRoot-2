@@ -6,6 +6,12 @@ import { gsap } from "@/lib/gsap";
 import { SectionTag } from "@/components/ui/SectionTag";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { useNizekHeading } from "@/components/animations/useNizekHeading";
+import {
+  SectionBodyCol,
+  SectionHeadingCol,
+  SectionShell,
+  SectionSplit,
+} from "@/components/layout/SectionLayout";
 
 const aiPaths = [
   {
@@ -63,9 +69,9 @@ export function AiForStartups() {
       ref={sectionRef}
       className="site-section relative overflow-hidden bg-bg"
     >
-      <div className="container">
-        <div className="section-grid lg:grid-cols-[minmax(0,380px)_1fr] lg:items-start xl:grid-cols-[minmax(0,420px)_1fr]">
-          <div className="lg:sticky lg:top-32">
+      <SectionShell>
+        <SectionSplit>
+          <SectionHeadingCol>
             <SectionTag>03 · AI path</SectionTag>
             <h2 ref={headingRef} className="text-heading-section">
               {["YOUR STARTUP'S", "AI PARTNER."].map((line) => (
@@ -81,8 +87,9 @@ export function AiForStartups() {
               have, make your current system smarter, or launch a completely new AI
               SaaS with us.
             </p>
-          </div>
+          </SectionHeadingCol>
 
+          <SectionBodyCol>
           <div ref={cardsRef} className="flex flex-col gap-6">
             {aiPaths.map((path) => (
               <motion.div
@@ -112,12 +119,13 @@ export function AiForStartups() {
               </motion.div>
             ))}
           </div>
-        </div>
+          </SectionBodyCol>
+        </SectionSplit>
 
-        <div className="btn-row-center">
+        <div className="btn-row">
           <MagneticButton href="#ai-chatbot">Discuss your AI idea →</MagneticButton>
         </div>
-      </div>
+      </SectionShell>
     </section>
   );
 }

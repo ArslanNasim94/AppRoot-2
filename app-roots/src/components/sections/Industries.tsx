@@ -5,6 +5,12 @@ import { gsap } from "@/lib/gsap";
 import { SectionTag } from "@/components/ui/SectionTag";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { useNizekHeading } from "@/components/animations/useNizekHeading";
+import {
+  SectionBodyCol,
+  SectionHeadingCol,
+  SectionShell,
+  SectionSplit,
+} from "@/components/layout/SectionLayout";
 
 const stackCards = [
   {
@@ -53,21 +59,23 @@ export function Industries() {
 
   return (
     <section id="tech-stack" className="site-section bg-bg">
-      <div className="container section-grid">
-        <div>
-          <SectionTag>05 · Tech stack</SectionTag>
-          <h2 ref={headingRef} className="text-heading-section">
-            {["FULL-STACK", "DEVELOPMENT,", "ONE PARTNER."].map((line) => (
-              <span key={line} className="block overflow-hidden">
-                <span data-line className="block">
-                  {line}
+      <SectionShell>
+        <SectionSplit>
+          <SectionHeadingCol>
+            <SectionTag>05 · Tech stack</SectionTag>
+            <h2 ref={headingRef} className="text-heading-section">
+              {["FULL-STACK", "DEVELOPMENT,", "ONE PARTNER."].map((line) => (
+                <span key={line} className="block overflow-hidden">
+                  <span data-line className="block">
+                    {line}
+                  </span>
                 </span>
-              </span>
-            ))}
-          </h2>
-        </div>
+              ))}
+            </h2>
+          </SectionHeadingCol>
 
-        <div ref={tilesRef} className="flex flex-col gap-6">
+          <SectionBodyCol>
+          <div ref={tilesRef} className="flex flex-col gap-6">
           {stackCards.map((card) => (
             <div
               key={card.name}
@@ -80,12 +88,14 @@ export function Industries() {
               </span>
             </div>
           ))}
-        </div>
-      </div>
+          </div>
+          </SectionBodyCol>
+        </SectionSplit>
 
-      <div className="btn-row-center container">
-        <MagneticButton href="/products">See Our Products →</MagneticButton>
-      </div>
+        <div className="btn-row">
+          <MagneticButton href="/products">See Our Products →</MagneticButton>
+        </div>
+      </SectionShell>
     </section>
   );
 }

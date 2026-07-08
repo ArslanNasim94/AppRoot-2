@@ -33,7 +33,9 @@ export default function RootLayout({
         <ScrollTriggerRefresh />
         <CustomCursor />
         <Navigation />
-        <main className="relative isolate z-0 pt-20">{children}</main>
+        <main className="relative isolate z-0 pt-20 md:pl-[var(--pipeline-rail)]">
+          {children}
+        </main>
         <Footer />
         <AiChatbot />
       </body>

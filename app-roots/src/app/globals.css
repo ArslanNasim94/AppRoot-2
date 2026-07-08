@@ -25,6 +25,21 @@
   --space-stack-lg: 1.5rem;
   --space-inline: 1.5rem;
   --space-inline-lg: 2rem;
+  --pipeline-rail: 11rem;
+  --section-heading-col: 420px;
+  --section-split-gap: 2rem;
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --pipeline-rail: 11.5rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  :root {
+    --pipeline-rail: 12rem;
+  }
 }
 
 * {
@@ -242,6 +257,49 @@ h4 {
     .section-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 3rem;
+    }
+  }
+
+  .section-split {
+    display: grid;
+    gap: var(--space-block);
+    align-items: start;
+  }
+
+  @media (min-width: 1024px) {
+    .section-split {
+      grid-template-columns: minmax(0, var(--section-heading-col)) minmax(0, 1fr);
+      column-gap: var(--section-split-gap);
+    }
+  }
+
+  .section-heading-col {
+    width: 100%;
+    max-width: var(--section-heading-col);
+  }
+
+  @media (min-width: 1024px) {
+    .section-heading-col--sticky {
+      position: sticky;
+      top: 8rem;
+      align-self: start;
+    }
+
+    .section-heading-col--sticky-center {
+      position: sticky;
+      top: 50%;
+      align-self: start;
+      transform: translateY(-50%);
+    }
+  }
+
+  .section-body-col {
+    width: 100%;
+  }
+
+  @media (min-width: 1024px) {
+    .section-body-col--narrow {
+      max-width: 32rem;
     }
   }
 

@@ -1,9 +1,16 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
+import { gsap } from "@/lib/gsap";
 import { SectionTag } from "@/components/ui/SectionTag";
 import { ContainerScroll, CardSticky } from "@/components/ui/cards-stack";
 import { useNizekHeading } from "@/components/animations/useNizekHeading";
+import {
+  SectionBodyCol,
+  SectionHeadingCol,
+  SectionShell,
+  SectionSplit,
+} from "@/components/layout/SectionLayout";
 
 const painPoints = [
   {
@@ -28,8 +35,37 @@ const painPoints = [
 
 export function Services() {
   const sectionRef = useRef<HTMLElement>(null);
+  const cardsRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   useNizekHeading(headingRef);
+
+  useEffect(() => {
+    const cards = cardsRef.current;
+    if (!cards) return;
+
+    const items = cards.querySelectorAll("[data-pain-card]");
+    if (!items.length) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      gsap.set(items, { x: 0, opacity: 1 });
+      return;
+    }
+
+    gsap.set(items, { x: 160, opacity: 0 });
+
+    gsap.to(items, {
+      x: 0,
+      opacity: 1,
+      duration: 0.9,
+      stagger: 0.2,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: cards,
+        start: "top 78%",
+        once: true,
+      },
+    });
+  }, []);
 
   return (
     <section
@@ -37,9 +73,9 @@ export function Services() {
       ref={sectionRef}
       className="site-section relative overflow-hidden bg-bg-surface"
     >
-      <div className="container">
-        <div className="section-grid md:grid-cols-2">
-          <div className="left-0 top-0 md:sticky md:top-32 md:self-start lg:top-36">
+      <SectionShell>
+        <SectionSplit>
+          <SectionHeadingCol sticky="center">
             <SectionTag>02 · Pain points — Sound familiar?</SectionTag>
             <h2 ref={headingRef} className="text-heading-section">
               {["THE PROBLEMS THAT", "SLOW STARTUPS DOWN."].map((line) => (
@@ -50,20 +86,25 @@ export function Services() {
                 </span>
               ))}
             </h2>
-            <p className="copy-lead">
+            <p className="copy-lead max-w-[36ch]">
               You&apos;re not alone — we hear these from founders every week. We
               built AppRoots to take exactly these problems off your plate.
             </p>
-          </div>
+          </SectionHeadingCol>
 
-          <ContainerScroll className="min-h-[115vh] space-y-6 md:min-h-[135vh]">
+          <SectionBodyCol className="section-body-col--narrow">
+          <ContainerScroll
+            ref={cardsRef}
+            className="min-h-[80vh] space-y-4 md:min-h-[92vh]"
+          >
             {painPoints.map((point, index) => (
               <CardSticky
                 key={point.number}
                 index={index + 1}
-                incrementY={10}
+                incrementY={8}
                 incrementZ={10}
-                className="card-surface group w-full shadow-[0_8px_32px_rgba(10,10,15,0.45)] backdrop-blur-md"
+                data-pain-card
+                className="card-surface group w-full !p-5 shadow-[0_8px_32px_rgba(10,10,15,0.45)] backdrop-blur-md will-change-transform lg:!p-6"
               >
                 <span className="font-satoshi text-[48px] font-black leading-none text-white/[0.06] transition-all duration-300 group-hover:gradient-text lg:text-[56px]">
                   {point.number}
@@ -76,8 +117,9 @@ export function Services() {
               </CardSticky>
             ))}
           </ContainerScroll>
-        </div>
-      </div>
+          </SectionBodyCol>
+        </SectionSplit>
+      </SectionShell>
     </section>
   );
 }

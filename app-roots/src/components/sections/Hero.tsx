@@ -102,7 +102,7 @@ export function Hero() {
     <div
       id="hero"
       ref={trackRef}
-      className="relative isolate"
+      className="relative isolate max-md:w-full md:-ml-[var(--pipeline-rail)] md:w-[calc(100%+var(--pipeline-rail))]"
       style={{ height: `calc(100svh - 5rem + ${HERO_TOTAL_VH * 100}svh)` }}
     >
       <div className="sticky top-20 z-[10] h-[calc(100svh-5rem)] w-full overflow-hidden bg-bg">

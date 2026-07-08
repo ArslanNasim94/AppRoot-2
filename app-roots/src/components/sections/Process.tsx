@@ -4,6 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { ScrollTrigger } from "@/lib/gsap";
 import { SectionTag } from "@/components/ui/SectionTag";
 import { useNizekHeading } from "@/components/animations/useNizekHeading";
+import {
+  SectionBodyCol,
+  SectionHeadingCol,
+  SectionShell,
+  SectionSplit,
+} from "@/components/layout/SectionLayout";
 
 const steps = [
   {
@@ -63,21 +69,23 @@ export function Process() {
 
   return (
     <section id="steps" className="site-section bg-bg-surface">
-      <div className="container section-grid">
-        <div className="lg:sticky lg:top-32 lg:self-start">
-          <SectionTag>06 · How we work</SectionTag>
-          <h2 ref={headingRef} className="text-heading-section">
-            {["THREE STEPS,", "NO OVERHEAD."].map((line) => (
-              <span key={line} className="block overflow-hidden">
-                <span data-line className="block">
-                  {line}
+      <SectionShell>
+        <SectionSplit>
+          <SectionHeadingCol>
+            <SectionTag>06 · How we work</SectionTag>
+            <h2 ref={headingRef} className="text-heading-section">
+              {["THREE STEPS,", "NO OVERHEAD."].map((line) => (
+                <span key={line} className="block overflow-hidden">
+                  <span data-line className="block">
+                    {line}
+                  </span>
                 </span>
-              </span>
-            ))}
-          </h2>
-        </div>
+              ))}
+            </h2>
+          </SectionHeadingCol>
 
-        <div className="relative space-y-10 pl-8 lg:space-y-12">
+          <SectionBodyCol>
+          <div className="relative space-y-10 pl-8 lg:space-y-12">
           <div
             className="absolute left-3 top-0 h-full w-px bg-white/10"
             style={{
@@ -107,19 +115,21 @@ export function Process() {
               <p className="text-card">{step.body}</p>
             </div>
           ))}
-        </div>
-      </div>
-
-      <div className="card-grid container mt-10 md:grid-cols-3 lg:mt-12">
-        {notes.map((note) => (
-          <div key={note.title} className="card-surface">
-            <h3 className="font-satoshi text-sm font-black uppercase text-text-heading">
-              {note.title}
-            </h3>
-            <p className="text-card">{note.body}</p>
           </div>
-        ))}
-      </div>
+          </SectionBodyCol>
+        </SectionSplit>
+
+        <div className="card-grid mt-10 md:grid-cols-3 lg:mt-12">
+          {notes.map((note) => (
+            <div key={note.title} className="card-surface">
+              <h3 className="font-satoshi text-sm font-black uppercase text-text-heading">
+                {note.title}
+              </h3>
+              <p className="text-card">{note.body}</p>
+            </div>
+          ))}
+        </div>
+      </SectionShell>
     </section>
   );
 }

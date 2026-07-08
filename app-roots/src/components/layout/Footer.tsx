@@ -26,7 +26,7 @@ const coreStacks = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-white/[0.07] bg-bg">
+    <footer className="border-t border-white/[0.07] bg-bg md:pl-[var(--pipeline-rail)]">
       <div className="container section-padding !pb-16 !pt-20">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div>

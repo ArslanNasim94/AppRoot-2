@@ -5,6 +5,7 @@ import { gsap } from "@/lib/gsap";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { SectionTag } from "@/components/ui/SectionTag";
 import { useNizekHeading } from "@/components/animations/useNizekHeading";
+import { SectionHeadingCol, SectionShell } from "@/components/layout/SectionLayout";
 
 export function FinalCTA() {
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -54,26 +55,29 @@ export function FinalCTA() {
         }}
       />
 
-      <div className="container relative z-10 py-4 text-center lg:py-6">
-        <SectionTag>07 · Launch</SectionTag>
-        <h2 ref={headingRef} className="text-heading-cta">
-          {["STOP JUGGLING", "DEVELOPMENT.", "START BUILDING", "MOMENTUM."].map(
-            (line) => (
-              <span key={line} className="block overflow-hidden">
-                <span data-line className="block">
-                  {line}
+      <SectionShell className="relative z-10 py-4 lg:py-6">
+        <SectionHeadingCol sticky="none">
+          <SectionTag>07 · Launch</SectionTag>
+          <h2 ref={headingRef} className="text-heading-cta">
+            {["STOP JUGGLING", "DEVELOPMENT.", "START BUILDING", "MOMENTUM."].map(
+              (line) => (
+                <span key={line} className="block overflow-hidden">
+                  <span data-line className="block">
+                    {line}
+                  </span>
                 </span>
-              </span>
-            )
-          )}
-        </h2>
+              )
+            )}
+          </h2>
 
-        <p className="copy-lead mx-auto max-w-[520px]">
-          Tell us what you&apos;re building. We&apos;ll figure out the first step
-          together.
-        </p>
+          <p className="copy-lead max-w-[36ch]">
+            Tell us what you&apos;re building. We&apos;ll figure out the first step
+            together.
+          </p>
+        </SectionHeadingCol>
 
-        <div className="btn-row-center">
+        <div className="max-w-3xl">
+        <div className="btn-row">
           <MagneticButton href="/register">Let&apos;s talk →</MagneticButton>
           <a
             href="#ai-chatbot"
@@ -91,7 +95,8 @@ export function FinalCTA() {
           No commitment. No hard sell. Just an honest conversation about
           what&apos;s possible.
         </p>
-      </div>
+        </div>
+      </SectionShell>
     </section>
   );
 }
