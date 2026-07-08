@@ -161,6 +161,7 @@ export const products: Product[] = [
     price: 29.99,
     color: "#2E0A1A",
     span: "col-span-1 row-span-1",
+    websiteUrl: "https://example.com/project-management",
     about:
       "Modern project management solution designed for teams of all sizes. Features include task tracking, team collaboration, time tracking, reporting, and integrations with popular tools.",
     pricingNote: "Starting at $29.99/month per user. Enterprise plans available.",
@@ -175,6 +176,7 @@ export const products: Product[] = [
     price: 9.99,
     color: "#1A2E0A",
     span: "col-span-1 row-span-1",
+    websiteUrl: "https://example.com/fitness-app",
     about:
       "Fitness app with workout plans, nutrition tracking, and progress monitoring — built for iOS and Android with a full backend.",
     pricingNote: "$9.99/month or $79.99/year.",
@@ -189,6 +191,7 @@ export const products: Product[] = [
     price: 49.99,
     color: "#0A0A2E",
     span: "col-span-1 row-span-1",
+    websiteUrl: "https://example.com/ecommerce",
     about:
       "Full-featured e-commerce platform with inventory management, order processing, payment integration, and storefront customization.",
     pricingNote: "Starting at $49.99/month.",
@@ -203,6 +206,7 @@ export const products: Product[] = [
     price: 39.99,
     color: "#2E1A0A",
     span: "col-span-2 row-span-1",
+    websiteUrl: "https://example.com/crm",
     about:
       "Manage customers, deals, and workflows in one place. Built for sales teams that need pipeline visibility, contact management, and reporting.",
     pricingNote: "$39.99/user/month.",
@@ -228,7 +232,6 @@ function isInvalidWebsiteHost(hostname: string): boolean {
   const host = hostname.toLowerCase();
   if (INVALID_WEBSITE_HOSTS.has(host)) return true;
   if (host.endsWith(".approots.net")) return true;
-  if (host === "example.com" || host.endsWith(".example.com")) return true;
   return false;
 }
 
