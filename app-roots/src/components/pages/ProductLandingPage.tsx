@@ -1,12 +1,20 @@
+"use client";
+
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
-import { ProductDetailHeading } from "@/components/pages/ProductsPageHeader";
-import {
-  ProductInquiryForm,
-  ProductScreenshots,
-} from "@/components/pages/ProductInquiryForm";
+import Image from "next/image";
+import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { AppWindow, ChevronRight, Smartphone } from "lucide-react";
+import { gsap } from "@/lib/gsap";
+import { AnimatedHeading } from "@/components/ui/AnimatedHeading";
+import { ProductInquiryForm } from "@/components/pages/ProductInquiryForm";
 import { MagneticButton } from "@/components/ui/MagneticButton";
-import { formatPrice, type Product } from "@/data/products";
+import {
+  formatPrice,
+  hasProductImage,
+  type Product,
+} from "@/data/products";
+import { prefersReducedMotion } from "@/components/animations/useReducedMotion";
 
 function ProductBreadcrumb({ name }: { name: string }) {
   return (
@@ -38,37 +46,133 @@ function ProductBreadcrumb({ name }: { name: string }) {
 }
 
 function ProductHeroVisual({ product }: { product: Product }) {
+  const hasImage = hasProductImage(product);
+  const Icon = /mobile/i.test(product.category) ? Smartphone : AppWindow;
+
   return (
-    <div
-      className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-2xl border border-white/[0.08] lg:aspect-square"
+    <motion.div
+      layoutId={`product-image-${product.slug}`}
+      transition={{ duration: 0.5, ease: [0.2, 0.7, 0, 1] }}
+      className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-white/[0.08] bg-bg-elevated"
+      data-hero-image
       style={{
-        background: `radial-gradient(circle at 30% 30%, ${product.color}88 0%, #0A0A0F 70%)`,
+        viewTransitionName: `product-image-${product.slug}`,
+        background:
+          "linear-gradient(145deg, rgba(123,47,255,0.18) 0%, rgba(10,10,15,0.9) 62%, rgba(0,200,255,0.14) 100%)",
       }}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/10 to-brand-cyan/10" />
-      <div className="relative text-center">
-        <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-2xl border border-white/10 bg-white/5 font-satoshi text-2xl font-black uppercase text-text-heading backdrop-blur-sm">
-          {product.name
-            .split(" ")
-            .slice(0, 2)
-            .map((w) => w[0])
-            .join("")}
-        </div>
-        <p className="font-inter text-sm text-white/40">{product.category}</p>
+      {hasImage ? (
+        <Image
+          src={product.imageSrc!}
+          alt={product.name}
+          fill
+          priority
+          sizes="(max-width: 1280px) 100vw, 1200px"
+          className="object-cover"
+        />
+      ) : (
+        <>
+          <div
+            className="absolute inset-0 opacity-25"
+            style={{
+              backgroundImage:
+                "repeating-linear-gradient(135deg, rgba(255,255,255,0.08) 0px, rgba(255,255,255,0.08) 1px, transparent 1px, transparent 12px)",
+            }}
+          />
+          <div className="relative flex h-full items-center justify-center">
+            <Icon className="h-20 w-20 text-white/25" aria-hidden />
+          </div>
+        </>
+      )}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bg/50 to-transparent" />
+      <div className="absolute left-4 top-4 rounded-full border border-brand-cyan/30 bg-bg/70 px-3 py-1 font-inter text-[11px] font-medium text-brand-cyan backdrop-blur">
+        {product.category}
       </div>
-    </div>
+    </motion.div>
   );
 }
 
 export function ProductLandingPage({ product }: { product: Product }) {
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root || prefersReducedMotion()) return;
+
+    const heroEls = root.querySelectorAll("[data-hero-fade]");
+    const sectionEls = root.querySelectorAll("[data-section-reveal]");
+    const fields = root.querySelectorAll("[data-form-field]");
+    const heroImage = root.querySelector<HTMLElement>("[data-hero-image]");
+
+    gsap.fromTo(
+      heroEls,
+      { opacity: 0, y: 16 },
+      { opacity: 1, y: 0, duration: 0.45, stagger: 0.08, ease: "power2.out" }
+    );
+
+    if (heroImage) {
+      gsap.fromTo(
+        heroImage,
+        { scale: 1.08, filter: "blur(6px)" },
+        { scale: 1, filter: "blur(0px)", duration: 0.75, ease: "power3.out" }
+      );
+
+      gsap.to(heroImage, {
+        y: -14,
+        ease: "none",
+        scrollTrigger: {
+          trigger: heroImage,
+          start: "top 80%",
+          end: "bottom top",
+          scrub: 0.5,
+        },
+      });
+    }
+
+    sectionEls.forEach((el) => {
+      gsap.fromTo(
+        el,
+        { opacity: 0, y: 28 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 86%",
+            once: true,
+          },
+        }
+      );
+    });
+
+    gsap.fromTo(
+      fields,
+      { opacity: 0, y: 16 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.45,
+        stagger: 0.06,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: "#request-info",
+          start: "top 82%",
+          once: true,
+        },
+      }
+    );
+  }, []);
+
   return (
-    <div className="site-section pt-28 lg:pt-32">
+    <div ref={rootRef} className="site-section pt-28 lg:pt-32">
       <div className="container max-w-6xl">
         <ProductBreadcrumb name={product.name} />
 
         <section className="section-grid border-b border-white/[0.07] pb-12 lg:pb-20">
           <div>
-            <div className="mb-4 flex flex-wrap gap-2">
+            <div className="mb-4 flex flex-wrap gap-2" data-hero-fade>
               <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1 font-inter text-xs font-medium uppercase tracking-wide text-text-heading">
                 {product.category}
               </span>
@@ -82,10 +186,23 @@ export function ProductLandingPage({ product }: { product: Product }) {
               ))}
             </div>
 
-            <ProductDetailHeading title={product.name} />
-            <p className="copy-lead max-w-xl">{product.description}</p>
+            <motion.div
+              layoutId={`product-title-${product.slug}`}
+              transition={{ duration: 0.5, ease: [0.2, 0.7, 0, 1] }}
+              style={{ viewTransitionName: `product-title-${product.slug}` }}
+            >
+              <AnimatedHeading
+                as="h1"
+                className="mb-4"
+                headingClassName="text-heading-page"
+                lines={[product.name.toUpperCase()]}
+              />
+            </motion.div>
+            <p className="copy-lead max-w-xl" data-hero-fade>
+              {product.description}
+            </p>
 
-            <div className="btn-row">
+            <div className="btn-row" data-hero-fade>
               {product.websiteUrl && (
                 <MagneticButton href={product.websiteUrl}>
                   Visit Website
@@ -104,8 +221,14 @@ export function ProductLandingPage({ product }: { product: Product }) {
           <ProductHeroVisual product={product} />
         </section>
 
-        <section className="border-b border-white/[0.07] py-12 lg:py-20">
-          <h2 className="text-heading-section mb-6">About This Product</h2>
+        <section
+          className="border-b border-white/[0.07] py-12 lg:py-20"
+          data-section-reveal
+        >
+          <AnimatedHeading
+            lines={["ABOUT THIS PRODUCT"]}
+            headingClassName="text-heading-section mb-6"
+          />
           <p className="copy-lead max-w-3xl">{product.about}</p>
 
           {product.features && product.features.length > 0 && (
@@ -125,10 +248,14 @@ export function ProductLandingPage({ product }: { product: Product }) {
           )}
         </section>
 
-        <ProductScreenshots product={product} />
-
-        <section className="border-b border-white/[0.07] py-12 lg:py-20">
-          <h2 className="text-heading-section mb-6">Pricing</h2>
+        <section
+          className="border-b border-white/[0.07] py-12 lg:py-20"
+          data-section-reveal
+        >
+          <AnimatedHeading
+            lines={["PRICING"]}
+            headingClassName="text-heading-section mb-6"
+          />
           <div className="card-surface max-w-md">
             <p className="font-satoshi text-3xl font-black text-brand-cyan">
               {formatPrice(product.price)}
@@ -148,18 +275,27 @@ export function ProductLandingPage({ product }: { product: Product }) {
           </div>
         </section>
 
-        <section className="border-b border-white/[0.07] py-12 lg:py-20">
-          <h2 className="text-heading-section mb-6">Use Cases</h2>
+        <section
+          className="border-b border-white/[0.07] py-12 lg:py-20"
+          data-section-reveal
+        >
+          <AnimatedHeading
+            lines={["USE CASES"]}
+            headingClassName="text-heading-section mb-6"
+          />
           <p className="copy-lead max-w-3xl">{product.useCases}</p>
         </section>
 
-        <section id="request-info" className="py-12 lg:py-20">
-          <h2 className="text-heading-section mb-3">Request Information</h2>
+        <section id="request-info" className="py-12 lg:py-20" data-section-reveal>
+          <AnimatedHeading
+            lines={["REQUEST INFORMATION"]}
+            headingClassName="text-heading-section mb-3"
+          />
           <p className="copy-lead mb-0 max-w-2xl text-sm">
             Interested in {product.name}? Fill out the form below and our team
             will get back to you.
           </p>
-          <div className="card-surface mt-8 max-w-2xl">
+          <div className="card-surface mt-8 max-w-2xl" data-form-field>
             <ProductInquiryForm productName={product.name} />
           </div>
         </section>

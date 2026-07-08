@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { ProductsPageHeader } from "@/components/pages/ProductsPageHeader";
-import { products, formatPrice } from "@/data/products";
+import { products } from "@/data/products";
+import { ProductsGridClient } from "@/components/pages/ProductsGridClient";
 
 export const metadata: Metadata = {
   title: "Startup Products & SaaS Apps Built by AppRoots",
@@ -36,43 +37,7 @@ export default function ProductsPage() {
           mobile apps available for purchase or partnership.
         </p>
 
-        <div className="card-grid sm:grid-cols-2 lg:grid-cols-3">
-          {products.map((product) => (
-            <Link
-              key={product.slug}
-              href={`/products/${product.slug}`}
-              className="card-surface group flex flex-col justify-between transition-colors hover:border-brand-purple/30"
-              data-cursor="view"
-            >
-              <div>
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-inter text-[11px] font-medium uppercase tracking-[0.12em] text-white/30">
-                    {product.category}
-                  </span>
-                  {product.tag && (
-                    <span className="rounded-full bg-brand-purple/15 px-2 py-0.5 font-inter text-[10px] font-medium uppercase tracking-wide text-brand-purple">
-                      {product.tag}
-                    </span>
-                  )}
-                </div>
-                <h2 className="mt-3 font-satoshi text-lg font-black uppercase text-text-heading">
-                  {product.name}
-                </h2>
-                <p className="mt-3 line-clamp-3 font-inter text-sm leading-relaxed text-text-body">
-                  {product.description}
-                </p>
-              </div>
-              <div className="mt-6 flex items-center justify-between">
-                <span className="font-inter text-sm font-medium text-brand-cyan">
-                  {formatPrice(product.price)}
-                </span>
-                <span className="font-inter text-sm text-text-body opacity-0 transition-opacity group-hover:opacity-100">
-                  View Details →
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
+        <ProductsGridClient products={products} />
       </div>
     </div>
   );

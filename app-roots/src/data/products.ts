@@ -3,6 +3,7 @@ export type Product = {
   category: string;
   name: string;
   description: string;
+  imageSrc?: string | null;
   price: number;
   color: string;
   tag?: string;
@@ -21,6 +22,7 @@ export const products: Product[] = [
     slug: "asfleet",
     category: "SaaS",
     name: "AsFleet",
+    imageSrc: null, // TODO: no image asset available for this product yet
     description:
       "Professional fleet maintenance tracking for small and mid-size businesses. Manage vehicles, schedules, repairs, and reminders in one powerful dashboard.",
     price: 0,
@@ -45,6 +47,7 @@ export const products: Product[] = [
     slug: "drinx-hydration",
     category: "Mobile app",
     name: "Drinx – Hydration",
+    imageSrc: null, // TODO: no image asset available for this product yet
     description:
       "Transform your hydration habits with Drinx — track, log, and stay refreshed daily!",
     price: 0,
@@ -71,6 +74,7 @@ export const products: Product[] = [
     slug: "sipar-hydration-with-steps",
     category: "Mobile app",
     name: "SipAR | Hydration with Steps",
+    imageSrc: null, // TODO: no image asset available for this product yet
     description:
       "Achieve your health goals with SipAR! Track your hydration, count your steps & visualize your progress through augmented reality.",
     price: 0,
@@ -96,6 +100,7 @@ export const products: Product[] = [
     slug: "fit-tracking",
     category: "Mobile app",
     name: "Fit Tracking",
+    imageSrc: null, // TODO: no image asset available for this product yet
     description:
       "Track your health and fitness effortlessly — multiple health calculators, personalized profiles & timely reminders.",
     price: 0,
@@ -121,6 +126,7 @@ export const products: Product[] = [
     slug: "mindsync-ai",
     category: "Mobile app",
     name: "MindSync AI",
+    imageSrc: null, // TODO: no image asset available for this product yet
     description:
       "Achieve emotional balance & mental clarity — analyze emotions, track moods & achieve wellness goals.",
     price: 0,
@@ -146,6 +152,7 @@ export const products: Product[] = [
     slug: "saas-project-management-tool",
     category: "SaaS",
     name: "SaaS Project Management Tool",
+    imageSrc: null, // TODO: no image asset available for this product yet
     description:
       "A comprehensive project management SaaS platform with real-time collaboration.",
     price: 29.99,
@@ -160,6 +167,7 @@ export const products: Product[] = [
     slug: "mobile-fitness-app",
     category: "Mobile app with backend",
     name: "Mobile Fitness App",
+    imageSrc: null, // TODO: no image asset available for this product yet
     description: "iOS and Android fitness tracking app.",
     price: 9.99,
     color: "#1A2E0A",
@@ -173,6 +181,7 @@ export const products: Product[] = [
     slug: "ecommerce-platform",
     category: "SaaS",
     name: "E-Commerce Platform",
+    imageSrc: null, // TODO: no image asset available for this product yet
     description: "Complete e-commerce solution.",
     price: 49.99,
     color: "#0A0A2E",
@@ -186,6 +195,7 @@ export const products: Product[] = [
     slug: "crm-software-solution",
     category: "SaaS",
     name: "CRM Software Solution",
+    imageSrc: null, // TODO: no image asset available for this product yet
     description: "CRM for sales teams.",
     price: 39.99,
     color: "#2E1A0A",
@@ -203,4 +213,8 @@ export function getProductBySlug(slug: string): Product | undefined {
 
 export function formatPrice(price: number): string {
   return price === 0 ? "$0.00" : `$${price.toFixed(2)}`;
+}
+
+export function hasProductImage(product: Product): boolean {
+  return Boolean(product.imageSrc && product.imageSrc.trim().length > 0);
 }

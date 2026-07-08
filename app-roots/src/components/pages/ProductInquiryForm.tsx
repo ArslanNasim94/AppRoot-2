@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Check, Loader2 } from "lucide-react";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import type { Product } from "@/data/products";
 
@@ -14,10 +15,15 @@ const inquiryTypes = [
 
 export function ProductInquiryForm({ productName }: { productName: string }) {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSubmitting(true);
+    window.setTimeout(() => {
+      setSubmitting(false);
+      setSubmitted(true);
+    }, 850);
   };
 
   if (submitted) {
@@ -34,7 +40,7 @@ export function ProductInquiryForm({ productName }: { productName: string }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="grid gap-5 sm:grid-cols-2">
-        <div>
+        <div data-form-field>
           <label
             htmlFor="inquiry-name"
             className="mb-2 block font-inter text-sm font-medium text-text-heading"
@@ -48,7 +54,7 @@ export function ProductInquiryForm({ productName }: { productName: string }) {
             className="h-12 w-full rounded-xl border border-white/[0.08] bg-bg px-4 font-inter text-sm text-text-heading outline-none transition-colors focus:border-brand-purple/50 focus:ring-2 focus:ring-brand-purple/20"
           />
         </div>
-        <div>
+        <div data-form-field>
           <label
             htmlFor="inquiry-email"
             className="mb-2 block font-inter text-sm font-medium text-text-heading"
@@ -65,7 +71,7 @@ export function ProductInquiryForm({ productName }: { productName: string }) {
         </div>
       </div>
 
-      <div>
+      <div data-form-field>
         <label
           htmlFor="inquiry-phone"
           className="mb-2 block font-inter text-sm font-medium text-text-heading"
@@ -80,7 +86,7 @@ export function ProductInquiryForm({ productName }: { productName: string }) {
         />
       </div>
 
-      <div>
+      <div data-form-field>
         <label
           htmlFor="inquiry-type"
           className="mb-2 block font-inter text-sm font-medium text-text-heading"
@@ -105,7 +111,7 @@ export function ProductInquiryForm({ productName }: { productName: string }) {
         </select>
       </div>
 
-      <div>
+      <div data-form-field>
         <label
           htmlFor="inquiry-message"
           className="mb-2 block font-inter text-sm font-medium text-text-heading"
@@ -120,7 +126,25 @@ export function ProductInquiryForm({ productName }: { productName: string }) {
         />
       </div>
 
-      <MagneticButton type="submit">Submit Inquiry</MagneticButton>
+      <div data-form-field>
+        <MagneticButton type="submit">
+          <span className="inline-flex items-center gap-2">
+            {submitting ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Sending...
+              </>
+            ) : submitted ? (
+              <>
+                <Check className="h-4 w-4" />
+                Sent
+              </>
+            ) : (
+              "Submit Inquiry"
+            )}
+          </span>
+        </MagneticButton>
+      </div>
     </form>
   );
 }
